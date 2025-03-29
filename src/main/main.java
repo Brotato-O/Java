@@ -7,7 +7,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import GUI.SupermarketUI;
+import GUI.*;
 import GUI.loginForm;
 
 public class main extends JFrame{
@@ -17,9 +17,9 @@ public class main extends JFrame{
     public main(){
         setSize(width, height); 
         getContentPane().setBackground(Color.decode("#cdffff"));
-        add(new loginForm());
+        add(new QLHD());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
+//        setResizable(false);
         setVisible(true);
     }
 

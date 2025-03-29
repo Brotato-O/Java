@@ -3,7 +3,6 @@ package GUI;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
 
 public class SupermarketUI {
@@ -33,8 +32,8 @@ public class SupermarketUI {
     	    sidePanel.add(imgLabel, BorderLayout.NORTH);
 
     	    // Menu Items
-    	    String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản Lý Nhân Viên", "Quản Lý Khách Hàng", 
-    	                           "Nhập & Xuất Sách", "Giảm Giá", "Tài Khoản", "Thống Kê", "Nhà Cung Cấp" };
+    	    String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên", "Quản Lý Khách Hàng", 
+    	                           "Nhập & Xuất Sách","Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê", "Nhà Cung Cấp" };
 
     	    JPanel menuPanel = new JPanel();
     	    menuPanel.setLayout(new GridLayout(menuItems.length, 1, 0, 0));
@@ -255,21 +254,16 @@ public class SupermarketUI {
     	    
     	    
     	    
-    	    
-    	    
-    	    
-    	    
     	    quanLySach.add(QLS1);
     	    quanLySach.add(QLS2);
     	    quanLySach.add(QLS3);
     	    quanLySachPanel.add(quanLySach);
     	    
     	    
-    	    
-
     	    // Thêm vào CardLayout
     	    mainPanel.add(banHangPanel, "Bán Hàng");
     	    mainPanel.add(quanLySachPanel, "Quản Lý Sách");
+             mainPanel.add(new QLHD(), "Nhập sách");
 
     	    sidePanel.add(menuPanel);
 
