@@ -211,19 +211,21 @@ public class QLHD extends JPanel {
         modelHD.setNumRows(20);
         tableHD.setModel(modelHD);
         JScrollPane p1= new JScrollPane(tableHD);
-        JPanel p2= new JPanel();
+        JPanel p2= new JPanel(new GridLayout(1, 2));
         JPanel temp1= new JPanel();
+        temp1.setLayout(new BoxLayout(temp1, BoxLayout.X_AXIS));
         temp1.add(new JLabel("Số lượng hóa đơn"));
         temp1.add(tongHD);
         JPanel temp2= new JPanel();
+        temp2.setLayout(new BoxLayout(temp2, BoxLayout.X_AXIS));
         temp2.add(new JLabel("Tổng tiền các hóa đơn"));
         temp2.add(tongTienHD);
         p.add(p1);
         p2.add(temp1);
         p2.add(temp2);
         p.add(p2);
-        tongHD.setPreferredSize(new Dimension(100, 25));
-        tongTienHD.setPreferredSize(new Dimension(100, 25));
+        tongHD.setMaximumSize(new Dimension(125, 25));
+        tongTienHD.setMaximumSize(new Dimension(125, 25));
         return p;
     }
     
