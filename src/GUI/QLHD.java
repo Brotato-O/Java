@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -20,18 +21,20 @@ public class QLHD extends JPanel {
     private JTextField maKH= new JTextField();
     private JTextField ngayLap = new JTextField();
     private JComboBox phuongThuc= new JComboBox();
+    private DefaultComboBoxModel modelPT= new DefaultComboBoxModel();
     private JTextField tongGG= new JTextField();
     private JTextField tongTien= new JTextField();
     private JTextField tongSL= new JTextField();
-    private JButton xoa= new JButton("Xóa");
-    private JButton sua= new JButton("Sửa");
-    private JButton xuat= new JButton("Xuất");
-    private JButton lamMoi= new JButton("Làm mới");
+    private JButton xoa= new JButton("XÓA");
+    private JButton sua= new JButton("SỬA");
+    private JButton xuat= new JButton("XUẤT");
+    private JButton lamMoi= new JButton("LÀM MỚI");
     
     private JTextField timMaHD= new JTextField();
     private JTextField timMaNV= new JTextField();
     private JTextField timMaKH= new JTextField();
     private JComboBox timPhuongThuc= new JComboBox();
+    private DefaultComboBoxModel modelTimPT= new DefaultComboBoxModel();
     private JTextField tgianBD= new JTextField();
     private JTextField tgianKT= new JTextField();
     private JTextField tienBD= new JTextField();
@@ -47,15 +50,14 @@ public class QLHD extends JPanel {
     private JTextField ctTongSL = new JTextField();
     private JTextField ctTongThanhTien= new JTextField();
     private JTable tableCTHD= new JTable();
-    private JButton ctTong= new JButton("Tất cả chi tiết hóa đơn");
+    private JButton ctTong= new JButton("TẤT CẢ CHI TIẾT HÓA ĐƠN");
     private DefaultTableModel modelCTHD= new DefaultTableModel();
-    private JButton suaCTHD= new JButton("Sửa");
-    private JButton xoaCTHD= new JButton("Xóa");
+    private JButton suaCTHD= new JButton("SỬA");
+    private JButton xoaCTHD= new JButton("XÓA");
     
     public QLHD(){
         setLayout(new BorderLayout());
         JPanel header= new JPanel();
-        header.setBackground(Color.red);
         header.setPreferredSize(new Dimension(100, 50));
         header.add(new JLabel("QUẢN LÝ HÓA ĐƠN"){{setFont(new Font("Arial", Font.BOLD, 26));}});
         add(header, BorderLayout.NORTH);
@@ -72,6 +74,10 @@ public class QLHD extends JPanel {
         JPanel p= new JPanel();
         p.setLayout(new GridLayout(1, 5));
         p.setPreferredSize(new Dimension(0, (int)(0.2*height)));
+        modelPT.addElement("Tiền mặt");
+        modelPT.addElement("Chuyển khoản");
+        modelPT.addElement("Quẹt thẻ");
+        phuongThuc.setModel(modelPT);
         JPanel[] c= new JPanel[5];
         JPanel[] r= new JPanel[8];
         JPanel[] t= new JPanel[8];
@@ -79,11 +85,9 @@ public class QLHD extends JPanel {
         for (int i=0; i< 5; i++){
             c[i]= new JPanel();
             c[i].setLayout(new BoxLayout(c[i], BoxLayout.Y_AXIS));
-            c[i].setBorder(BorderFactory.createLineBorder(Color.yellow));
         }
         for (int i=0; i< 8; i++){
             r[i]= new JPanel(new GridLayout(1, 2));
-            r[i].setBackground(Color.red);
         }
         for (int i=0; i< 8; i++){
             t[i]= new JPanel();
@@ -119,14 +123,21 @@ public class QLHD extends JPanel {
             c[i].add(r[i*2]);
             c[i].add(r[i*2+1]);
         }
-        c[4].setLayout(new GridLayout(2, 2));
-        c[4].add(xoa);
-        c[4].add(sua);
-        c[4].add(xuat);
-        c[4].add(lamMoi);
-        for (int i=0; i< 5; i++)
-            p.add(c[i]);
         
+        JPanel[] pBtn= new JPanel[4];
+        for (int i=0; i< 4; i++){
+            pBtn[i]= new JPanel(new BorderLayout());
+            pBtn[i].setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
+        }
+        c[4].setLayout(new GridLayout(2, 2));
+        pBtn[0].add(xoa);
+        pBtn[1].add(xuat);
+        pBtn[2].add(sua);
+        pBtn[3].add(lamMoi);
+        for (int i=0; i< 5; i++){
+            if (i< 4) c[4].add(pBtn[i]);
+            p.add(c[i]);
+        }
         System.out.println((int)(0.7*r[0].getSize().getWidth()));
         maHD.setMaximumSize(d);
         maKH.setMaximumSize(d);
@@ -136,6 +147,13 @@ public class QLHD extends JPanel {
         tongGG.setMaximumSize(d);
         tongSL.setMaximumSize(d);
         tongTien.setMaximumSize(d);
+        
+        xoa.setBackground(Color.red);
+        xoa.setForeground(Color.white);
+        xuat.setBackground(Color.BLUE);
+        xuat.setForeground(Color.white);
+        sua.setBackground(Color.orange);
+        lamMoi.setBackground(Color.GREEN);
         return p;
     }
     
@@ -143,10 +161,15 @@ public class QLHD extends JPanel {
         JPanel p= new JPanel();
 //        JPanel p1= new JPanel();
 //        p1.setLayout(new GridLayout(1, 1));
+        modelTimPT.addElement("Tiền mặt");
+        modelTimPT.addElement("Chuyển khoản");
+        modelTimPT.addElement("Quẹt thẻ");
+        timPhuongThuc.setModel(modelTimPT);
         p.setLayout(new BorderLayout());
         p.setPreferredSize(new Dimension(0, (int)(0.2*height)));
         JPanel center= new JPanel();
         center.setLayout(new GridLayout(2, 4));
+        center.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         JPanel[] t= new JPanel[8];
         JPanel[] c1= new JPanel[8];
         JPanel[] c2= new JPanel[8];
@@ -181,7 +204,14 @@ public class QLHD extends JPanel {
             center.add(t[i]);
         }
         p.add(center, BorderLayout.CENTER);
+        
+        ImageIcon icon= new ImageIcon(getClass().getResource("../img/search.png"));
+        Image img= icon.getImage();
+        img= img.getScaledInstance(35, 35, Image.SCALE_AREA_AVERAGING);
+        tim.setIcon(new ImageIcon(img));
+        tim.setBackground(Color.GRAY);
         p.add(tim, BorderLayout.EAST);
+        
         Border thickBorder = BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK); //ko biết là gì nhưng sẽ ôn sau
         Border bd= BorderFactory.createLineBorder(Color.BLACK,5);
         TitledBorder ttBD= BorderFactory.createTitledBorder(thickBorder, "TÌM KIẾM HÓA ĐƠN");
@@ -210,17 +240,25 @@ public class QLHD extends JPanel {
         modelHD.setColumnIdentifiers(colums);
         modelHD.setNumRows(20);
         tableHD.setModel(modelHD);
+        JPanel pTable= new JPanel(new BorderLayout());
         JScrollPane p1= new JScrollPane(tableHD);
+        pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        pTable.add(p1);
+        
         JPanel p2= new JPanel(new GridLayout(1, 2));
         JPanel temp1= new JPanel();
         temp1.setLayout(new BoxLayout(temp1, BoxLayout.X_AXIS));
+        temp1.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
         temp1.add(new JLabel("Số lượng hóa đơn"));
+        temp1.add(Box.createHorizontalStrut(10));
         temp1.add(tongHD);
         JPanel temp2= new JPanel();
         temp2.setLayout(new BoxLayout(temp2, BoxLayout.X_AXIS));
         temp2.add(new JLabel("Tổng tiền các hóa đơn"));
+        temp2.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        temp2.add(Box.createHorizontalStrut(10));
         temp2.add(tongTienHD);
-        p.add(p1);
+        p.add(pTable);
         p2.add(temp1);
         p2.add(temp2);
         p.add(p2);
@@ -236,22 +274,40 @@ public class QLHD extends JPanel {
         Border thickBorder = BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK); //ko biết là gì nhưng sẽ ôn sau
         TitledBorder ttbd= BorderFactory.createTitledBorder(thickBorder, "CHI TIẾT HÓA ĐƠN");
         ttbd.setTitleJustification(TitledBorder.CENTER);
-        ttbd.setTitleColor(Color.pink);
+        ttbd.setTitleColor(Color.magenta);
         ttbd.setTitleFont(new Font("Arial", Font.PLAIN, 22));
         Border bd= BorderFactory.createLineBorder(Color.BLACK);
         bd= BorderFactory.createTitledBorder(ttbd);
         
         JPanel temp1= new JPanel();
-        temp1.setLayout(new BorderLayout());
-        JPanel l= new JPanel(new GridLayout(2, 3));
-        l.add(new JLabel("Mã HĐ"));
-        l.add(new JLabel("Tổng số lượng"));
-        l.add(new JLabel("Tổng thành tiền"));
-        l.add(ctMaHD);
-        l.add(tongSL);
-        l.add(ctTongThanhTien);
-        temp1.add(l, BorderLayout.CENTER);
-        temp1.add(ctTong, BorderLayout.EAST);
+        temp1.setLayout(new GridLayout(1, 2));
+        JPanel l= new JPanel(new GridLayout(1, 3));
+        JPanel[] t= new JPanel[3];
+        for (int i=0; i< 3; i++){
+            t[i]= new JPanel();
+            t[i].setLayout(new BoxLayout(t[i], BoxLayout.Y_AXIS));
+            t[i].setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        }
+        t[0].add(new JLabel("Mã HĐ"));
+        t[0].add(ctMaHD);
+        t[1].add(new JLabel("Tổng số lượng"));
+        t[1].add(ctTongSL);
+        t[2].add(new JLabel("Tổng thành tiền"));
+        t[2].add(ctTongThanhTien);
+        for (int i=0; i< 3; i++){
+            l.add(t[i]);
+        }
+        temp1.add(l);
+        JPanel tempBtn= new JPanel();
+        tempBtn.setLayout(new BoxLayout(tempBtn, BoxLayout.X_AXIS));
+        tempBtn.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 25));
+        tempBtn.add(ctTong);
+        ctTong.setPreferredSize(new Dimension(150, 35));
+        ctTong.setAlignmentY(CENTER_ALIGNMENT);
+        ctTong.setBackground(Color.GRAY);
+        ctTong.setForeground(Color.white);
+//        temp1.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        temp1.add(tempBtn);
         
         JPanel temp2 = new JPanel(new BorderLayout());
         String[] colums= {"Mã HĐ", "Mã sách", "Số lượng", "Đơn giá", "Tổng tiền", "Mã giảm", "Thành tiền"};
@@ -259,11 +315,25 @@ public class QLHD extends JPanel {
         modelCTHD.setRowCount(20);
         tableCTHD.setModel(modelCTHD);
         JScrollPane pane= new JScrollPane(tableCTHD);
-        temp2.add(pane);
+        JPanel pTable= new JPanel(new BorderLayout());
+        pTable.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+        pTable.add(pane);
+        temp2.add(pTable);
         JPanel r= new JPanel();
         r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
+        r.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+        suaCTHD.setAlignmentX(CENTER_ALIGNMENT);
+        suaCTHD.setMaximumSize(new Dimension(100, 35));
+        suaCTHD.setFont(new Font("Arial", Font.PLAIN, 18));
+        suaCTHD.setBackground(Color.ORANGE);
         r.add(suaCTHD);
+        r.add(Box.createVerticalStrut(5));
         r.add(xoaCTHD);
+        xoaCTHD.setAlignmentX(CENTER_ALIGNMENT);
+        xoaCTHD.setMaximumSize(new Dimension(100, 35));
+        xoaCTHD.setFont(new Font("Arial", Font.PLAIN, 18));
+        xoaCTHD.setBackground(Color.RED);
+        xoaCTHD.setForeground(Color.white);
         temp2.add(r, BorderLayout.EAST);
         
         p.add(temp1);
