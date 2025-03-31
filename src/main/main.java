@@ -3,31 +3,35 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package main;
+
 import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import GUI.*;
-import GUI.loginForm;
+import GUI.CustomerManagement;
+import GUI.QLHD;
+import GUI.SupermarketUI;
 
-public class main extends JFrame{
-    public static int width = 400;
-    public static int height = 500;
+public class main extends JFrame {
+	public static int width = 400;
+	public static int height = 500;
 
-    public main(){
-        setSize(width, height); 
-        getContentPane().setBackground(Color.decode("#cdffff"));
-        add(new QLHD());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        setResizable(false);
-        setVisible(true);
-    }
+	public main() {
+		setSize(width, height);
+		getContentPane().setBackground(Color.decode("#cdffff"));
+		add(new CustomerManagement());
+		add(new QLHD());
 
-    public static void main(String[] args) {
-//        new main();
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//        setResizable(false);
+		setVisible(true);
+	}
 
-            SupermarketUI sm= new SupermarketUI();
-            sm.createAndShowGUI();
-            sm.getSuperMarketUI();
-    }
+	public static void main(String[] args) {
+		//        new main();
+
+		SupermarketUI sm = new SupermarketUI();
+		sm.createAndShowGUI();
+		sm.getSuperMarketUI();
+	}
 }
