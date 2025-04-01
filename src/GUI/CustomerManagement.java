@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -212,7 +211,7 @@ public class CustomerManagement extends JPanel {
 		searchBorder.setTitleJustification(TitledBorder.CENTER);
 		footerRight.setBorder(searchBorder);
 		footerRight.setLayout(new GridLayout(4, 1, 5, 5));
-		
+
 		// Dòng 1: ComboBox tìm kiếm
 		JPanel pnlSearchRow1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JComboBox cboTimKiem = new JComboBox<>(new String[] { "Mã Khách Hàng" });

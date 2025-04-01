@@ -9,6 +9,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import GUI.CustomerManagement;
+import GUI.EmployeeManagement;
 import GUI.QLHD;
 import GUI.SupermarketUI;
 
@@ -19,6 +20,7 @@ public class main extends JFrame {
 	public main() {
 		setSize(width, height);
 		getContentPane().setBackground(Color.decode("#cdffff"));
+		add(new EmployeeManagement());
 		add(new CustomerManagement());
 		add(new QLHD());
 
