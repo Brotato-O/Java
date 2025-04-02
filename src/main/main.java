@@ -9,6 +9,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import GUI.CustomerManagement;
+import GUI.GiamGia;
 import GUI.QLHD;
 import GUI.SupermarketUI;
 
@@ -19,11 +20,12 @@ public class main extends JFrame {
 	public main() {
 		setSize(width, height);
 		getContentPane().setBackground(Color.decode("#cdffff"));
-		add(new CustomerManagement());
-		add(new QLHD());
-
+//		add(new CustomerManagement());
+//		add(new QLHD());
+                add(new GiamGia());
+                
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//        setResizable(false);
+//		        setResizable(false);
 		setVisible(true);
 	}
 

@@ -274,6 +274,7 @@ public class SupermarketUI {
 		//		mainPanel.add(banHangPanel, "Bán Hàng");
 		mainPanel.add(quanLySachPanel, "Quản Lý Sách");
 		mainPanel.add(new QLHD(), "Nhập sách");
+		mainPanel.add(new GiamGia(), "Giảm Giá");
 
 		sidePanel.add(menuPanel);
 

@@ -310,7 +310,7 @@ public class QLHD extends JPanel {
         temp1.add(tempBtn);
         
         JPanel temp2 = new JPanel(new BorderLayout());
-        String[] colums= {"Mã HĐ", "Mã sách", "Số lượng", "Đơn giá", "Tổng tiền", "Mã giảm", "Thành tiền"};
+        String[] colums= {"Mã HĐ", "Mã sách", "Số lượng", "Đơn giá", "Tổng tiền", "Giảm giá", "Thành tiền"};
         modelCTHD.setColumnIdentifiers(colums);
         modelCTHD.setRowCount(20);
         tableCTHD.setModel(modelCTHD);
