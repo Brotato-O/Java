@@ -80,7 +80,7 @@ public class QLS extends JPanel{
     }
     public JPanel inputFieldsQLS(){
         JPanel QLS = new JPanel(new GridLayout(1, 5 , 10, 0));
-        QLS.setPreferredSize(new Dimension(0, (int)(0.5*height)));
+        QLS.setPreferredSize(new Dimension(0, (int)(0.6*height)));
         QLS.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20)); 
 
         
@@ -207,6 +207,7 @@ public class QLS extends JPanel{
 
     public JPanel tbQLS(){
         JPanel tbQLS= new JPanel();
+       // tbQLS.setPreferredSize(new Dimension(0, (int)(0.3*height)));
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
         String[] colums= {"MÃ SÁCH", "MÃ NXB", "MÃ THỂ LOẠI", "MÃ TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
         modelHD.setColumnIdentifiers(colums);
