@@ -9,11 +9,11 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import GUI.CustomerManagement;
-<<<<<<< HEAD
+
 import GUI.EmployeeManagement;
-=======
+
 import GUI.GiamGia;
->>>>>>> branch 'master' of https://github.com/Brotato-O/Java.git
+
 import GUI.QLHD;
 import GUI.SupermarketUI;
 
@@ -24,17 +24,15 @@ public class main extends JFrame {
 	public main() {
 		setSize(width, height);
 		getContentPane().setBackground(Color.decode("#cdffff"));
-<<<<<<< HEAD
 		add(new EmployeeManagement());
 		add(new CustomerManagement());
 		add(new QLHD());
 
-=======
+
 //		add(new CustomerManagement());
 //		add(new QLHD());
                 add(new GiamGia());
                 
->>>>>>> branch 'master' of https://github.com/Brotato-O/Java.git
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 //		        setResizable(false);
 		setVisible(true);
