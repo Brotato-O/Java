@@ -22,29 +22,29 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GiamGia extends JPanel{
     Dimension d= new Dimension(500, 25);
-    private JTextField maGG= new JTextField();
-    private JTextField tenGG= new JTextField();
-    private JTextField tienGG= new JTextField();
-    private JTextField ngayBD= new JTextField();
-    private JTextField ngayKT= new JTextField();
-    private JButton themGG= new JButton("THÊM");
-    private JButton suaGG= new JButton("SỬA");
-    private JButton xoaGG= new JButton("XÓA");
-    private JButton allGG= new JButton("TẤT CẢ");
-    private JTable tableGG= new JTable();
-    private DefaultTableModel modelGG= new DefaultTableModel();
+    public JTextField maGG= new JTextField();
+    public JTextField tenGG= new JTextField();
+    public JTextField tienGG= new JTextField();
+    public JTextField ngayBD= new JTextField();
+    public JTextField ngayKT= new JTextField();
+    public JButton themGG= new JButton("THÊM");
+    public JButton suaGG= new JButton("SỬA");
+    public JButton xoaGG= new JButton("XÓA");
+    public JButton allGG= new JButton("TẤT CẢ");
+    public JTable tableGG= new JTable();
+    public DefaultTableModel modelGG= new DefaultTableModel();
     
-    private JTextField timBD= new JTextField();
-    private JTextField timKT= new JTextField();
-    private JButton tim= new JButton();
+    public JTextField timBD= new JTextField();
+    public JTextField timKT= new JTextField();
+    public JButton tim= new JButton();
     
-    private JTable tableCTGG= new JTable();
-    private DefaultTableModel modelCT= new DefaultTableModel();
-    private JButton ctSach= new JButton("...");
-    private JTextField ctSachInp= new JTextField();
-    private JTextField ctGiam= new JTextField();
-    private JButton themCT= new JButton("THÊM");
-    private JButton xoaCT= new JButton("XÓA");
+    public JTable tableCTGG= new JTable();
+    public DefaultTableModel modelCT= new DefaultTableModel();
+    public JButton ctSach= new JButton("...");
+    public JTextField ctSachInp= new JTextField();
+    public JTextField ctGiam= new JTextField();
+    public JButton themCT= new JButton("THÊM");
+    public JButton xoaCT= new JButton("XÓA");
     
     public GiamGia(){
         setLayout(new BorderLayout());

@@ -8,14 +8,12 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import GUI.CustomerManagement;
-<<<<<<< HEAD
 import GUI.EmployeeManagement;
-=======
 import GUI.GiamGia;
->>>>>>> branch 'master' of https://github.com/Brotato-O/Java.git
+
 import GUI.QLHD;
 import GUI.SupermarketUI;
+import GUI.loginForm;
 
 public class main extends JFrame {
 	public static int width = 400;
@@ -24,24 +22,19 @@ public class main extends JFrame {
 	public main() {
 		setSize(width, height);
 		getContentPane().setBackground(Color.decode("#cdffff"));
-<<<<<<< HEAD
-		add(new EmployeeManagement());
-		add(new CustomerManagement());
-		add(new QLHD());
-
-=======
+                add(new loginForm());
+//		add(new EmployeeManagement());
 //		add(new CustomerManagement());
 //		add(new QLHD());
-                add(new GiamGia());
-                
->>>>>>> branch 'master' of https://github.com/Brotato-O/Java.git
+//                add(new GiamGia());
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		        setResizable(false);
+		        setResizable(false);
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
-		//        new main();
+//		        new main();
 
 		SupermarketUI sm = new SupermarketUI();
 		sm.createAndShowGUI();
