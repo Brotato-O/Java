@@ -8,12 +8,11 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import GUI.EmployeeManagement;
-import GUI.GiamGia;
-
-import GUI.QLHD;
-import GUI.SupermarketUI;
-import GUI.loginForm;
+import GUI.view.EmployeeManagement;
+import GUI.view.GiamGia;
+import GUI.view.QLHD;
+import GUI.view.SupermarketUI;
+import GUI.view.loginForm;
 
 public class main extends JFrame {
 	public static int width = 400;
