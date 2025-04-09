@@ -1,4 +1,4 @@
-package GUI;
+package GUI.view;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

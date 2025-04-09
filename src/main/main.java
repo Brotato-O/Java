@@ -8,6 +8,7 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
+import GUI.view.CustomerManagement;
 import GUI.view.EmployeeManagement;
 import GUI.view.GiamGia;
 import GUI.view.QLHD;
