@@ -5,9 +5,10 @@
 package main;
 
 import java.awt.Color;
-
+import java.sql.*;
 import javax.swing.JFrame;
 
+import GUI.view.CustomerManagement;
 import GUI.view.EmployeeManagement;
 import GUI.view.GiamGia;
 import GUI.view.QLHD;
@@ -40,8 +41,27 @@ public class main extends JFrame {
 	public static void main(String[] args) {
 //		        new main();
 
-		SupermarketUI sm = new SupermarketUI();
-		sm.createAndShowGUI();
-		sm.getSuperMarketUI();
+		// SupermarketUI sm = new SupermarketUI();
+		// sm.createAndShowGUI();
+		// sm.getSuperMarketUI();
+
+		String url= "jdbc:sqlserver://localhost:1433;databaseName=QLSV;encrypt=false;";
+		String user= "sa";
+		String pass= "admin123456";
+		try{
+			Connection conn= DriverManager.getConnection(url,user,pass);
+			System.out.println("Kết nối thành công!");
+                        Statement stmt=conn.createStatement();
+                        ResultSet rs = stmt.executeQuery("SELECT * FROM SVIEN");
+                        while (rs.next()) {
+                            String maSV = rs.getString("MASV");
+                            String tenSV = rs.getString("TENSV");
+                            int tuoi = rs.getInt("NAMHOC");
+                            System.out.println(maSV + " - " + tenSV + " - " + tuoi);
+                           }
+		}
+		catch (SQLException e) {
+            System.out.println("loi ket noi: " + e.getMessage());
+        }
 	}
 }
