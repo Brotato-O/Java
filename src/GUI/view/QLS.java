@@ -1,4 +1,4 @@
-package GUI;
+package GUI.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -185,7 +185,7 @@ public class QLS extends JPanel{
         }
         findQLS.add(center, BorderLayout.CENTER);
         
-        ImageIcon icon= new ImageIcon(getClass().getResource("../img/search.png"));
+        ImageIcon icon= new ImageIcon(getClass().getResource("../../img/search.png"));
         Image img= icon.getImage();
         img= img.getScaledInstance(35, 35, Image.SCALE_AREA_AVERAGING);
         tim.setIcon(new ImageIcon(img));

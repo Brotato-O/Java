@@ -43,7 +43,7 @@ public class QLHD extends JPanel {
     
     public JTextField tongHD= new JTextField();
     public JTextField tongTienHD= new JTextField();
-    public JTable tableHD= new JTable();
+    private JTable tableHD= new JTable();
     public DefaultTableModel modelHD= new DefaultTableModel();
     
     public JTextField ctMaHD= new JTextField();
@@ -340,5 +340,13 @@ public class QLHD extends JPanel {
         p.add(temp2);
         p.setBorder(bd);
         return p;
+    }
+
+    public JTable getTableHD(){
+        return tableHD;
+    }
+
+    public JPanel getPanelHD(){
+        return this;
     }
 }
