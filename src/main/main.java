@@ -8,14 +8,11 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import GUI.CustomerManagement;
-
-import GUI.EmployeeManagement;
-
-import GUI.GiamGia;
-
-import GUI.QLHD;
-import GUI.SupermarketUI;
+import GUI.view.EmployeeManagement;
+import GUI.view.GiamGia;
+import GUI.view.QLHD;
+import GUI.view.SupermarketUI;
+import GUI.view.loginForm;
 
 public class main extends JFrame {
 	public static int width = 400;
@@ -29,17 +26,19 @@ public class main extends JFrame {
 		add(new QLHD());
 
 
+                add(new loginForm());
+//		add(new EmployeeManagement());
 //		add(new CustomerManagement());
 //		add(new QLHD());
-                add(new GiamGia());
-                
+//                add(new GiamGia());
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-//		        setResizable(false);
+		        setResizable(false);
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
-		//        new main();
+//		        new main();
 
 		SupermarketUI sm = new SupermarketUI();
 		sm.createAndShowGUI();
