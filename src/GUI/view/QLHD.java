@@ -10,6 +10,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import DTO.HD;
+import BLL.HDBLL;
+import java.util.ArrayList;
 import main.main;
 
 public class QLHD extends JPanel {
@@ -236,9 +240,9 @@ public class QLHD extends JPanel {
     public JPanel HD(){
         JPanel p= new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-        String[] colums= {"Mã HD", "Mã KH", "Mã NV", "Ngày lập", "Tổng tiền", "Tổng giảm giá", "Phương thức"};
+        String[] colums= {"Mã HD", "Mã KH", "Mã NV", "Ngày lập", "Tổng tiền", "Tổng giảm giá", "Tổng SL", "Phương thức", "Thành tiền"};
         modelHD.setColumnIdentifiers(colums);
-        modelHD.setNumRows(20);
+        setTable();
         tableHD.setModel(modelHD);
         JPanel pTable= new JPanel(new BorderLayout());
         JScrollPane p1= new JScrollPane(tableHD);
@@ -340,6 +344,27 @@ public class QLHD extends JPanel {
         p.add(temp2);
         p.setBorder(bd);
         return p;
+    }
+    
+    public void setTable(){
+        HDBLL hdbll= new HDBLL();
+        ArrayList<HD> hd= hdbll.getHDBUS();
+        System.out.println("size" + hd.size());
+        modelHD.setRowCount(0);
+        for (int i=0; i< hd.size(); i++){
+            HD item= hd.get(i);
+            Object[] row= new Object[] {item.getMaHD(), 
+                item.getMaKH(), 
+                item.getMaNV(), 
+                item.getNgayLap(), 
+                item.getTongTien(), 
+                item.getTongGG(), 
+                item.getTongSL(), 
+                item.getPhuongThuc(), 
+                item.getThanhTien() };
+            modelHD.addRow(row);
+            System.out.println(i);
+        }
     }
 
     public JTable getTableHD(){
