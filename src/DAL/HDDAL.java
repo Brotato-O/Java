@@ -13,7 +13,7 @@ import java.sql.*;
  * @author ADMIN
  */
 public class HDDAL {
-    public ArrayList<HD> getHD (){
+    public ArrayList<HD> selectAll(){
         String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
         String pass= "admin123456";
         String user= "sa";
@@ -29,11 +29,11 @@ public class HDDAL {
                 String maNV= rs.getString("MANV");
                 String maKH= rs.getString("MAKH");
                 String ngayLap= rs.getString("NGAYLAP");
-                int tongTien= rs.getInt("TONGTIEN");
-                int tongSL= rs.getInt("TONGSOLG");
+                float tongTien= rs.getFloat("TONGTIEN");
+                float tongSL= rs.getFloat("TONGSOLG");
                 String hinhThuc= rs.getString("HINHTHUC");
-                int thanhTien= rs.getInt("THANHTIEN");
-                int tongGG= rs.getInt("TONGGG");
+                float thanhTien= rs.getFloat("THANHTIEN");
+                float tongGG= rs.getFloat("TONGGG");
                 
                 HD temp= new HD(maHD, maNV, maKH, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
                 hd.add(temp);
