@@ -16,6 +16,7 @@ import DTO.HD;
 import DTO.CTHD;
 import BLL.HDBLL;
 import GUI.controller.QLHDController;
+import GUI.view.SupermarketUI;
 import java.util.ArrayList;
 import main.main;
 
@@ -23,6 +24,8 @@ public class QLHD extends JPanel {
     Dimension d= new Dimension(Integer.MAX_VALUE, 25);
     int height= main.height;
     int width= main.width;
+    SupermarketUI sp= new SupermarketUI();
+    public JFrame frame = sp.getSuperMarketUI();
     public JTextField maHD= new JTextField();
     public JTextField maNV= new JTextField();
     public JTextField maKH= new JTextField();
@@ -366,7 +369,7 @@ public class QLHD extends JPanel {
     
     public void setTable(){
         HDBLL hdbll= new HDBLL();
-        ArrayList<HD> hd= hdbll.getHDBUS();
+        ArrayList<HD> hd= hdbll.selectAll();
         DefaultTableModel modelHD= (DefaultTableModel) tableHD.getModel();
         modelHD.setRowCount(0);
         for (int i=0; i< hd.size(); i++){
@@ -386,7 +389,7 @@ public class QLHD extends JPanel {
     
     public void setTableCTHD(){
         CTHDBLL cthdbll= new CTHDBLL();
-        ArrayList<CTHD> cthd= cthdbll.getCTHDDAL();
+        ArrayList<CTHD> cthd= cthdbll.selectAll();
         DefaultTableModel modelCTHD= (DefaultTableModel) tableCTHD.getModel();
         modelCTHD.setRowCount(0);
         for (int i=0; i< cthd.size(); i++){
@@ -414,6 +417,8 @@ public class QLHD extends JPanel {
     public void addEvent(){
         controller = new QLHDController(this);
         tableHD.addMouseListener(controller.cthdAdapter);
+        ctTong.addActionListener(controller.showCTHD);
+        xoaCTHD.addActionListener(controller.confirmDelete);
     }
     
     public JTable getTableHD() {
@@ -423,4 +428,5 @@ public class QLHD extends JPanel {
     public JTable getTableCTHD() {
         return tableCTHD;
     }
+    
 }

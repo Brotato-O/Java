@@ -14,10 +14,16 @@ import java.util.ArrayList;
  */
 public class CTHDBLL {
     CTHDDAL cthd= new CTHDDAL();
-    public ArrayList<CTHD> getCTHDDAL(){
+    public ArrayList<CTHD> selectAll(){
         return cthd.selectAll();
     }
-    public ArrayList<CTHD> getCTHĐALById(String id){
+    public ArrayList<CTHD> selectById(String id){
         return cthd.selectById(id);
+    }
+    public ArrayList<CTHD> selectById(String id, String maSach){
+        return cthd.selectById(id, maSach);
+    }
+    public int delete(String maHD, String maSach){
+        return cthd.delete(maHD, maSach);
     }
 }

@@ -48,7 +48,7 @@ public class main extends JFrame {
 //		String url= "jdbc:sqlserver://localhost:1433;databaseName=QLSV;encrypt=false;";
 //		String user= "sa";
 //		String pass= "admin123456";
-//		System.out.println("DriverManager loaded: " + DriverManager.class);
+//		System.out.println("DriverManager loaded: " + DriverManager.class	);
 //		try{
 //			Connection conn= DriverManager.getConnection(url,user,pass);
 //			System.out.println("Kết nối thành công!");

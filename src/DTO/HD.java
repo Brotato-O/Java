@@ -8,12 +8,12 @@ public class HD {
     private String phuongThuc;
     private float tongGG;
     private float tongTien;
-    private float tongSL;
+    private int tongSL;
     private float thanhTien;
 
     public HD(){}
 
-    public HD(String maHD, String maNV, String maKH, String ngayLap, String phuongThuc, float tongGG, float tongTien, float tongSL, float thanhTien) {
+    public HD(String maHD, String maNV, String maKH, String ngayLap, String phuongThuc, float tongGG, float tongTien, int tongSL, float thanhTien) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.maKH = maKH;
@@ -67,10 +67,10 @@ public class HD {
     public void setTongTien(float tongTien) {
         this.tongTien = tongTien;
     }
-    public float getTongSL() {
+    public int getTongSL() {
         return tongSL;
     }
-    public void setTongSL(float tongSL) {
+    public void setTongSL(int tongSL) {
         this.tongSL = tongSL;
     }
     public float getThanhTien(){
