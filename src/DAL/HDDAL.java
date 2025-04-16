@@ -46,6 +46,38 @@ public class HDDAL {
         return hd;
     }
     
+    public HD selectById(String id){
+        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
+        String pass= "admin123456";
+        String user= "sa";
+        HD hd= null;
+        try{
+            Connection conn= DriverManager.getConnection(url, user, pass);
+            String query= "Select * from HOADON where MAHD= ? and STATUS= 0";
+            PreparedStatement prestm= conn.prepareStatement(query);
+            prestm.setString(1, id);
+            ResultSet rs= prestm.executeQuery();
+            while(rs.next()){
+                String maHD= rs.getString("MAHD");
+                String maNV= rs.getString("MANV");
+                String maKH= rs.getString("MAKH");
+                String ngayLap= rs.getString("NGAYLAP");
+                float tongTien= rs.getFloat("TONGTIEN");
+                int tongSL= rs.getInt("TONGSOLG");
+                String hinhThuc= rs.getString("HINHTHUC");
+                float thanhTien= rs.getFloat("THANHTIEN");
+                float tongGG= rs.getFloat("TONGGG");
+                
+                hd= new HD(maHD, maNV, maKH, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
+            }
+            
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return hd;
+    }
+    
     //chua biet lam gì nen de day
     public int updateTongTien(String maHD, float thanhTien){
         String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
@@ -86,6 +118,25 @@ public class HDDAL {
             prestm.executeUpdate();
             
             prestm= conn.prepareCall(query1);
+            row= prestm.executeUpdate();
+            conn.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return row;
+    }
+    
+    public int delete(String maHD){
+        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
+        String pass= "admin123456";
+        String user= "sa";
+        int row= 0;
+        try{
+            Connection conn= DriverManager.getConnection(url, user, pass);
+            String query= "Update HOADON set STATUS= 1 where MAHD= ?";
+            PreparedStatement prestm= conn.prepareCall(query);
+            prestm.setString(1, maHD);
             row= prestm.executeUpdate();
             conn.close();
         }
