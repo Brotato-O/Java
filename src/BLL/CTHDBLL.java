@@ -20,7 +20,7 @@ public class CTHDBLL {
     public ArrayList<CTHD> selectById(String id){
         return cthd.selectById(id);
     }
-    public ArrayList<CTHD> selectById(String id, String maSach){
+    public CTHD selectById(String id, String maSach){
         return cthd.selectById(id, maSach);
     }
     public int delete(String maHD, String maSach){

@@ -74,11 +74,11 @@ public class CTHDDAL {
         return cthd;
     }
     
-    public ArrayList<CTHD> selectById(String id, String idSach){
+    public CTHD selectById(String id, String idSach){
         String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
         String pass= "admin123456";
         String user= "sa";
-        ArrayList<CTHD> cthd= new ArrayList<>();
+        CTHD cthd= null;
         try{
             Connection conn= DriverManager.getConnection(url, user, pass);
             String query= "Select * from CHITIETHOADON where MAHD=? and MASACH=? and STATUS= 0";
@@ -95,8 +95,7 @@ public class CTHDDAL {
                 float tongTien= rs.getFloat("TONGTIEN");
                 float giamGia= rs.getFloat("GIAMGIA");
                 
-                CTHD temp= new CTHD(maHD, maSach, solg, donGia, tongTien, giamGia, thanhTien);
-                cthd.add(temp);
+                cthd= new CTHD(maHD, maSach, solg, donGia, tongTien, giamGia, thanhTien);
             }
             conn.close();
         }
