@@ -1,4 +1,5 @@
 package GUI.view;
+import BLL.CTHDBLL;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,12 +11,21 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import DTO.HD;
+import DTO.CTHD;
+import BLL.HDBLL;
+import GUI.controller.QLHDController;
+import GUI.view.SupermarketUI;
+import java.util.ArrayList;
 import main.main;
 
 public class QLHD extends JPanel {
     Dimension d= new Dimension(Integer.MAX_VALUE, 25);
     int height= main.height;
     int width= main.width;
+    SupermarketUI sp= new SupermarketUI();
+    public JFrame frame = sp.getSuperMarketUI();
     public JTextField maHD= new JTextField();
     public JTextField maNV= new JTextField();
     public JTextField maKH= new JTextField();
@@ -44,16 +54,18 @@ public class QLHD extends JPanel {
     public JTextField tongHD= new JTextField();
     public JTextField tongTienHD= new JTextField();
     private JTable tableHD= new JTable();
-    public DefaultTableModel modelHD= new DefaultTableModel();
+    
     
     public JTextField ctMaHD= new JTextField();
     public JTextField ctTongSL = new JTextField();
     public JTextField ctTongThanhTien= new JTextField();
     public JTable tableCTHD= new JTable();
     public JButton ctTong= new JButton("TẤT CẢ CHI TIẾT HÓA ĐƠN");
-    public DefaultTableModel modelCTHD= new DefaultTableModel();
     public JButton suaCTHD= new JButton("SỬA");
     public JButton xoaCTHD= new JButton("XÓA");
+    
+    
+    QLHDController controller;
     
     public QLHD(){
         setLayout(new BorderLayout());
@@ -68,6 +80,7 @@ public class QLHD extends JPanel {
         container.add(HD());
         container.add(CTHD());
         add(container, BorderLayout.CENTER);
+        addEvent();
     }
     
     public JPanel inputFields(){
@@ -236,10 +249,16 @@ public class QLHD extends JPanel {
     public JPanel HD(){
         JPanel p= new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-        String[] colums= {"Mã HD", "Mã KH", "Mã NV", "Ngày lập", "Tổng tiền", "Tổng giảm giá", "Phương thức"};
+        String[] colums= {"Mã HD", "Mã KH", "Mã NV", "Ngày lập", "Tổng tiền", "Tổng giảm giá", "Tổng SL", "Phương thức", "Thành tiền"};
+        DefaultTableModel modelHD= new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         modelHD.setColumnIdentifiers(colums);
-        modelHD.setNumRows(20);
         tableHD.setModel(modelHD);
+        setTable();
         JPanel pTable= new JPanel(new BorderLayout());
         JScrollPane p1= new JScrollPane(tableHD);
         pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -311,9 +330,15 @@ public class QLHD extends JPanel {
         
         JPanel temp2 = new JPanel(new BorderLayout());
         String[] colums= {"Mã HĐ", "Mã sách", "Số lượng", "Đơn giá", "Tổng tiền", "Giảm giá", "Thành tiền"};
+        DefaultTableModel modelCTHD= new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         modelCTHD.setColumnIdentifiers(colums);
-        modelCTHD.setRowCount(20);
         tableCTHD.setModel(modelCTHD);
+        setTableCTHD();
         JScrollPane pane= new JScrollPane(tableCTHD);
         JPanel pTable= new JPanel(new BorderLayout());
         pTable.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
@@ -341,12 +366,67 @@ public class QLHD extends JPanel {
         p.setBorder(bd);
         return p;
     }
-
-    public JTable getTableHD(){
-        return tableHD;
+    
+    public void setTable(){
+        HDBLL hdbll= new HDBLL();
+        ArrayList<HD> hd= hdbll.selectAll();
+        DefaultTableModel modelHD= (DefaultTableModel) tableHD.getModel();
+        modelHD.setRowCount(0);
+        for (int i=0; i< hd.size(); i++){
+            HD item= hd.get(i);
+            Object[] row= new Object[] {item.getMaHD(), 
+                item.getMaKH(), 
+                item.getMaNV(), 
+                item.getNgayLap(), 
+                item.getTongTien(), 
+                item.getTongGG(), 
+                item.getTongSL(), 
+                item.getPhuongThuc(), 
+                item.getThanhTien() };
+            modelHD.addRow(row);
+        }
+    }
+    
+    public void setTableCTHD(){
+        CTHDBLL cthdbll= new CTHDBLL();
+        ArrayList<CTHD> cthd= cthdbll.selectAll();
+        DefaultTableModel modelCTHD= (DefaultTableModel) tableCTHD.getModel();
+        modelCTHD.setRowCount(0);
+        for (int i=0; i< cthd.size(); i++){
+            CTHD item= cthd.get(i);
+            Object[] row= new Object[]{item.getMaHD(), 
+                item.getMaSach(), 
+                item.getSoLuong(), 
+                item.getGiaTien(),
+                item.getTongTien(),
+                item.getGiamGia(),
+                item.getThanhTien()};
+            modelCTHD.addRow(row);
+        }
     }
 
-    public JPanel getPanelHD(){
-        return this;
+    public ArrayList<JButton> getAllButtons() {
+        ArrayList<JButton> buttons = new ArrayList<>();
+        buttons.add(xoa);
+        buttons.add(sua);
+        buttons.add(xuat);
+        buttons.add(lamMoi);
+        return buttons;
     }
+    
+    public void addEvent(){
+        controller = new QLHDController(this);
+        tableHD.addMouseListener(controller.cthdAdapter);
+        ctTong.addActionListener(controller.showCTHD);
+        xoaCTHD.addActionListener(controller.confirmDelete);
+    }
+    
+    public JTable getTableHD() {
+    return tableHD;
+}
+
+    public JTable getTableCTHD() {
+        return tableCTHD;
+    }
+    
 }

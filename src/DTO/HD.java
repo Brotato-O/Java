@@ -6,13 +6,14 @@ public class HD {
     private String maKH;
     private String ngayLap;
     private String phuongThuc;
-    private String tongGG;
-    private String tongTien;
-    private String tongSL;
+    private float tongGG;
+    private float tongTien;
+    private int tongSL;
+    private float thanhTien;
 
     public HD(){}
 
-    public HD(String maHD, String maNV, String maKH, String ngayLap, String phuongThuc, String tongGG, String tongTien, String tongSL) {
+    public HD(String maHD, String maNV, String maKH, String ngayLap, String phuongThuc, float tongGG, float tongTien, int tongSL, float thanhTien) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.maKH = maKH;
@@ -21,6 +22,7 @@ public class HD {
         this.tongGG = tongGG;
         this.tongTien = tongTien;
         this.tongSL = tongSL;
+        this.thanhTien= thanhTien;
     }
     // Getters and setters
     public String getMaHD() {
@@ -53,23 +55,29 @@ public class HD {
     public void setPhuongThuc(String phuongThuc) {
         this.phuongThuc = phuongThuc;
     }
-    public String getTongGG() {
+    public float getTongGG() {
         return tongGG;
     }
-    public void setTongGG(String tongGG) {
+    public void setTongGG(float tongGG) {
         this.tongGG = tongGG;
     }
-    public String getTongTien() {
+    public float getTongTien() {
         return tongTien;
     }
-    public void setTongTien(String tongTien) {
+    public void setTongTien(float tongTien) {
         this.tongTien = tongTien;
     }
-    public String getTongSL() {
+    public int getTongSL() {
         return tongSL;
     }
-    public void setTongSL(String tongSL) {
+    public void setTongSL(int tongSL) {
         this.tongSL = tongSL;
+    }
+    public float getThanhTien(){
+        return thanhTien;
+    }
+    public void setThanhTien(float thanhTien){
+        this.thanhTien= thanhTien;
     }
     // toString
     @Override

@@ -4,14 +4,14 @@ public class CTHD {
     private String maHD;
     private String maSach;
     private int soLuong;
-    private double giaTien;
-    private double tongTien;
-    private double giamGia;
-    private double thanhTien;
+    private float giaTien;
+    private float tongTien;
+    private float giamGia;
+    private float thanhTien;
 
     public CTHD(){};
 
-    public CTHD(String maHD, String maSach, int soLuong, double giaTien, double tongTien, double giamGia, double thanhTien) {
+    public CTHD(String maHD, String maSach, int soLuong, float giaTien, float tongTien, float giamGia, float thanhTien) {
         this.maHD = maHD;
         this.maSach = maSach;
         this.soLuong = soLuong;
@@ -39,25 +39,25 @@ public class CTHD {
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
-    public double getGiaTien() {
+    public float getGiaTien() {
         return giaTien;
     }
-    public void setGiaTien(double giaTien) {
+    public void setGiaTien(float giaTien) {
         this.giaTien = giaTien;
     }
-    public double getTongTien() {
+    public float getTongTien() {
         return tongTien;
     }
-    public void setTongTien(double tongTien) {
+    public void setTongTien(float tongTien) {
         this.tongTien = tongTien;
     }
-    public double getGiamGia() {
+    public float getGiamGia() {
         return giamGia;
     }
-    public void setGiamGia(double giamGia) {
+    public void setGiamGia(float giamGia) {
         this.giamGia = giamGia;
     }
-    public double getThanhTien() {
+    public float getThanhTien() {
         return thanhTien;
     }
     @Override
