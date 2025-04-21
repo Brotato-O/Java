@@ -9,12 +9,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import DAL.*;
+import DTO.*;
 import main.main;
 
 
@@ -39,9 +42,9 @@ public class QLS extends JPanel{
     JButton outputExcel = new  JButton("Xuất Excel");
     
     JTextField txtMaSach1 = new JTextField();
-    private JComboBox txtMaNXB1 = new JComboBox();;
-    private JComboBox txtMaTheLoai1 = new JComboBox();;
-    private JComboBox txtMaTacGia1 = new JComboBox();;
+    private JComboBox<map> txtMaNXB1 = new JComboBox<>();;
+    private JComboBox txtMaTheLoai1 = new JComboBox<>();;
+    private JComboBox<map> txtMaTacGia1 = new JComboBox<>();;
     JTextField txtTenSach1 = new JTextField();
     JTextField txtKhoangGiaTu = new JTextField();
     JTextField txtKhoangGiaDen = new JTextField();
@@ -56,12 +59,7 @@ public class QLS extends JPanel{
 	JTextField txtTongSoSach = new JTextField();
     JButton btnThongKe = new JButton("Thống Kê");
     Font font = new Font("Arial", Font.BOLD, 14);
-//    SpinnerDateModel model = new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_MONTH);
-//         JSpinner spinner = new JSpinner(model);
-
-//         // Định dạng hiển thị ngày tháng
-//         JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "dd/MM/yyyy");
-//         spinner.setEditor(editor);
+    ArrayList<Book> list = new ArrayList<>() ;
     public QLS(){
 
         setLayout(new BorderLayout());
@@ -70,12 +68,135 @@ public class QLS extends JPanel{
         header.add(new JLabel("QUẢN LÝ HÓA ĐƠN"){{setFont(new Font("Arial", Font.BOLD, 26));}});
         add(header, BorderLayout.NORTH);
         JPanel container= new JPanel();
+        txtMaSach.setEditable(false); // Không cho phép người dùng nhập vào trường này
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        for (map item : new DALQLS().getAllNCC()) {
+            txtMaNXB.addItem(item);
+        }
+        for (map item : new DALQLS().getAllTG()) {
+            txtMaTacGia.addItem(item);
+        }
+        for (String item : new DALQLS().getAllTL()) {
+            txtMaTheLoai.addItem(item);
+        }
+        for (map item : new DALQLS().getAllNCC()) {
+            txtMaNXB1.addItem(item);
+        }
+        for (map item : new DALQLS().getAllTG()) {
+            txtMaTacGia1.addItem(item);
+        }
+        for (String item : new DALQLS().getAllTL()) {
+            txtMaTheLoai1.addItem(item);
+        }
         container.add(inputFieldsQLS());
         container.add(findFields());
         container.add(tbQLS());
         container.add(statsQLS());
         add(container, BorderLayout.CENTER);
+       
+
+    
+btnThem.addActionListener(event  ->{
+    if (!isInputValid(container)) return;
+    Book book = new Book();
+    // book.setMaSach(txtMaSach.getText());
+    String newBookId = new DALQLS().generateNewBookId();
+    txtMaSach.setText(newBookId); 
+    book.setMaSach(newBookId);
+    book.setTenSach(txtTenSach.getText());
+    map selectedItem = (map) txtMaNXB.getSelectedItem();
+        if (selectedItem != null) {
+            book.setMaNCC(selectedItem.getMa());
+        }
+    map selectedItem1 = (map) txtMaTacGia.getSelectedItem();
+        if (selectedItem1 != null) {
+            book.setMaTacGia(selectedItem1.getMa());
+        }
+        String maTheLoai = (String) txtMaTheLoai.getSelectedItem();
+        book.setMaLoai(maTheLoai);
+        book.setNamXB(Integer.parseInt(txtNamXuatBan.getText()));
+        book.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+        book.setDonGia(Float.parseFloat(txtDonGia.getText()));
+    if(new DALQLS().addBook(book)){
+        JOptionPane.showMessageDialog(container, "thêm thành công");
+        // list.add(book);
+        // showTable();
+    }else JOptionPane.showMessageDialog(container, "Trùng mã sách");
+
+});
+btnSua.addActionListener(event -> {
+    if (!isInputValid(container)) return;  
+    Book book = new Book();
+    book.setMaSach(txtMaSach.getText());  
+    book.setTenSach(txtTenSach.getText());  
+    map selectedItem = (map) txtMaNXB.getSelectedItem();
+    if (selectedItem != null) {
+        book.setMaNCC(selectedItem.getMa());
+    }
+    map selectedItem1 = (map) txtMaTacGia.getSelectedItem();
+    if (selectedItem1 != null) {
+        book.setMaTacGia(selectedItem1.getMa());
+    }
+    String maTheLoai = (String) txtMaTheLoai.getSelectedItem();
+    book.setMaLoai(maTheLoai);
+    book.setNamXB(Integer.parseInt(txtNamXuatBan.getText()));
+    book.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+    book.setDonGia(Float.parseFloat(txtDonGia.getText()));
+    if (new DALQLS().updateBook(book)) {
+        JOptionPane.showMessageDialog(container, "Cập nhật thành công");
+    } else {
+        JOptionPane.showMessageDialog(container, "Cập nhật thất bại, mã sách không tồn tại");
+    }
+});
+
+btnXoa.addActionListener(event  ->{
+    Book book = new Book();
+    book.setMaSach(txtMaSach.getText());
+    if(new DALQLS().deleteBook(book)){
+        JOptionPane.showMessageDialog(container, "Xóa thành công");
+        int selectedRow = tableHD.getSelectedRow();
+        if (selectedRow >= 0) {
+        list.remove(selectedRow);
+        showTable();
+        }
+    }else JOptionPane.showMessageDialog(container, "Xóa thất bại");
+
+});
+btnLamMoi.addActionListener(event -> {
+
+    txtMaSach.setText("");
+    txtTenSach.setText("");
+    txtNamXuatBan.setText("");
+    txtSoLuong.setText("");
+    txtDonGia.setText("");
+    txtMaNXB.setSelectedIndex(0);  
+    txtMaTheLoai.setSelectedIndex(0); 
+    txtMaTacGia.setSelectedIndex(0);  
+
+    
+    list = new DALQLS().getAllBooks();  
+    showTable(); 
+});
+
+tableHD.getSelectionModel().addListSelectionListener(e -> {
+    
+    if (!e.getValueIsAdjusting()) {
+        int selectedRow = tableHD.getSelectedRow();
+        if (selectedRow >= 0) {
+            
+            txtMaSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
+            txtTenSach.setText(tableHD.getValueAt(selectedRow, 1).toString());
+                setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
+                txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
+                // setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
+                setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 4).toString());
+            txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
+            txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
+            txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+           
+        }
+    }
+});
         
     }
     public JPanel inputFieldsQLS(){
@@ -159,11 +280,12 @@ public class QLS extends JPanel{
         }
         c1[0].add(new JLabel("Mã Sách"));
         c2[0].add(txtMaSach1);
-        c1[1].add(new JLabel("Mã TG"));
-        c2[1].add(txtMaTacGia1);
-        c1[2].add(new JLabel("Tên Sách"));
-        c2[2].add(txtTenSach1);
+        c1[1].add(new JLabel("Tên Sách"));
+        c2[1].add(txtTenSach1);
+        c1[2].add(new JLabel("Mã TG"));
+        c2[2].add(txtMaTacGia1);
         c1[3].add(new JLabel("Mã NXB"));
+        
         c2[3].add(txtMaNXB1);
         c1[4].add(new JLabel("Mã TL"));
         c2[4].add(txtMaTheLoai1);
@@ -207,11 +329,13 @@ public class QLS extends JPanel{
 
     public JPanel tbQLS(){
         JPanel tbQLS= new JPanel();
-       // tbQLS.setPreferredSize(new Dimension(0, (int)(0.3*height)));
+        list = new DALQLS().getAllBooks();
+
+       
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-        String[] colums= {"MÃ SÁCH", "MÃ NXB", "MÃ THỂ LOẠI", "MÃ TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
         modelHD.setColumnIdentifiers(colums);
-        modelHD.setNumRows(20);
+        showTable();
         tableHD.setModel(modelHD);
         JPanel pTable= new JPanel(new BorderLayout());
         JScrollPane p1= new JScrollPane(tableHD);
@@ -220,6 +344,26 @@ public class QLS extends JPanel{
         tbQLS.add(pTable);
         return tbQLS;
     }
+    public void showTable() {
+        modelHD.setRowCount(0); 
+        int i = 1;
+        for (Book s : list) {
+            modelHD.addRow(new Object[]{
+                s.getMaSach(),
+                s.getTenSach(),
+                s.getMaNCC(),        
+                s.getMaLoai(),
+                s.getMaTacGia(),
+                s.getNamXB(),                
+                s.getSoLuong(),
+                s.getDonGia(),
+                s.getHA(),
+                ""                   
+            });
+        }
+    }
+    
+    
     public JPanel statsQLS(){
         JPanel statsQLS = new JPanel(new FlowLayout());
         JPanel QLSTK= new JPanel( new GridLayout(2,2));
@@ -245,5 +389,42 @@ public class QLS extends JPanel{
             }
         }
     }
+    private void setSelectedComboItem(JComboBox<map> comboBox, String value) {
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            map item = comboBox.getItemAt(i);
+            if (item.getTen().equals(value)) {
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+    private boolean isInputValid( JPanel container ) {
+        if (
+            // txtMaSach.getText().trim().isEmpty() ||
+            txtTenSach.getText().trim().isEmpty() ||
+            txtMaNXB.getSelectedItem() == null ||
+            txtMaTacGia.getSelectedItem() == null ||
+            txtMaTheLoai.getSelectedItem() == null ||
+            txtNamXuatBan.getText().trim().isEmpty() ||
+            txtSoLuong.getText().trim().isEmpty() ||
+            txtDonGia.getText().trim().isEmpty()) {
+    
+            JOptionPane.showMessageDialog(container, "Vui lòng nhập đầy đủ thông tin.");
+            return false;
+        }
+    
+        try {
+            Integer.parseInt(txtNamXuatBan.getText().trim());
+            Integer.parseInt(txtSoLuong.getText().trim());
+            Float.parseFloat(txtDonGia.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(container, "Năm xuất bản, số lượng, đơn giá phải là số hợp lệ.");
+            return false;
+        }
+    
+        return true;
+    }
+    
+
     
 }
