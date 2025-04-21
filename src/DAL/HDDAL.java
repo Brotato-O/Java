@@ -14,13 +14,12 @@ import java.sql.*;
  * @author ADMIN
  */
 public class HDDAL {
+    getConnection get= new getConnection();
+    
     public ArrayList<HD> selectAll(){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         ArrayList<HD> hd= new ArrayList<>();
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Select * from HOADON where STATUS= 0";
             PreparedStatement prestm= conn.prepareStatement(query);
             ResultSet rs= prestm.executeQuery();
@@ -37,8 +36,9 @@ public class HDDAL {
                 
                 HD temp= new HD(maHD, maNV, maKH, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
                 hd.add(temp);
+                
             }
-            
+            conn.close();
         }
         catch(Exception e){
             System.out.println(e);
@@ -47,12 +47,9 @@ public class HDDAL {
     }
     
     public HD selectById(String id){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         HD hd= null;
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Select * from HOADON where MAHD= ? and STATUS= 0";
             PreparedStatement prestm= conn.prepareStatement(query);
             prestm.setString(1, id);
@@ -69,75 +66,60 @@ public class HDDAL {
                 float tongGG= rs.getFloat("TONGGG");
                 
                 hd= new HD(maHD, maNV, maKH, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
+                
             }
-            
+            conn.close();
         }
         catch(Exception e){
             System.out.println(e);
         }
+        
         return hd;
     }
     
     //chua biet lam gì nen de day
     public int updateTongTien(String maHD, float thanhTien){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
+        
         int row= 0;
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Update HOADON set TONGTIEN= TONGTIEN - ? where maHD=?";
-            PreparedStatement prestm= conn.prepareCall(query);
-            prestm.setFloat(1, thanhTien);
-            prestm.setString(2, maHD);
-            System.out.println(thanhTien);
-            row= prestm.executeUpdate();
+            PreparedStatement prestm= conn.prepareStatement(query);
+            row= get.prepareUpdate(query, maHD, thanhTien);
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
+        System.out.println("row" + row);
         return row;
     }
     
     public int updateTongTien(CTHD cthd){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         int row= 0;
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Update HOADON set TONGTIEN= TONGTIEN - ?, TONGSOLG= TONGSOLG-?, TONGGG= TONGGG-? where maHD=?";
             String query1= "Update HOADON set THANHTIEN= TONGTIEN- TONGGG";
-            PreparedStatement prestm= conn.prepareCall(query);
-            prestm.setFloat(1, cthd.getTongTien());
-            prestm.setInt(2, cthd.getSoLuong());
-            prestm.setFloat(3, cthd.getGiamGia());
-            prestm.setString(4, cthd.getMaHD());
+            row= get.prepareUpdate(query, cthd.getTongTien(), cthd.getSoLuong(),  cthd.getGiamGia(), cthd.getMaHD());
             
+            PreparedStatement prestm= conn.prepareStatement(query1);
             prestm.executeUpdate();
-            
-            prestm= conn.prepareCall(query1);
-            row= prestm.executeUpdate();
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
+        System.out.println("row" + row);
         return row;
     }
     
     public int delete(String maHD){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         int row= 0;
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Update HOADON set STATUS= 1 where MAHD= ?";
-            PreparedStatement prestm= conn.prepareCall(query);
-            prestm.setString(1, maHD);
-            row= prestm.executeUpdate();
+            row= get.prepareUpdate(query, maHD);
             conn.close();
         }
         catch (Exception e){
