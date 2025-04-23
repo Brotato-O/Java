@@ -38,13 +38,13 @@ public class Connect {
 		}
 	}
 
-	public static void main(String[] args) {
-		Connection conn = getConnection();
-		if (conn != null) {
-			System.out.println("Kết nối thành công!");
-			closeConnection(conn);
-		} else {
-			System.err.println("Kết nối thất bại!");
-		}
-	}
+//	public static void main(String[] args) {
+//		Connection conn = getConnection();
+//		if (conn != null) {
+//			System.out.println("Kết nối thành công!");
+//			closeConnection(conn);
+//		} else {
+//			System.err.println("Kết nối thất bại!");
+//		}
+//	}
 }
