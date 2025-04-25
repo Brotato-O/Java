@@ -26,7 +26,6 @@ public class QLHDController {
     DefaultTableModel modelCTHD ;
     
     public QLHDController(QLHD view) {
-        int a[] [] = {[1] [2]};
         this.view = view;
         tableCTHD = this.view.getTableCTHD();
         modelCTHD = (DefaultTableModel) tableCTHD.getModel();
