@@ -22,9 +22,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import BLL.BLLQLGG;
-import DTO.Book;
 import DTO.GG;
-import DTO.map;
+
 
 
 /**
