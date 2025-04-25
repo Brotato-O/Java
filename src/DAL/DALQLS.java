@@ -247,6 +247,36 @@ public class DALQLS {
         return false;  
 
     }
+    public float getMaxPrice() {
+        String sql = "SELECT MAX(dongia) FROM SACH";
+        try (Connection conn = new getConnection().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+    
+            if (rs.next()) {
+                return rs.getFloat(1); 
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; 
+    }
+    public float getMinPrice() {
+        String sql = "SELECT MIN(dongia) FROM SACH";
+        try (Connection conn = new getConnection().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+    
+            if (rs.next()) {
+                return rs.getFloat(1); 
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; 
+    }
     
     
      

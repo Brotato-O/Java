@@ -11,6 +11,7 @@ import java.awt.Image;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -40,7 +41,8 @@ public class QLS extends JPanel{
     JButton btnXoaMem= new JButton("Xóa mềm");
     JButton btnLamMoi= new JButton("Làm mới");
     JButton outputExcel = new  JButton("Xuất Excel");
-    JPanel imgQLS = new JPanel();
+    JPanel imgQLS = new JPanel(new BorderLayout());
+
     
     JTextField txtMaSach1 = new JTextField();
     private  JTextField txtMaNXB1 = new  JTextField();;
@@ -146,7 +148,7 @@ btnXoa.addActionListener(event  ->{
     Book book = new Book();
     book.setMaSach(txtMaSach.getText());
     if(bllqls.deleteBookSQL(book)){
-        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?");
+        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?","Xác nhận", JOptionPane.YES_NO_OPTION);
         if(a==JOptionPane.YES_OPTION){
         JOptionPane.showMessageDialog(container, "Xóa thành công");
         int selectedRow = tableHD.getSelectedRow();
@@ -162,7 +164,7 @@ btnXoaMem.addActionListener(event  ->{
     Book book = new Book();
     book.setMaSach(txtMaSach.getText());
     if(bllqls.deleteBook(book)){
-        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?");
+        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?","Xác nhận", JOptionPane.YES_NO_OPTION);
         if(a==JOptionPane.YES_OPTION){
         JOptionPane.showMessageDialog(container, "Xóa thành công");
         int selectedRow = tableHD.getSelectedRow();
@@ -183,8 +185,21 @@ btnLamMoi.addActionListener(event -> {
     txtDonGia.setText("");
     txtMaNXB.setSelectedIndex(0);  
     txtMaTheLoai.setSelectedIndex(0); 
-    txtMaTacGia.setSelectedIndex(0);  
+    txtMaTacGia.setSelectedIndex(0);
 
+    txtDonGiaCaoNhat.setText("");
+    txtDonGiaThapNhat.setText("");
+    txtTongSoSach.setText(""); 
+
+    txtMaSach1.setText("");
+    txtTenSach1.setText("");
+    txtMaTacGia1.setText("");
+    txtMaNXB1.setText("");
+    txtMaTheLoai1.setText("");
+    txtNXBTu.setText("");
+    txtNXBDen.setText("");
+    txtKhoangGiaTu.setText("");
+    txtKhoangGiaDen.setText("");
     
     list = bllqls.getAllBooks();  
     showTable(); 
@@ -211,6 +226,22 @@ outputExcel.addActionListener(event -> {
         }
     }
 });
+tim.addActionListener(even ->{
+    ArrayList<Book> kq = timKiemSach();
+    list = kq;
+    showTable();
+});
+
+btnThongKe.addActionListener(even -> {
+    if(bllqls.getMaxPrice()>=0  && bllqls.getMinPrice() >= 0 ){
+        txtDonGiaCaoNhat.setText(String.valueOf(bllqls.getMaxPrice()));
+        txtDonGiaThapNhat.setText(String.valueOf(bllqls.getMinPrice()));
+    }else {
+        txtDonGiaCaoNhat.setText("Không có giá trị");
+        txtDonGiaThapNhat.setText("Không có giá trị");
+    }
+    txtTongSoSach.setText(String.valueOf(bllqls.countBook()));
+});
 
 tableHD.getSelectionModel().addListSelectionListener(e -> {
     
@@ -227,8 +258,8 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
             txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
             txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
-            // String imageName = tableHD.getValueAt(selectedRow, 8).toString();  // Cột 8 là ảnh
-            // showImageOnPanel(imgQLS, imageName);
+            String imageName = tableHD.getValueAt(selectedRow, 8).toString(); // Cột 8 là ảnh
+            showImageOnPanel(imgQLS, imageName);
            
         }
     }
@@ -282,7 +313,12 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
 
              
              
-    	     imgQLS.setBackground(Color.gray);
+    	    //  imgQLS.setBackground(Color.gray);
+             ImageIcon icon = new ImageIcon("src/img/book-stack.png");
+            Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(img);
+            JLabel lblImage = new JLabel(icon);
+            imgQLS.add(lblImage);
     	     JPanel inOutExcel = new JPanel( new GridLayout(4,1,2,10));
              inOutExcel.setPreferredSize(new Dimension((int)(0.2*width), 0));
             inOutExcel.add(outputExcel);
@@ -463,34 +499,54 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         return true;
     }
     // chưa biết làm
-    // public void showImageOnPanel(JPanel panel, String imageName) {
-    //     String imagePath = "../../img/" + imageName; 
-    
-    //     ImageIcon icon = new ImageIcon(imagePath);
+    public void showImageOnPanel(JPanel panel, String imageName) {
+        String imagePath = "src/img/" + imageName; 
+        ImageIcon icon = new ImageIcon(imagePath);
         
-    //     if (icon.getIconWidth() == -1) {
-    //         icon = new ImageIcon("../../img/book.png");
-    //     }
+        if (icon.getIconWidth() == -1) {
+            System.out.println("Không tìm thấy ảnh: " + imagePath);
+            icon = new ImageIcon("src/img/book-stack.png");
+        } else {
+            System.out.println("Đang hiển thị ảnh: " + imagePath);
+        }
         
-    //     // Lấy kích thước của JPanel
-    //     int panelWidth = panel.getWidth();
-    //     int panelHeight = panel.getHeight();
+        Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(img);
+        JLabel lblImage = new JLabel(icon);
         
-    //     // Nếu kích thước panel chưa được xác định, sử dụng kích thước mặc định
-    //     if (panelWidth == 0 || panelHeight == 0) {
-    //         panelWidth = 150; // hoặc kích thước mặc định bạn muốn
-    //         panelHeight = 150; // hoặc kích thước mặc định bạn muốn
-    //     }
-    
-    //     // Resize ảnh theo kích thước của JPanel
-    //     Image img = icon.getImage().getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH);
-    //     JLabel picLabel = new JLabel(new ImageIcon(img));
-    
-    //     panel.removeAll();
-    //     panel.add(picLabel, BorderLayout.CENTER);
-    //     panel.revalidate();
-    //     panel.repaint();
-    // }
+        panel.removeAll();
+        panel.add(lblImage, BorderLayout.CENTER);
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    public ArrayList<Book> timKiemSach() {
+    String maSach = txtMaSach1.getText().trim();
+    String tenSach = txtTenSach1.getText().trim();
+    String maTacGia = txtMaTacGia1.getText().trim();
+    String maNXB = txtMaNXB1.getText().trim();
+    String maTheLoai = txtMaTheLoai1.getText().trim();
+    String namTu = txtNXBTu.getText().trim();
+    String namDen = txtNXBDen.getText().trim();
+    String giaTu = txtKhoangGiaTu.getText().trim();
+    String giaDen = txtKhoangGiaDen.getText().trim();
+
+    ArrayList<Book> ketQua = new ArrayList<>();
+    for (Book s : bllqls.getAllBooks()) {
+        if (!maSach.isEmpty() && !s.getMaSach().contains(maSach)) continue;
+        if (!tenSach.isEmpty() && !s.getTenSach().toLowerCase().contains(tenSach.toLowerCase())) continue;
+        if (!maTacGia.isEmpty() && !s.getMaTacGia().contains(maTacGia)) continue;
+        if (!maNXB.isEmpty() && !s.getMaNCC().contains(maNXB)) continue;
+        if (!maTheLoai.isEmpty() && !s.getMaLoai().contains(maTheLoai)) continue;
+        if (!namTu.isEmpty() && s.getNamXB() < Integer.parseInt(namTu)) continue;
+        if (!namDen.isEmpty() && s.getNamXB() > Integer.parseInt(namDen)) continue;
+        if (!giaTu.isEmpty() && s.getDonGia() < Double.parseDouble(giaTu)) continue;
+        if (!giaDen.isEmpty() && s.getDonGia() > Double.parseDouble(giaDen)) continue;
+
+        ketQua.add(s);
+    }
+    return ketQua;
+}
 
 
 }

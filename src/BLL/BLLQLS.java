@@ -4,8 +4,7 @@ import DTO.Book;
 import DTO.map;
 
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+
 
 import DAL.DALQLS;
 public class BLLQLS {
@@ -58,5 +57,21 @@ public class BLLQLS {
             return true;
         }
         return false;
+    }
+    public float getMaxPrice(){
+        if (dal.getMaxPrice() >= 0 ){
+            return dal.getMaxPrice();
+        }
+        return -1;
+    }
+    public float getMinPrice(){
+        if (dal.getMinPrice() >= 0 ){
+            return dal.getMinPrice();
+        }
+        return -1;
+    }
+    public int countBook(){
+        ArrayList<Book> list = dal.getAllBooks();
+        return list.size();
     }
 }
