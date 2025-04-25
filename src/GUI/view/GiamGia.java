@@ -11,10 +11,21 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import BLL.BLLQLGG;
+import DTO.Book;
+import DTO.GG;
+import DTO.map;
+
 
 /**
  *
@@ -45,6 +56,9 @@ public class GiamGia extends JPanel{
     public JTextField ctGiam= new JTextField();
     public JButton themCT= new JButton("THÊM");
     public JButton xoaCT= new JButton("XÓA");
+    private  ArrayList<GG> list = new ArrayList<>() ;
+    private BLLQLGG bllqlgg = new BLLQLGG();
+    
     
     public GiamGia(){
         setLayout(new BorderLayout());
@@ -57,7 +71,107 @@ public class GiamGia extends JPanel{
         container.add(GG());
         container.add(CTGG());
         add(container, BorderLayout.CENTER);
+    tableGG.getSelectionModel().addListSelectionListener(e -> {
+    
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = tableGG.getSelectedRow();
+                if (selectedRow >= 0) {
+                    
+                    maGG.setText(tableGG.getValueAt(selectedRow, 0).toString());
+                    tenGG.setText(tableGG.getValueAt(selectedRow, 1).toString());
+                    tienGG.setText(tableGG.getValueAt(selectedRow, 2).toString());
+                    ngayBD.setText(tableGG.getValueAt(selectedRow,3).toString());
+                    ngayKT.setText(tableGG.getValueAt(selectedRow, 4).toString());
+                   
+                }
+            }
+        });
+    themGG.addActionListener(event  ->{
+            if (!isInputValid(container)) return;
+            String strNgayBD = ngayBD.getText();
+            String strNgayKT = ngayKT.getText();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate startDate, endDate;
+            
+            try {
+                startDate = LocalDate.parse(strNgayBD, formatter);
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(container, "Ngày bắt đầu phải có định dạng yyyy-MM-dd");
+                ngayBD.requestFocus();
+                return;
+            }
+            
+            try {
+                endDate = LocalDate.parse(strNgayKT, formatter);
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(container, "Ngày kết thúc phải có định dạng yyyy-MM-dd");
+                ngayKT.requestFocus();
+                return;
+            }
+            
+            // So sánh ngày
+            if (startDate.isAfter(endDate)) {
+                JOptionPane.showMessageDialog(container, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc");
+                ngayBD.requestFocus();
+                return;
+            }
+            
+            GG GG = new GG();
+            GG.setMaGG(maGG.getText());
+            GG.setTenGG(tenGG.getText());
+            GG.setLuongGiam(Float.parseFloat(tienGG.getText()));
+            GG.setNgayBD(strNgayBD);
+            GG.setNgayKT(strNgayKT);
+            if(bllqlgg.addGG(GG)){
+                JOptionPane.showMessageDialog(container, "thêm thành công");
+            }else JOptionPane.showMessageDialog(container, "Trùng mã sách");
+        
+        });
+    suaGG.addActionListener(event -> {
+            if (!isInputValid(container)) return;  
+            GG GG = new GG();
+            GG.setMaGG(maGG.getText());
+            GG.setTenGG(tenGG.getText());
+            GG.setLuongGiam(Float.parseFloat(tienGG.getText()));
+            GG.setNgayBD(ngayBD.getText());
+            GG.setNgayKT(ngayKT.getText());
+            if (bllqlgg.updateGG(GG)) {
+                JOptionPane.showMessageDialog(container, "Cập nhật thành công");
+            } else {
+                JOptionPane.showMessageDialog(container, "Cập nhật thất bại, mã sách không tồn tại");
+            }
+        });
+        
+    xoaGG.addActionListener(event  ->{
+            GG GG = new GG();
+            GG.setMaGG(maGG.getText());
+            if(bllqlgg.deleteGGSQL(GG)){
+                int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?","Xác nhận", JOptionPane.YES_NO_OPTION);
+                if(a==JOptionPane.YES_OPTION){
+                JOptionPane.showMessageDialog(container, "Xóa thành công");
+                int selectedRow = tableGG.getSelectedRow();
+                if (selectedRow >= 0) {
+                list.remove(selectedRow);
+                showTable();
+                }
+            }
+            }else JOptionPane.showMessageDialog(container, "Xóa thất bại");
+        
+        });
+    allGG.addActionListener(event -> {
+
+            maGG.setText("");
+            tenGG.setText("");
+            tienGG.setText("");
+            ngayBD.setText("");
+            ngayKT.setText("");
+           
+            list = bllqlgg.getAllGG();  
+            showTable(); 
+        });
     }
+
     
     public JPanel GG(){
         JPanel p =new JPanel();
@@ -115,9 +229,10 @@ public class GiamGia extends JPanel{
         top.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         
         JPanel right= new JPanel(new BorderLayout());
+        list = bllqlgg.getAllGG();
         String[] column= {"Mã GG", "Tên chương trình", "Số tiền giảm", "Ngày bắt đầu", "Ngày kết thúc"};
         modelGG.setColumnIdentifiers(column);
-        modelGG.setRowCount(20);
+        showTable();
         tableGG.setModel(modelGG);
         JScrollPane pane= new JScrollPane(tableGG);
         right.setBorder(BorderFactory.createEmptyBorder(0, 7, 0, 0));
@@ -195,7 +310,21 @@ public class GiamGia extends JPanel{
         tim.setBackground(Color.decode("#cffdce"));
         return p;
     }
-    
+    public void showTable() {
+        modelGG.setRowCount(0); 
+        int i = 1;
+        for (GG s : list) {
+            modelGG.addRow(new Object[]{
+                s.getMaGG(),
+                s.getTenGG(),
+                s.getLuongGiam(),        
+                s.getNgayBD(),
+                s.getNgayKT(),
+                ""                   
+            });
+        }
+    }
+
     public JPanel CTGG(){
         JPanel p= new JPanel(new BorderLayout());
         JPanel header= new JPanel();
@@ -265,5 +394,26 @@ public class GiamGia extends JPanel{
         xoaCT.setBackground(Color.red);
         xoaCT.setForeground(Color.white);
         return p;
+    }
+     private boolean isInputValid( JPanel container ) {
+        if (
+            // txtMaSach.getText().trim().isEmpty() ||
+            maGG.getText().trim().isEmpty() ||
+            tenGG.getText().trim().isEmpty() ||
+            ngayBD.getText().trim().isEmpty() ||
+            ngayKT.getText().trim().isEmpty()) {
+    
+            JOptionPane.showMessageDialog(container, "Vui lòng nhập đầy đủ thông tin.");
+            return false;
+        }
+    
+        try {
+            Float.parseFloat(tienGG.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(container, "Khuyễn mại phải là số hợp lệ.");
+            return false;
+        }
+    
+        return true;
     }
 }
