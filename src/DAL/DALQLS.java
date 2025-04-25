@@ -3,6 +3,8 @@ package DAL;
 import java.util.ArrayList;
 import DTO.*;
 import java.sql.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class DALQLS {
     public  ArrayList<Book> getAllBooks() {
@@ -148,9 +150,24 @@ public class DALQLS {
         }
         return false;
      }
-     public boolean deleteBook( Book book){
+     public boolean deleteBookSQL( Book book){
         
         String sql ="DELETE from SACH wHERE SACH.MASACH=?";
+        try {
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, book.getMaSach());
+           return ps.executeUpdate() > 0;
+
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+     }
+     public boolean deleteBook( Book book){
+        
+        String sql ="UPDATE SACH SET status =0 wHERE SACH.MASACH=?";
         try {
             Connection conn = new getConnection().getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -200,7 +217,36 @@ public class DALQLS {
         return "s1";  
     }
 
-    
+    public boolean outputExcel(String filePath){
+        String sql = "SELECT * FROM SACH";
+        try (Connection conn = new getConnection().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql);
+             PrintWriter writer = new PrintWriter(new FileWriter(filePath)))  {
+            writer.println("masach, tensach, maloai, matg, mancc, solg, dongia, hinhanh, namxb, status");
+            
+            while (rs.next()) {
+                String line = String.format("%s,%s,%s,%s,%s,%d,%d,%.2f,%s,%d",
+                rs.getString("maSach"),
+                rs.getString("tenSach"),
+                rs.getString("maLoai"),
+                rs.getString("matg"),
+                rs.getString("mancc"),
+                rs.getInt("soLg"),
+                rs.getInt("namXB"),
+                rs.getFloat("donGia"),
+                rs.getString("hinhanh"),
+                rs.getInt("status")
+                );
+                writer.println(line);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;  
+
+    }
     
     
      

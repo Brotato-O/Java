@@ -16,8 +16,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import DAL.*;
 import DTO.*;
+import BLL.*;
 import main.main;
 
 
@@ -36,15 +36,16 @@ public class QLS extends JPanel{
     JTextField txtDonGia = new JTextField();
     JButton btnThem= new JButton("Thêm");
     JButton btnSua= new JButton("Sửa");
-    JButton btnXoa= new JButton("Xóa");
+    JButton btnXoa= new JButton("Xóa cứng");
+    JButton btnXoaMem= new JButton("Xóa mềm");
     JButton btnLamMoi= new JButton("Làm mới");
-    JButton inputExcel = new JButton("Nhập Excel");
     JButton outputExcel = new  JButton("Xuất Excel");
+    JPanel imgQLS = new JPanel();
     
     JTextField txtMaSach1 = new JTextField();
-    private JComboBox<map> txtMaNXB1 = new JComboBox<>();;
-    private JComboBox txtMaTheLoai1 = new JComboBox<>();;
-    private JComboBox<map> txtMaTacGia1 = new JComboBox<>();;
+    private  JTextField txtMaNXB1 = new  JTextField();;
+    private  JTextField txtMaTheLoai1 = new  JTextField();;
+    private  JTextField txtMaTacGia1 = new  JTextField();;
     JTextField txtTenSach1 = new JTextField();
     JTextField txtKhoangGiaTu = new JTextField();
     JTextField txtKhoangGiaDen = new JTextField();
@@ -60,6 +61,7 @@ public class QLS extends JPanel{
     JButton btnThongKe = new JButton("Thống Kê");
     Font font = new Font("Arial", Font.BOLD, 14);
     ArrayList<Book> list = new ArrayList<>() ;
+    BLLQLS bllqls = new BLLQLS();
     public QLS(){
 
         setLayout(new BorderLayout());
@@ -70,23 +72,14 @@ public class QLS extends JPanel{
         JPanel container= new JPanel();
         txtMaSach.setEditable(false); // Không cho phép người dùng nhập vào trường này
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        for (map item : new DALQLS().getAllNCC()) {
+        for (map item : bllqls.getAllNcc()) {
             txtMaNXB.addItem(item);
         }
-        for (map item : new DALQLS().getAllTG()) {
+        for (map item : bllqls.getAllTg()) {
             txtMaTacGia.addItem(item);
         }
-        for (String item : new DALQLS().getAllTL()) {
+        for (String item : bllqls.getAllTl()) {
             txtMaTheLoai.addItem(item);
-        }
-        for (map item : new DALQLS().getAllNCC()) {
-            txtMaNXB1.addItem(item);
-        }
-        for (map item : new DALQLS().getAllTG()) {
-            txtMaTacGia1.addItem(item);
-        }
-        for (String item : new DALQLS().getAllTL()) {
-            txtMaTheLoai1.addItem(item);
         }
         container.add(inputFieldsQLS());
         container.add(findFields());
@@ -100,7 +93,7 @@ btnThem.addActionListener(event  ->{
     if (!isInputValid(container)) return;
     Book book = new Book();
     // book.setMaSach(txtMaSach.getText());
-    String newBookId = new DALQLS().generateNewBookId();
+    String newBookId = bllqls.generateNewBookId();
     txtMaSach.setText(newBookId); 
     book.setMaSach(newBookId);
     book.setTenSach(txtTenSach.getText());
@@ -117,7 +110,7 @@ btnThem.addActionListener(event  ->{
         book.setNamXB(Integer.parseInt(txtNamXuatBan.getText()));
         book.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
         book.setDonGia(Float.parseFloat(txtDonGia.getText()));
-    if(new DALQLS().addBook(book)){
+    if(bllqls.addBook(book)){
         JOptionPane.showMessageDialog(container, "thêm thành công");
         // list.add(book);
         // showTable();
@@ -142,7 +135,7 @@ btnSua.addActionListener(event -> {
     book.setNamXB(Integer.parseInt(txtNamXuatBan.getText()));
     book.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
     book.setDonGia(Float.parseFloat(txtDonGia.getText()));
-    if (new DALQLS().updateBook(book)) {
+    if (bllqls.updateBook(book)) {
         JOptionPane.showMessageDialog(container, "Cập nhật thành công");
     } else {
         JOptionPane.showMessageDialog(container, "Cập nhật thất bại, mã sách không tồn tại");
@@ -152,13 +145,32 @@ btnSua.addActionListener(event -> {
 btnXoa.addActionListener(event  ->{
     Book book = new Book();
     book.setMaSach(txtMaSach.getText());
-    if(new DALQLS().deleteBook(book)){
+    if(bllqls.deleteBookSQL(book)){
+        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?");
+        if(a==JOptionPane.YES_OPTION){
         JOptionPane.showMessageDialog(container, "Xóa thành công");
         int selectedRow = tableHD.getSelectedRow();
         if (selectedRow >= 0) {
         list.remove(selectedRow);
         showTable();
         }
+    }
+    }else JOptionPane.showMessageDialog(container, "Xóa thất bại");
+
+});
+btnXoaMem.addActionListener(event  ->{
+    Book book = new Book();
+    book.setMaSach(txtMaSach.getText());
+    if(bllqls.deleteBook(book)){
+        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?");
+        if(a==JOptionPane.YES_OPTION){
+        JOptionPane.showMessageDialog(container, "Xóa thành công");
+        int selectedRow = tableHD.getSelectedRow();
+        if (selectedRow >= 0) {
+        list.remove(selectedRow);
+        showTable();
+        }
+    }
     }else JOptionPane.showMessageDialog(container, "Xóa thất bại");
 
 });
@@ -174,8 +186,30 @@ btnLamMoi.addActionListener(event -> {
     txtMaTacGia.setSelectedIndex(0);  
 
     
-    list = new DALQLS().getAllBooks();  
+    list = bllqls.getAllBooks();  
     showTable(); 
+});
+outputExcel.addActionListener(event -> {
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+    
+    int userSelection = fileChooser.showSaveDialog(null);
+
+    if (userSelection == JFileChooser.APPROVE_OPTION) {
+        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+        // Đảm bảo có đuôi .csv
+        if (!filePath.endsWith(".csv")) {
+            filePath += ".csv";
+        }
+
+        if (bllqls.outputExcel(filePath)) {
+            JOptionPane.showMessageDialog(null, "✅ Xuất Excel thành công!");
+        } else {
+            
+            JOptionPane.showMessageDialog(null, "❌ Lỗi khi xuất file.");
+        }
+    }
 });
 
 tableHD.getSelectionModel().addListSelectionListener(e -> {
@@ -193,6 +227,8 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
             txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
             txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+            // String imageName = tableHD.getValueAt(selectedRow, 8).toString();  // Cột 8 là ảnh
+            // showImageOnPanel(imgQLS, imageName);
            
         }
     }
@@ -224,7 +260,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
              txtQLS.add(new JLabel ("Đơn Giá: "));
              txtQLS.add(txtDonGia);
           
-             JPanel btnQLS = new JPanel( new GridLayout(4,1,2,10));
+             JPanel btnQLS = new JPanel( new GridLayout(5,1,2,10));
              
 		
     	     btnQLS.add(btnThem);
@@ -236,17 +272,19 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
              btnQLS.add(btnXoa);
     	     btnXoa.setForeground(Color.WHITE);
     	     btnXoa.setBackground(Color.red);
+             btnQLS.add(btnXoaMem);
+    	     btnXoaMem.setForeground(Color.WHITE);
+    	     btnXoaMem.setBackground(Color.orange);
              btnQLS.add(btnLamMoi);
     	     btnLamMoi.setForeground(Color.WHITE);
     	     btnLamMoi.setBackground(Color.green);
     	     
 
-             JPanel imgQLS = new JPanel();
+             
              
     	     imgQLS.setBackground(Color.gray);
     	     JPanel inOutExcel = new JPanel( new GridLayout(4,1,2,10));
              inOutExcel.setPreferredSize(new Dimension((int)(0.2*width), 0));
-    	    inOutExcel.add(inputExcel);
             inOutExcel.add(outputExcel);
       
 
@@ -316,7 +354,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         
         Border thickBorder = BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK); //ko biết là gì nhưng sẽ ôn sau
         Border bd= BorderFactory.createLineBorder(Color.BLACK,5);
-        TitledBorder ttBD= BorderFactory.createTitledBorder(thickBorder, "TÌM KIẾM HÓA ĐƠN");
+        TitledBorder ttBD= BorderFactory.createTitledBorder(thickBorder, "TÌM KIẾM SÁCH");
         ttBD.setTitleJustification(TitledBorder.CENTER);
         ttBD.setTitleColor(Color.BLUE);
         ttBD.setTitleFont(new Font("Arial", Font.PLAIN, 22));
@@ -329,7 +367,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
 
     public JPanel tbQLS(){
         JPanel tbQLS= new JPanel();
-        list = new DALQLS().getAllBooks();
+        list = new BLLQLS().getAllBooks();
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
@@ -424,7 +462,35 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
     
         return true;
     }
+    // chưa biết làm
+    // public void showImageOnPanel(JPanel panel, String imageName) {
+    //     String imagePath = "../../img/" + imageName; 
     
+    //     ImageIcon icon = new ImageIcon(imagePath);
+        
+    //     if (icon.getIconWidth() == -1) {
+    //         icon = new ImageIcon("../../img/book.png");
+    //     }
+        
+    //     // Lấy kích thước của JPanel
+    //     int panelWidth = panel.getWidth();
+    //     int panelHeight = panel.getHeight();
+        
+    //     // Nếu kích thước panel chưa được xác định, sử dụng kích thước mặc định
+    //     if (panelWidth == 0 || panelHeight == 0) {
+    //         panelWidth = 150; // hoặc kích thước mặc định bạn muốn
+    //         panelHeight = 150; // hoặc kích thước mặc định bạn muốn
+    //     }
+    
+    //     // Resize ảnh theo kích thước của JPanel
+    //     Image img = icon.getImage().getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH);
+    //     JLabel picLabel = new JLabel(new ImageIcon(img));
+    
+    //     panel.removeAll();
+    //     panel.add(picLabel, BorderLayout.CENTER);
+    //     panel.revalidate();
+    //     panel.repaint();
+    // }
 
-    
+
 }
