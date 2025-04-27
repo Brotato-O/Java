@@ -416,7 +416,6 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
     }
     public void showTable() {
         modelHD.setRowCount(0); 
-        int i = 1;
         for (Book s : list) {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),

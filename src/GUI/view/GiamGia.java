@@ -22,6 +22,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import BLL.BLLQLGG;
+import BLL.BLLQLS;
+import DTO.Book;
 import DTO.GG;
 
 
@@ -46,6 +48,7 @@ public class GiamGia extends JPanel{
     
     public JTextField timBD= new JTextField();
     public JTextField timKT= new JTextField();
+    public JTextField timMa= new JTextField();
     public JButton tim= new JButton();
     
     public JTable tableCTGG= new JTable();
@@ -57,6 +60,7 @@ public class GiamGia extends JPanel{
     public JButton xoaCT= new JButton("XÓA");
     private  ArrayList<GG> list = new ArrayList<>() ;
     private BLLQLGG bllqlgg = new BLLQLGG();
+
     
     
     public GiamGia(){
@@ -169,6 +173,14 @@ public class GiamGia extends JPanel{
             list = bllqlgg.getAllGG();  
             showTable(); 
         });
+    ctSach.addActionListener(even -> {
+        ctSach(); 
+    });
+    tim.addActionListener(even -> {
+        ArrayList<GG> kq = timKiemGG();
+        list = kq;
+        showTable();
+    });
     }
 
     
@@ -267,11 +279,22 @@ public class GiamGia extends JPanel{
         pKT2.add(timKT);
         pKT.add(pKT2);
         pKT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JPanel pMa= new JPanel();
+        pMa.setLayout(new BoxLayout(pMa, BoxLayout.X_AXIS));
+        pMa.add(new JLabel("Mã giảm giá"));
+        pMa.add(Box.createHorizontalStrut(10));
+        JPanel pKT3= new JPanel();
+        pKT3.setLayout(new BoxLayout(pKT3, BoxLayout.X_AXIS));
+        pKT3.add(timMa);
+        pMa.add(pKT3);
+        pMa.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         JPanel l= new JPanel();
         l.setLayout(new BoxLayout(l, BoxLayout.X_AXIS));
         l.add(pBD);
         l.add(pKT);
+        l.add(pMa);
         
         JPanel r= new JPanel(new FlowLayout(FlowLayout.RIGHT));
         r.add(tim);
@@ -394,7 +417,7 @@ public class GiamGia extends JPanel{
         xoaCT.setForeground(Color.white);
         return p;
     }
-     private boolean isInputValid( JPanel container ) {
+    private boolean isInputValid( JPanel container ) {
         if (
             // txtMaSach.getText().trim().isEmpty() ||
             maGG.getText().trim().isEmpty() ||
@@ -414,5 +437,77 @@ public class GiamGia extends JPanel{
         }
     
         return true;
+    }
+    private void ctSach(){
+    JFrame fr1 = new JFrame();
+        fr1.dispose();
+		fr1.setSize(400, 550);
+        fr1.setLayout(new BorderLayout());
+       
+    JPanel tbQLS= new JPanel();
+    ArrayList<Book> list1 = new ArrayList<>() ;  
+    DefaultTableModel modelHD= new DefaultTableModel();
+    JTable tableHD= new JTable();
+        list1 = new BLLQLS().getAllBooks();
+
+       
+        tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
+    String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        modelHD.setColumnIdentifiers(colums);
+        modelHD.setRowCount(0); 
+        for (Book s : list1) {
+            modelHD.addRow(new Object[]{
+                s.getMaSach(),
+                s.getTenSach(),
+                s.getMaNCC(),        
+                s.getMaLoai(),
+                s.getMaTacGia(),
+                s.getNamXB(),                
+                s.getSoLuong(),
+                s.getDonGia(),
+                s.getHA(),
+                ""                   
+            });
+        }
+        tableHD.setModel(modelHD);
+    JPanel pTable= new JPanel(new BorderLayout());
+    JScrollPane p1= new JScrollPane(tableHD);
+        pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        pTable.add(p1);
+        tbQLS.add(pTable);
+    JButton chon = new JButton("Chọn");
+
+        fr1.add(tbQLS,BorderLayout.NORTH);
+        fr1.add(chon, BorderLayout.CENTER);
+        fr1.setVisible(true);
+        chon.addActionListener(even -> {
+            int selectedRow = tableHD.getSelectedRow();
+            if (selectedRow >= 0) {
+                String maSach = tableHD.getValueAt(selectedRow, 0).toString(); 
+                ctSachInp.setText(maSach); 
+                fr1.dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(fr1, "Vui lòng chọn một dòng sách!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        
+    }
+    
+    public ArrayList<GG> timKiemGG() {
+        String maGG = timMa.getText().trim();
+        String ngayTu = timBD.getText().trim();
+        String ngayDen = timKT.getText().trim();
+
+    
+        ArrayList<GG> ketQua = new ArrayList<>();
+        for (GG s : bllqlgg.getAllGG()) {
+            if (!maGG.isEmpty() && !s.getMaGG().contains(maGG)) continue;
+            // nên dùng DateTimeFormatter formatter và LocalDate để so sánh ngày chuẩn hơn 
+            if (!ngayTu.isEmpty() && !s.getNgayBD().toLowerCase().contains(ngayTu.toLowerCase())) continue;
+            if (!ngayDen.isEmpty() && !s.getNgayKT().toLowerCase().contains(ngayDen.toLowerCase())) continue;
+    
+            ketQua.add(s);
+        }
+        return ketQua;
     }
 }
