@@ -8,6 +8,7 @@ import DTO.CTHD;
 import DTO.HD;
 import java.util.ArrayList;
 import java.sql.*;
+import java.time.LocalDate;
 
 /**
  *
@@ -126,5 +127,40 @@ public class HDDAL {
             System.out.println(e);
         }
         return row;
+    }
+    public ArrayList<HD> findHD(String maHD, String maNV, String maKH, String phuongThuc, LocalDate bd, LocalDate kt, float tienTu, float tienDen){
+        ArrayList<HD> hd= new ArrayList<>();
+        try{
+            String query= "Select * from HOADON where hinhthuc= '" + phuongThuc +"' " ;
+            Connection conn= get.getConnection();
+            if (!maHD.equals("")) query += " And maHD= '" + maHD +"' ";
+            if (!maNV.equals("")) query += " and maNV= '" + maNV +"' ";
+            if (!maKH.equals("")) query += " and maKH= '" +maKH + "' ";
+            if (bd != null) query += " AND CAST(ngaylap AS DATE)>= '" + bd.toString() + "' ";
+            if (kt != null) query += " AND CAST(ngaylap AS DATE)<= '" + kt.toString() + "' ";
+            if (!String.valueOf(tienTu).equals("")) query += " and tongtien >= '" + tienTu + "' ";
+            if (!String.valueOf(tienDen).equals("")) query += " and tongtien <= '" + tienDen + "' ";
+            PreparedStatement prestm= conn.prepareCall(query);
+            ResultSet rs= prestm.executeQuery();
+            while (rs.next()){
+                String maHD1= rs.getString("MAHD");
+                String maNV1= rs.getString("MANV");
+                String maKH1= rs.getString("MAKH");
+                String ngayLap= rs.getString("NGAYLAP");
+                float tongTien= rs.getFloat("TONGTIEN");
+                int tongSL= rs.getInt("TONGSOLG");
+                String hinhThuc= rs.getString("HINHTHUC");
+                float thanhTien= rs.getFloat("THANHTIEN");
+                float tongGG= rs.getFloat("TONGGG");
+                
+                HD temp= new HD(maHD1, maNV1, maKH1, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
+                hd.add(temp);
+                conn.close();
+            }
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return hd;
     }
 }

@@ -22,6 +22,7 @@ public class QLHDController {
     public ActionListener confirmDelete;
     public ActionListener deleteCTHD;
     public ActionListener addCTHD;
+    public ActionListener findHD;
     JTable tableCTHD ;
     DefaultTableModel modelCTHD ;
     
@@ -111,7 +112,7 @@ public class QLHDController {
                                 int rowHD= hdbll.updateTongTien(cthd);
 
                                 if (rowHD > 0){
-                                    updateHD(hdbll);
+                                    updateHD(hdbll.selectAll());
                                 }
                                 JOptionPane.showMessageDialog(view.frame, "Xóa thành công");
                             }
@@ -127,10 +128,39 @@ public class QLHDController {
                 new addQLHD(parent, view);
             }
         };
+        
+        findHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HDBLL hdbll= new HDBLL();
+                String maHD = view.timMaHD.getText();
+                String maNV = view.timMaNV.getText();
+                String maKH = view.timMaKH.getText();
+                String phuongThuc = view.timPhuongThuc.getSelectedItem().toString();
+                switch (phuongThuc){
+                    case "Tiền mặt":
+                        phuongThuc= "Tien mat";
+                        break;
+                    case "Chuyển khoản":
+                        phuongThuc= "Chuyen khoan";
+                        break;
+                    case "Quẹt thẻ":
+                        phuongThuc= "Quet the";
+                        break;
+                }
+                String ngayBD = view.tgianBD.getText();
+                String ngayKT = view.tgianKT.getText();
+                String tienBD = view.tienBD.getText();
+                String tienKT = view.tienKT.getText();
+
+                updateHD(hdbll.findHD(maHD, maNV, maKH, phuongThuc, ngayBD, ngayKT, tienBD, tienKT));
+            }
+        };
+                
     }
     
-    public void updateHD(HDBLL hdbll){
-        ArrayList<HD> listHD= hdbll.selectAll();
+    public void updateHD(ArrayList<HD> temp){
+        ArrayList<HD> listHD=temp;
         JTable tableHD= view.getTableHD();
         System.out.println("heh");
         DefaultTableModel modelHD= (DefaultTableModel) tableHD.getModel();
