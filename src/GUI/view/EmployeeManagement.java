@@ -1,5 +1,8 @@
 package GUI.view;
 
+import BLL.EmpBLL;
+import DTO.EmployeeManagementDTO;
+import GUI.controller.EmpController;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -7,7 +10,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,10 +23,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
-import BLL.EmpBLL;
-import DTO.EmployeeManagementDTO;
-import GUI.controller.EmpController;
 
 public class EmployeeManagement extends JPanel {
 
@@ -289,6 +287,10 @@ public class EmployeeManagement extends JPanel {
 		this.txtChucVu.setText(position);
 		this.txtLuong.setText(salary);
 		this.txtNgaySinh.setText(birthDate);
+	}
+
+	public JButton getBtnThem() {
+		return jbThem;
 	}
 
 }
