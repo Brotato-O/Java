@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import DTO.Book;
+import DTO.CTGG;
 import DTO.GG;
 
 public class DALGG {
@@ -81,4 +84,58 @@ public class DALGG {
         }
         return false;
     }
+    public ArrayList<CTGG> seleCtgg(String id) {
+        ArrayList<CTGG> list = new ArrayList<>();
+        String sql = "SELECT * FROM CHITIETGIAMGIA WHERE MAGG = ?";
+        try (
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CTGG b = new CTGG();
+                    b.setMaGG(rs.getString("magg"));
+                    b.setMaSach(rs.getString("masach"));
+                    list.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public boolean addCTGG( CTGG ctgg){
+        
+        String sql ="insert into CHITIETGIAMGIA (masach, magg) values(?, ?)";
+        try {
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+           ps.setString(1, ctgg.getMaSach());
+           ps.setString(2, ctgg.getMaGG());
+           return ps.executeUpdate() > 0;
+
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+     }
+    public boolean deleteCTGGSQL( CTGG ctgg){
+        
+        String sql ="DELETE from CHITIETGIAMGIA wHERE magg = ? AND masach = ?";
+        try {
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, ctgg.getMaGG());
+            ps.setString(2, ctgg.getMaSach());
+           return ps.executeUpdate() > 0;
+
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+     }
 }

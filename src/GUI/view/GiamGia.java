@@ -24,7 +24,9 @@ import javax.swing.table.DefaultTableModel;
 import BLL.BLLQLGG;
 import BLL.BLLQLS;
 import DTO.Book;
+import DTO.CTGG;
 import DTO.GG;
+
 
 
 
@@ -55,7 +57,7 @@ public class GiamGia extends JPanel{
     public DefaultTableModel modelCT= new DefaultTableModel();
     public JButton ctSach= new JButton("...");
     public JTextField ctSachInp= new JTextField();
-    public JTextField ctGiam= new JTextField();
+    public JComboBox ctGiam= new JComboBox<>();
     public JButton themCT= new JButton("THÊM");
     public JButton xoaCT= new JButton("XÓA");
     private  ArrayList<GG> list = new ArrayList<>() ;
@@ -71,6 +73,9 @@ public class GiamGia extends JPanel{
         JPanel container= new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBackground(Color.red);
+         for (GG item : bllqlgg.getAllGG()) {
+            ctGiam.addItem(item.getMaGG());
+        }
         container.add(GG());
         container.add(CTGG());
         add(container, BorderLayout.CENTER);
@@ -79,12 +84,13 @@ public class GiamGia extends JPanel{
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = tableGG.getSelectedRow();
                 if (selectedRow >= 0) {
-                    
+                    String magg = tableGG.getValueAt(selectedRow, 0).toString();
                     maGG.setText(tableGG.getValueAt(selectedRow, 0).toString());
                     tenGG.setText(tableGG.getValueAt(selectedRow, 1).toString());
                     tienGG.setText(tableGG.getValueAt(selectedRow, 2).toString());
                     ngayBD.setText(tableGG.getValueAt(selectedRow,3).toString());
                     ngayKT.setText(tableGG.getValueAt(selectedRow, 4).toString());
+                    loadCTGG(magg);
                    
                 }
             }
@@ -175,6 +181,39 @@ public class GiamGia extends JPanel{
         });
     ctSach.addActionListener(even -> {
         ctSach(); 
+    });
+    themCT.addActionListener(even -> {
+         if (ctSachInp.getText().trim().isEmpty() && ctGiam.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(container, "Vui lòng nhập đầy đủ thông tin.");
+            return;
+         }
+    CTGG ctgg = new CTGG();
+    ctgg.setMaSach( ctSachInp.getText());
+    String selectedMaGG = (String) ctGiam.getSelectedItem();
+        if (selectedMaGG != null) {
+            ctgg.setMaGG(selectedMaGG);
+        }
+    if(bllqlgg.addCTGG(ctgg)){
+        JOptionPane.showMessageDialog(container, "thêm thành công");
+        modelCT.addRow(new Object[]{
+            ctgg.getMaGG(), ctgg.getMaSach()
+        });
+    }else JOptionPane.showMessageDialog(container, "Đã có!!!");
+    });
+    xoaCT.addActionListener(even -> {
+       CTGG ctgg = new CTGG();
+       int selectedRow = tableCTGG.getSelectedRow();
+       String magg = modelCT.getValueAt(selectedRow, 0).toString();
+       String masach = modelCT.getValueAt(selectedRow, 1).toString();
+        ctgg.setMaGG(magg);
+        ctgg.setMaSach(masach);
+        if(bllqlgg.deleteCTGGSQL(ctgg)){
+        int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?","Xác nhận", JOptionPane.YES_NO_OPTION);
+        if(a==JOptionPane.YES_OPTION){
+        JOptionPane.showMessageDialog(container, "Xóa thành công");
+        modelCT.removeRow(selectedRow);
+    }
+    }else JOptionPane.showMessageDialog(container, "Xóa thất bại");
     });
     tim.addActionListener(even -> {
         ArrayList<GG> kq = timKiemGG();
@@ -355,11 +394,11 @@ public class GiamGia extends JPanel{
         p.add(header, BorderLayout.NORTH);
         JPanel container= new JPanel();
         container.setLayout(new BorderLayout());
-        
+
         JPanel left= new JPanel(new BorderLayout());
-        String[] column= {"Mã GG", "%Giảm", "Sách"} ;
+        String[] column= {"Mã GG", "Sách"} ;
         modelCT.setColumnIdentifiers(column);
-        modelCT.setRowCount(20);
+        
         tableCTGG.setModel(modelCT);
         JScrollPane pane= new JScrollPane(tableCTGG);
         left.add(pane);
@@ -386,7 +425,7 @@ public class GiamGia extends JPanel{
         
         JPanel giam= new JPanel();
         giam.setLayout(new BoxLayout(giam, BoxLayout.X_AXIS));
-        giam.add(new JLabel("% GIẢM"));
+        giam.add(new JLabel("Mã giảm"));
         giam.add(Box.createHorizontalStrut(10));
         JPanel temp2= new JPanel();
         temp2.setLayout(new BoxLayout(temp2, BoxLayout.X_AXIS));
@@ -510,4 +549,18 @@ public class GiamGia extends JPanel{
         }
         return ketQua;
     }
+    private void loadCTGG(String magg) {
+        ArrayList<CTGG> listCTGG = bllqlgg.getAllCTGG(magg);
+    
+        // Xóa sạch dữ liệu cũ trong model
+        modelCT.setRowCount(0);
+    
+        // Thêm lại dữ liệu mới
+        for (CTGG ct : listCTGG) {
+            modelCT.addRow(new Object[]{
+                ct.getMaGG(), ct.getMaSach()
+            });
+        }
+    }
+    
 }

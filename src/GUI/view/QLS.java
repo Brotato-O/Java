@@ -432,7 +432,6 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         }
     }
     
-    
     public JPanel statsQLS(){
         JPanel statsQLS = new JPanel(new FlowLayout());
         JPanel QLSTK= new JPanel( new GridLayout(2,2));

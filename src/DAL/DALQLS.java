@@ -127,7 +127,7 @@ public class DALQLS {
         }
         return list;
     }
-     public boolean addBook( Book book){
+    public boolean addBook( Book book){
         
         String sql ="insert into SACH (masach, tensach, maloai, matg, mancc, solg, dongia, hinhanh, namxb, status) values(?, ?, ?, ?, ?, ?, ?, ?, ?,1)";
         try {
@@ -150,7 +150,7 @@ public class DALQLS {
         }
         return false;
      }
-     public boolean deleteBookSQL( Book book){
+    public boolean deleteBookSQL( Book book){
         
         String sql ="DELETE from SACH wHERE SACH.MASACH=?";
         try {
@@ -165,7 +165,7 @@ public class DALQLS {
         }
         return false;
      }
-     public boolean deleteBook( Book book){
+    public boolean deleteBook( Book book){
         
         String sql ="UPDATE SACH SET status =0 wHERE SACH.MASACH=?";
         try {
@@ -180,7 +180,7 @@ public class DALQLS {
         }
         return false;
      }
-     public boolean updateBook(Book book) {
+    public boolean updateBook(Book book) {
         String sql = "UPDATE SACH SET tensach = ?, maloai = ?, matg = ?, mancc = ?, solg = ?, dongia = ?, hinhanh = ?, namxb = ? WHERE masach = ?";
         try {
             Connection conn = new getConnection().getConnection();
