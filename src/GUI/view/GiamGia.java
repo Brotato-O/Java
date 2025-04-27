@@ -11,10 +11,22 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import BLL.BLLQLGG;
+import BLL.BLLQLS;
+import DTO.Book;
+import DTO.GG;
+
+
 
 /**
  *
@@ -36,6 +48,7 @@ public class GiamGia extends JPanel{
     
     public JTextField timBD= new JTextField();
     public JTextField timKT= new JTextField();
+    public JTextField timMa= new JTextField();
     public JButton tim= new JButton();
     
     public JTable tableCTGG= new JTable();
@@ -45,6 +58,10 @@ public class GiamGia extends JPanel{
     public JTextField ctGiam= new JTextField();
     public JButton themCT= new JButton("THÊM");
     public JButton xoaCT= new JButton("XÓA");
+    private  ArrayList<GG> list = new ArrayList<>() ;
+    private BLLQLGG bllqlgg = new BLLQLGG();
+
+    
     
     public GiamGia(){
         setLayout(new BorderLayout());
@@ -57,7 +74,115 @@ public class GiamGia extends JPanel{
         container.add(GG());
         container.add(CTGG());
         add(container, BorderLayout.CENTER);
+    tableGG.getSelectionModel().addListSelectionListener(e -> {
+    
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = tableGG.getSelectedRow();
+                if (selectedRow >= 0) {
+                    
+                    maGG.setText(tableGG.getValueAt(selectedRow, 0).toString());
+                    tenGG.setText(tableGG.getValueAt(selectedRow, 1).toString());
+                    tienGG.setText(tableGG.getValueAt(selectedRow, 2).toString());
+                    ngayBD.setText(tableGG.getValueAt(selectedRow,3).toString());
+                    ngayKT.setText(tableGG.getValueAt(selectedRow, 4).toString());
+                   
+                }
+            }
+        });
+    themGG.addActionListener(event  ->{
+            if (!isInputValid(container)) return;
+            String strNgayBD = ngayBD.getText();
+            String strNgayKT = ngayKT.getText();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate startDate, endDate;
+            
+            try {
+                startDate = LocalDate.parse(strNgayBD, formatter);
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(container, "Ngày bắt đầu phải có định dạng yyyy-MM-dd");
+                ngayBD.requestFocus();
+                return;
+            }
+            
+            try {
+                endDate = LocalDate.parse(strNgayKT, formatter);
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(container, "Ngày kết thúc phải có định dạng yyyy-MM-dd");
+                ngayKT.requestFocus();
+                return;
+            }
+            
+            // So sánh ngày
+            if (startDate.isAfter(endDate)) {
+                JOptionPane.showMessageDialog(container, "Ngày bắt đầu phải trước hoặc bằng ngày kết thúc");
+                ngayBD.requestFocus();
+                return;
+            }
+            
+            GG GG = new GG();
+            GG.setMaGG(maGG.getText());
+            GG.setTenGG(tenGG.getText());
+            GG.setLuongGiam(Float.parseFloat(tienGG.getText()));
+            GG.setNgayBD(strNgayBD);
+            GG.setNgayKT(strNgayKT);
+            if(bllqlgg.addGG(GG)){
+                JOptionPane.showMessageDialog(container, "thêm thành công");
+            }else JOptionPane.showMessageDialog(container, "Trùng mã sách");
+        
+        });
+    suaGG.addActionListener(event -> {
+            if (!isInputValid(container)) return;  
+            GG GG = new GG();
+            GG.setMaGG(maGG.getText());
+            GG.setTenGG(tenGG.getText());
+            GG.setLuongGiam(Float.parseFloat(tienGG.getText()));
+            GG.setNgayBD(ngayBD.getText());
+            GG.setNgayKT(ngayKT.getText());
+            if (bllqlgg.updateGG(GG)) {
+                JOptionPane.showMessageDialog(container, "Cập nhật thành công");
+            } else {
+                JOptionPane.showMessageDialog(container, "Cập nhật thất bại, mã sách không tồn tại");
+            }
+        });
+        
+    xoaGG.addActionListener(event  ->{
+            GG GG = new GG();
+            GG.setMaGG(maGG.getText());
+            if(bllqlgg.deleteGGSQL(GG)){
+                int a = JOptionPane.showConfirmDialog(container, "Bạn có chắc muốn xóa chứ?","Xác nhận", JOptionPane.YES_NO_OPTION);
+                if(a==JOptionPane.YES_OPTION){
+                JOptionPane.showMessageDialog(container, "Xóa thành công");
+                int selectedRow = tableGG.getSelectedRow();
+                if (selectedRow >= 0) {
+                list.remove(selectedRow);
+                showTable();
+                }
+            }
+            }else JOptionPane.showMessageDialog(container, "Xóa thất bại");
+        
+        });
+    allGG.addActionListener(event -> {
+
+            maGG.setText("");
+            tenGG.setText("");
+            tienGG.setText("");
+            ngayBD.setText("");
+            ngayKT.setText("");
+           
+            list = bllqlgg.getAllGG();  
+            showTable(); 
+        });
+    ctSach.addActionListener(even -> {
+        ctSach(); 
+    });
+    tim.addActionListener(even -> {
+        ArrayList<GG> kq = timKiemGG();
+        list = kq;
+        showTable();
+    });
     }
+
     
     public JPanel GG(){
         JPanel p =new JPanel();
@@ -115,9 +240,10 @@ public class GiamGia extends JPanel{
         top.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         
         JPanel right= new JPanel(new BorderLayout());
+        list = bllqlgg.getAllGG();
         String[] column= {"Mã GG", "Tên chương trình", "Số tiền giảm", "Ngày bắt đầu", "Ngày kết thúc"};
         modelGG.setColumnIdentifiers(column);
-        modelGG.setRowCount(20);
+        showTable();
         tableGG.setModel(modelGG);
         JScrollPane pane= new JScrollPane(tableGG);
         right.setBorder(BorderFactory.createEmptyBorder(0, 7, 0, 0));
@@ -153,11 +279,22 @@ public class GiamGia extends JPanel{
         pKT2.add(timKT);
         pKT.add(pKT2);
         pKT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JPanel pMa= new JPanel();
+        pMa.setLayout(new BoxLayout(pMa, BoxLayout.X_AXIS));
+        pMa.add(new JLabel("Mã giảm giá"));
+        pMa.add(Box.createHorizontalStrut(10));
+        JPanel pKT3= new JPanel();
+        pKT3.setLayout(new BoxLayout(pKT3, BoxLayout.X_AXIS));
+        pKT3.add(timMa);
+        pMa.add(pKT3);
+        pMa.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         JPanel l= new JPanel();
         l.setLayout(new BoxLayout(l, BoxLayout.X_AXIS));
         l.add(pBD);
         l.add(pKT);
+        l.add(pMa);
         
         JPanel r= new JPanel(new FlowLayout(FlowLayout.RIGHT));
         r.add(tim);
@@ -195,7 +332,21 @@ public class GiamGia extends JPanel{
         tim.setBackground(Color.decode("#cffdce"));
         return p;
     }
-    
+    public void showTable() {
+        modelGG.setRowCount(0); 
+        int i = 1;
+        for (GG s : list) {
+            modelGG.addRow(new Object[]{
+                s.getMaGG(),
+                s.getTenGG(),
+                s.getLuongGiam(),        
+                s.getNgayBD(),
+                s.getNgayKT(),
+                ""                   
+            });
+        }
+    }
+
     public JPanel CTGG(){
         JPanel p= new JPanel(new BorderLayout());
         JPanel header= new JPanel();
@@ -265,5 +416,98 @@ public class GiamGia extends JPanel{
         xoaCT.setBackground(Color.red);
         xoaCT.setForeground(Color.white);
         return p;
+    }
+    private boolean isInputValid( JPanel container ) {
+        if (
+            // txtMaSach.getText().trim().isEmpty() ||
+            maGG.getText().trim().isEmpty() ||
+            tenGG.getText().trim().isEmpty() ||
+            ngayBD.getText().trim().isEmpty() ||
+            ngayKT.getText().trim().isEmpty()) {
+    
+            JOptionPane.showMessageDialog(container, "Vui lòng nhập đầy đủ thông tin.");
+            return false;
+        }
+    
+        try {
+            Float.parseFloat(tienGG.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(container, "Khuyễn mại phải là số hợp lệ.");
+            return false;
+        }
+    
+        return true;
+    }
+    private void ctSach(){
+    JFrame fr1 = new JFrame();
+        fr1.dispose();
+		fr1.setSize(400, 550);
+        fr1.setLayout(new BorderLayout());
+       
+    JPanel tbQLS= new JPanel();
+    ArrayList<Book> list1 = new ArrayList<>() ;  
+    DefaultTableModel modelHD= new DefaultTableModel();
+    JTable tableHD= new JTable();
+        list1 = new BLLQLS().getAllBooks();
+
+       
+        tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
+    String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        modelHD.setColumnIdentifiers(colums);
+        modelHD.setRowCount(0); 
+        for (Book s : list1) {
+            modelHD.addRow(new Object[]{
+                s.getMaSach(),
+                s.getTenSach(),
+                s.getMaNCC(),        
+                s.getMaLoai(),
+                s.getMaTacGia(),
+                s.getNamXB(),                
+                s.getSoLuong(),
+                s.getDonGia(),
+                s.getHA(),
+                ""                   
+            });
+        }
+        tableHD.setModel(modelHD);
+    JPanel pTable= new JPanel(new BorderLayout());
+    JScrollPane p1= new JScrollPane(tableHD);
+        pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        pTable.add(p1);
+        tbQLS.add(pTable);
+    JButton chon = new JButton("Chọn");
+
+        fr1.add(tbQLS,BorderLayout.NORTH);
+        fr1.add(chon, BorderLayout.CENTER);
+        fr1.setVisible(true);
+        chon.addActionListener(even -> {
+            int selectedRow = tableHD.getSelectedRow();
+            if (selectedRow >= 0) {
+                String maSach = tableHD.getValueAt(selectedRow, 0).toString(); 
+                ctSachInp.setText(maSach); 
+                fr1.dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(fr1, "Vui lòng chọn một dòng sách!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        
+    }
+    
+    public ArrayList<GG> timKiemGG() {
+        String maGG = timMa.getText().trim();
+        String ngayTu = timBD.getText().trim();
+        String ngayDen = timKT.getText().trim();
+
+    
+        ArrayList<GG> ketQua = new ArrayList<>();
+        for (GG s : bllqlgg.getAllGG()) {
+            if (!maGG.isEmpty() && !s.getMaGG().contains(maGG)) continue;
+            // nên dùng DateTimeFormatter formatter và LocalDate để so sánh ngày chuẩn hơn 
+            if (!ngayTu.isEmpty() && !s.getNgayBD().toLowerCase().contains(ngayTu.toLowerCase())) continue;
+            if (!ngayDen.isEmpty() && !s.getNgayKT().toLowerCase().contains(ngayDen.toLowerCase())) continue;
+    
+            ketQua.add(s);
+        }
+        return ketQua;
     }
 }
