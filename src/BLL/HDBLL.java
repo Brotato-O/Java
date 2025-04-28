@@ -35,22 +35,54 @@ public class HDBLL {
     }
     
     public ArrayList<HD> findHD(String maHD, String maNV, String maKH, String phuongThuc, String ngayBD, String ngayKT, String tienBD, String tienKT){
-        DateTimeFormatter formater= DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate BD;
         LocalDate KT;
         float BD1= 0;
         float KT1= 0;
-        try{
-            BD= LocalDate.parse(tienBD, formater);
-            KT= LocalDate.parse(tienKT, formater);
-            BD1= Float.parseFloat(tienBD);
-            KT1= Float.parseFloat(tienKT);
-        }
-        catch (Exception e){
-            BD= null;
-            KT= null;
-        }
+        
+        BD= ngayBD.equals("") ? null : LocalDate.parse(ngayBD, formater);
+        KT= ngayKT.equals("") ? null : LocalDate.parse(ngayKT, formater);
+        BD1= tienBD.equals("") ? 0 : Float.parseFloat(tienBD);
+        KT1= tienKT.equals("") ? 0 : Float.parseFloat(tienKT);
         ArrayList<HD> rs= hd.findHD(maHD, maNV, maKH, phuongThuc, BD, KT, BD1, KT1);
         return rs;
+    }
+    
+    public int check(String ngayBD, String ngayKT, String tienBD, String tienKT){
+        DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate BD;
+        LocalDate KT;
+        float BD1= 0;
+        float KT1= 0;
+        if (!ngayBD.equals(""))
+            try{
+                BD= LocalDate.parse(ngayBD, formater);
+            }
+            catch (Exception e){
+                return 1;
+            }
+        if (!ngayKT.equals(""))
+            try{
+                KT= LocalDate.parse(ngayKT, formater);
+            }
+            catch (Exception e){
+                return 1;
+            }
+        if (!tienBD.equals(""))
+            try{
+                BD1= Float.parseFloat(tienBD);
+            }
+            catch (Exception e){
+                return 2;
+            }
+        if (!tienKT.equals(""))
+            try{
+                KT1= Float.parseFloat(tienKT);
+            }
+            catch (Exception e){
+                return 2;
+            }
+        return 0;
     }
 }

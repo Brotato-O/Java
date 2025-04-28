@@ -23,6 +23,7 @@ public class QLHDController {
     public ActionListener deleteCTHD;
     public ActionListener addCTHD;
     public ActionListener findHD;
+    public ActionListener showHD;
     JTable tableCTHD ;
     DefaultTableModel modelCTHD ;
     
@@ -133,11 +134,15 @@ public class QLHDController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HDBLL hdbll= new HDBLL();
+                
                 String maHD = view.timMaHD.getText();
                 String maNV = view.timMaNV.getText();
                 String maKH = view.timMaKH.getText();
                 String phuongThuc = view.timPhuongThuc.getSelectedItem().toString();
                 switch (phuongThuc){
+                    case "Tất cả":
+                        phuongThuc= "Tat ca";
+                        break;
                     case "Tiền mặt":
                         phuongThuc= "Tien mat";
                         break;
@@ -152,11 +157,30 @@ public class QLHDController {
                 String ngayKT = view.tgianKT.getText();
                 String tienBD = view.tienBD.getText();
                 String tienKT = view.tienKT.getText();
-
-                updateHD(hdbll.findHD(maHD, maNV, maKH, phuongThuc, ngayBD, ngayKT, tienBD, tienKT));
+                
+                int check= hdbll.check(ngayBD, ngayKT, tienBD, tienKT);
+                if (check==1) {
+                    JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng định dạng yyyy-MM-dd");
+                    return;
+                }
+                if (check==2) {
+                    JOptionPane.showMessageDialog(view.frame, "Nhập giá tiền hợp lệ");
+                    return;
+                }
+                ArrayList<HD> rs= hdbll.findHD(maHD, maNV, maKH, phuongThuc, ngayBD, ngayKT, tienBD, tienKT);
+                updateHD(rs);
+                
             }
         };
-                
+        showHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HDBLL hdbll= new HDBLL();
+                ArrayList<HD> rs= hdbll.selectAll();
+                updateHD(rs);
+            }
+        };
+        
     }
     
     public void updateHD(ArrayList<HD> temp){

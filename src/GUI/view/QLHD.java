@@ -399,6 +399,7 @@ public class QLHD extends JPanel {
         xoaCTHD.addActionListener(controller.confirmDelete);
         themCTHD.addActionListener(controller.addCTHD);
         tim.addActionListener(controller.findHD);
+        lamMoi.addActionListener(controller.showHD);
     }
     
     public JTable getTableHD() {
