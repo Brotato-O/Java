@@ -47,6 +47,7 @@ public class EmployeeManagement extends JPanel {
 		add(Footer(), BorderLayout.SOUTH);
 		
 		idEmp.setEditable(false);
+		jbSua.setEnabled(false);
 		// Khởi tạo controller
 		new EmpController(this);
 		
@@ -265,33 +266,44 @@ public class EmployeeManagement extends JPanel {
 		return this.table;
 	}
 	
-	/**
-	 * Hiển thị dữ liệu nhân viên lên các textfield
-	 */
-	public void displayEmployeeData(String id, String fullName, String phone, String email, 
-			String gender, String position, String salary, String birthDate) {
-		// Hiển thị dữ liệu lên các textfield
-		this.idEmp.setText(id);
-		this.txtEmployeeName.setText(fullName);
-		this.txtSDT.setText(phone);
-		this.txtEmail.setText(email);
-		
-		// Hiển thị giới tính (radio button) - Dữ liệu từ cột "phai" trong DB
-		if (gender != null) {
-			if (gender.equalsIgnoreCase("Nam")) {
-				this.rdiNam.setSelected(true);
-			} else {
-				this.rdiNu.setSelected(true);
-			}
-		}
-		
-		this.txtChucVu.setText(position);
-		this.txtLuong.setText(salary);
-		this.txtNgaySinh.setText(birthDate);
+	public JTextField getMaNV() {
+		return idEmp;
+	}
+
+	public JTextField getTenNV() {
+		return txtEmployeeName;
+	}
+
+	public JTextField getSdt() {
+		return txtSDT;
+	}
+
+	public JTextField getEmail() {
+		return txtEmail;
+	}
+
+	public JTextField getChucVu() {
+		return txtChucVu;
+	}
+
+	public JTextField getLuong() {
+		return txtLuong;
+	}
+
+	public JTextField getNgaySinh() {
+		return txtNgaySinh;
+	}
+
+	public JRadioButton isGioiTinh() {
+		return rdiNam;//true nam, false nu
 	}
 
 	public JButton getBtnThem() {
 		return jbThem;
+	}
+
+	public JButton getBtnSua() {
+		return jbSua;
 	}
 
 }

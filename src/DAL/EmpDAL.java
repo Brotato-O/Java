@@ -93,4 +93,23 @@ public class EmpDAL {
 		}
 	}
 
+	public boolean updateNV(EmployeeManagementDTO emp) {
+		try {
+			String sql = "UPDATE nhanvien SET TENNV = ?, SDT = ?, LUONG = ?, email = ?, phai = ?, chucvu = ?, ngaysinh = ? WHERE MANV = ?";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setString(1, emp.getName_emp());
+			pre.setString(2, emp.getPhone_emp());
+			pre.setFloat(3, emp.getSalary_emp());
+			pre.setString(4, emp.getEmail_emp());
+			pre.setString(5, emp.getGender_emp());
+			pre.setString(6, emp.getPosition_emp());
+			pre.setString(7, emp.getBirth_date());
+			pre.setString(8, emp.getId_emp());
+			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

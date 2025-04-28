@@ -33,4 +33,8 @@ public class EmpBLL {
 		return this.empDAL.checkMaNV(maNV);
 	}
 
+	public boolean updateNV(EmployeeManagementDTO empDTO) {
+		return this.empDAL.updateNV(empDTO);
+	}
+
 }
