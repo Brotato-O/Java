@@ -1,5 +1,6 @@
 package BLL;
 
+import DAL.EmpDAL;
 import DAL.HDDAL;
 import DTO.CTHD;
 import DTO.HD;
@@ -10,6 +11,8 @@ import java.util.Locale;
 
 public class HDBLL {
     HDDAL hd= new HDDAL();
+    EmpDAL nv= new EmpDAL();
+//    KHDAL kh= new KHDAL();
     public ArrayList<HD> selectAll(){
         return hd.selectAll();
     }
@@ -100,5 +103,25 @@ public class HDBLL {
                 return 2;
             }
         return 0;
+    }
+    
+    public int editHD(String maHD, String maNV, String maKH, String phuongThuc, String ngayLap){
+        if(maNV.equals("") || maKH.equals("") || ngayLap.equals("")) return 0;
+        if(nv.getNhanVien(maNV) == null) return -1;
+//        if(kh.getKhachHang(MaKH) == null) return -2;
+        DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ngayLap1;
+        try{
+            ngayLap1= LocalDate.parse(ngayLap, formater);
+        }
+        catch (Exception e){
+            return -3;
+        }
+        maHD= maHD.trim();
+        maNV= maNV.trim();
+        maKH= maKH.trim();
+        ngayLap= ngayLap.trim();
+        hd.editHD(maHD, maKH, maNV, ngayLap1, phuongThuc);
+        return 1;
     }
 }

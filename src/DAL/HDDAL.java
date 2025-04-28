@@ -165,4 +165,18 @@ public class HDDAL {
         }
         return hd;
     }
+    
+    public int editHD(String maHD, String maKH, String maNV, LocalDate ngayLap, String phuongThuc){
+        String query= "Update HOadon set maNV=?, maKH=? ngaylap=?, phuongthuc=? where maHD=?";
+        int rs= 0;
+        try{
+            Connection conn= get.getConnection();
+            rs= get.prepareUpdate(query, maNV, maKH, ngayLap, phuongThuc);
+            conn.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
 }

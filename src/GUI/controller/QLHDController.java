@@ -11,6 +11,8 @@ import GUI.view.QLHD;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +27,7 @@ public class QLHDController {
     public ActionListener addCTHD;
     public ActionListener findHD;
     public ActionListener showHD;
+    public ActionListener editHD;
     JTable tableCTHD ;
     DefaultTableModel modelCTHD ;
     
@@ -41,9 +44,28 @@ public class QLHDController {
                 
                 int rowSl = table.getSelectedRow();
                 if (rowSl != -1) {
-                    String id = table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã HD")).toString();
+                    String maHD = table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã HD")).toString();
+                    String maNV= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã NV")).toString();
+                    String maKH= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã KH")).toString();
+                    String ngayLap= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Ngày lập")).toString();
+                    String tongGG= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Tổng giảm giá")).toString();
+                    String tongSL= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Tổng SL")).toString();
+                    String phuongThuc= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Phương thức")).toString();
+                    String thanhTien= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Thành tiền")).toString();
+                    
+                    view.maHD.setText(maHD);
+                    view.maKH.setText(maKH);
+                    view.maNV.setText(maNV);
+                    view.ngayLap.setText(ngayLap);
+                    view.tongTien.setText(thanhTien);
+                    view.tongGG.setText(tongGG);
+                    view.tongSL.setText(tongSL);
+                    JComboBox cbb= view.phuongThuc;
+                    DefaultComboBoxModel modelCbb= (DefaultComboBoxModel) cbb.getModel();
+                    modelCbb.setSelectedItem(phuongThuc);
+                    
                     CTHDBLL cthd = new CTHDBLL();
-                    ArrayList<CTHD> rs = cthd.selectById(id);
+                    ArrayList<CTHD> rs = cthd.selectById(maHD);
                     updateCTHD(rs);
                 }
             }
@@ -178,6 +200,37 @@ public class QLHDController {
                     }
                 }
                 else JOptionPane.showMessageDialog(view.frame, "Vui lòng chọn hóa đơn để xóa");
+            }
+        };
+        editHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String maHD= view.maHD.getText();
+                String maKH= view.maHD.getText();
+                String maNV= view.maNV.getText();
+                String ngayLap= view.ngayLap.getText();
+                JComboBox cbb= view.phuongThuc;
+                DefaultComboBoxModel modelCbb= (DefaultComboBoxModel) cbb.getModel();
+                String phuongThuc= modelCbb.getSelectedItem().toString();
+                HDBLL hd= new HDBLL();
+                int rs= hd.editHD(maHD, maNV, maKH, phuongThuc, ngayLap);
+                switch (rs){
+                    case 0:
+                        JOptionPane.showMessageDialog(view.frame, "Vui lòng không để trống");
+                        return;
+                    case -1:
+                        JOptionPane.showMessageDialog(view.frame, "Nhân viên chưa tồn tại, vui lòng thêm vào trước");
+                        return;
+                    case -2:
+                        JOptionPane.showMessageDialog(view.frame, "Khách hàng chưa tồn tại, vui lòng thêm vào trước");
+                        return;
+                    case -3:
+                        JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng định dạng yyyy-MM-dd");
+                        return;
+                    case 1:
+                        JOptionPane.showMessageDialog(view.frame, "Đã sửa thành công");
+                        return;
+                }
             }
         };
     }
