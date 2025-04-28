@@ -1,30 +1,53 @@
 package GUI.controller;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import BLL.*;
 import DTO.EmployeeManagementDTO;
+import GUI.dialog.QLNV.AddQLNVDialog;
 import GUI.view.EmployeeManagement;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 public class EmpController {
 
-	private EmpBLL empBLL = new EmpBLL();
 	private EmployeeManagement view = null;
 	JTable table;
+	JButton btnThem;
 	DefaultTableModel model;
+private EmpBLL empBLL = new EmpBLL();
 
 	public EmpController(EmployeeManagement view) {
 		this.view = view;
 		this.table = view.getTableListEmp();
 		this.model = (DefaultTableModel) table.getModel();
 		
+		this.btnThem = view.getBtnThem();
+
 		// Thêm sự kiện MouseListener vào JTable
 		addTableMouseListener();
+		btnClickShowDialogAdd();
 	}
 	
+	private void btnClickShowDialogAdd() {
+    this.btnThem.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // Lấy JFrame chứa JPanel
+            JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(view);
+            if (parentFrame != null) {
+                // Hiển thị dialog thêm nhân viên
+                AddQLNVDialog addQLNVDialog = new AddQLNVDialog(parentFrame);
+            } else {
+                System.err.println("Không tìm thấy JFrame chứa JPanel!");
+            }
+        }
+    });
+}
+
 	private void addTableMouseListener() {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -69,5 +92,9 @@ public class EmpController {
 			String.valueOf(emp.getSalary_emp()), // Lương
 			emp.getBirth_date()        // Ngày sinh
 		);
+	}
+	public void refreshTable() {
+		// Logic để làm mới bảng
+		System.out.println("Refreshing table...");
 	}
 }
