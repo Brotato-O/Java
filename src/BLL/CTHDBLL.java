@@ -26,4 +26,7 @@ public class CTHDBLL {
     public int delete(String maHD, String maSach){
         return cthd.delete(maHD, maSach);
     }
+    public int delete(String maHD){
+        return cthd.delete(maHD);
+    }
 }

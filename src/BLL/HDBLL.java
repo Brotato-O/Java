@@ -24,17 +24,33 @@ public class HDBLL {
     
     public int updateTongTien(CTHD cthd){
         String id= cthd.getMaHD();
-        System.out.println("id" + id);
         int row= hd.updateTongTien(cthd);
-        System.out.println("row" + row);
         HD temp= hd.selectById(id);
         int tongSl= temp.getTongSL();
-        if (tongSl== 0) hd.delete(id);
+        if (tongSl== 0) delete(id);
         
         return row;
     }
     
+    public int delete( String maHD){
+        return hd.delete(maHD);
+    }
+    
     public ArrayList<HD> findHD(String maHD, String maNV, String maKH, String phuongThuc, String ngayBD, String ngayKT, String tienBD, String tienKT){
+        switch (phuongThuc){
+                    case "Tất cả":
+                        phuongThuc= "Tat ca";
+                        break;
+                    case "Tiền mặt":
+                        phuongThuc= "Tien mat";
+                        break;
+                    case "Chuyển khoản":
+                        phuongThuc= "Chuyen khoan";
+                        break;
+                    case "Quẹt thẻ":
+                        phuongThuc= "Quet the";
+                        break;
+                }
         DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate BD;
         LocalDate KT;

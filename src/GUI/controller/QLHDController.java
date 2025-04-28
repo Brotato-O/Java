@@ -20,6 +20,7 @@ public class QLHDController {
     public MouseAdapter cthdAdapter;
     public ActionListener showCTHD;
     public ActionListener confirmDelete;
+    public ActionListener deleteHD;
     public ActionListener deleteCTHD;
     public ActionListener addCTHD;
     public ActionListener findHD;
@@ -43,22 +44,7 @@ public class QLHDController {
                     String id = table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã HD")).toString();
                     CTHDBLL cthd = new CTHDBLL();
                     ArrayList<CTHD> rs = cthd.selectById(id);
-
-                    modelCTHD.setRowCount(0);
-
-                    for (int i = 0; i < rs.size(); i++) {
-                        CTHD item = rs.get(i);
-                        Object[] row = new Object[]{
-                            item.getMaHD(),
-                            item.getMaSach(),
-                            item.getSoLuong(),
-                            item.getGiaTien(),
-                            item.getTongTien(),
-                            item.getGiamGia(),
-                            item.getThanhTien()
-                        };
-                        modelCTHD.addRow(row);
-                    }
+                    updateCTHD(rs);
                 }
             }
         };
@@ -68,18 +54,7 @@ public class QLHDController {
             public void actionPerformed(ActionEvent e){
                 CTHDBLL cthd = new CTHDBLL();
                 ArrayList<CTHD> rs = cthd.selectAll();
-                modelCTHD.setRowCount(0);
-                for (int i=0; i< rs.size(); i++){
-                    CTHD item= rs.get(i);
-                    Object[] row= new Object[]{item.getMaHD(), 
-                        item.getMaSach(), 
-                        item.getSoLuong(), 
-                        item.getGiaTien(),
-                        item.getTongTien(),
-                        item.getGiamGia(),
-                        item.getThanhTien()};
-                    modelCTHD.addRow(row);
-                }
+                updateCTHD(rs);
                 JTable tableHD= view.getTableHD();
                 tableHD.clearSelection();
             }
@@ -112,9 +87,7 @@ public class QLHDController {
                                 
                                 int rowHD= hdbll.updateTongTien(cthd);
 
-                                if (rowHD > 0){
-                                    updateHD(hdbll.selectAll());
-                                }
+                                if (rowHD > 0) updateHD(hdbll.selectAll());
                                 JOptionPane.showMessageDialog(view.frame, "Xóa thành công");
                             }
                         }
@@ -180,7 +153,33 @@ public class QLHDController {
                 updateHD(rs);
             }
         };
-        
+        deleteHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable tableHD= view.getTableHD();
+                DefaultTableModel model= (DefaultTableModel) tableHD.getModel();
+                int row= tableHD.getSelectedRow();
+                int column= tableHD.getColumnModel().getColumnIndex("Mã HD");
+                if (row != -1){
+                    String maHD= (String) tableHD.getValueAt(row, column);
+                    int choice= JOptionPane.showConfirmDialog(view.frame, "Xác nhận xóa?", "Xóa hóa đơn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(choice==0){
+                        HDBLL hd= new HDBLL();
+                        int r =hd.delete(maHD);
+                        if (r >0) {
+                            CTHDBLL cthd= new CTHDBLL();
+                            cthd.delete(maHD);
+                            ArrayList<CTHD> rs= cthd.selectAll();
+                            updateCTHD(rs);
+                        }
+                        JOptionPane.showMessageDialog(view.frame, "Đã xóa thành công");
+                        ArrayList<HD> rs= hd.selectAll();
+                        updateHD(rs);
+                    }
+                }
+                else JOptionPane.showMessageDialog(view.frame, "Vui lòng chọn hóa đơn để xóa");
+            }
+        };
     }
     
     public void updateHD(ArrayList<HD> temp){
@@ -212,6 +211,24 @@ public class QLHDController {
         else 
             rs = cthdbll.selectAll();
 
+        modelCTHD.setRowCount(0);
+        for (int i = 0; i < rs.size(); i++) {
+            CTHD item = rs.get(i);
+            Object[] row1 = new Object[]{
+                item.getMaHD(),
+                item.getMaSach(),
+                item.getSoLuong(),
+                item.getGiaTien(),
+                item.getTongTien(),
+                item.getGiamGia(),
+                item.getThanhTien()
+            };
+            modelCTHD.addRow(row1);
+        }
+        
+    }
+    
+    public void updateCTHD(ArrayList<CTHD> rs){
         modelCTHD.setRowCount(0);
         for (int i = 0; i < rs.size(); i++) {
             CTHD item = rs.get(i);
