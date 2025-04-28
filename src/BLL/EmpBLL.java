@@ -1,9 +1,8 @@
 package BLL;
 
-import java.util.ArrayList;
-
 import DAL.EmpDAL;
 import DTO.EmployeeManagementDTO;
+import java.util.ArrayList;
 
 public class EmpBLL {
 
@@ -20,6 +19,18 @@ public class EmpBLL {
 
 	public EmployeeManagementDTO getNV(String maNV) {
 		return this.empDAL.getNhanVien(maNV);
+	}
+
+	public boolean addNV(EmployeeManagementDTO empDTO) {
+		if (this.empDAL.checkMaNV(empDTO.getId_emp())) {
+			System.out.println("Mã nhân viên đã tồn tại: " + empDTO.getId_emp());
+			return false; // Không thêm nếu mã nhân viên đã tồn tại
+		}
+		return this.empDAL.addNhanVien(empDTO);
+	}
+
+	public boolean checkID(String maNV) {
+		return this.empDAL.checkMaNV(maNV);
 	}
 
 }

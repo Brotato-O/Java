@@ -17,6 +17,19 @@ public class EmployeeManagementDTO {
 
 	}
 
+	//Constructor cho thêm một nhân viên
+	public EmployeeManagementDTO(String maNV, String tenNV, String sdt, String email, String chucVu, float luong, String ngaySinh, boolean gioiTinh) {
+		this.id_emp = maNV;
+		this.name_emp = tenNV;
+		this.phone_emp = sdt;
+		this.salary_emp = luong;
+		this.status_emp = 1; // Mặc định là 1 (có mặt)
+		this.email_emp = email;
+		this.birth_date = ngaySinh;
+		this.gender_emp = gioiTinh ? "Nam" : "Nu"; // true nếu nam, false nếu nữ
+		this.position_emp = chucVu;
+	}
+
 	public EmployeeManagementDTO(String id_emp, String name_emp, String phone_emp, 
 			float salary_emp, int status_emp, String email_emp, 
 			String gender_emp, String position_emp, String birth_date) {

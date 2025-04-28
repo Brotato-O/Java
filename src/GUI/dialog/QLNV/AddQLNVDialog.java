@@ -26,7 +26,7 @@ public class AddQLNVDialog extends JDialog {
         
         setSize(400, 500);
         setLocationRelativeTo(null);
-        setVisible(true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     }
     
     private JPanel addMiddle() {
@@ -85,6 +85,39 @@ public class AddQLNVDialog extends JDialog {
         panel.add(btnHuy);
 
         return panel;
+    }
+
+    public JTextField getTxtMaNV() {
+        return txtMaNV;
+    }
+
+    public JTextField getTxtTenNV() {
+        return txtTenNV;
+    }
+
+    public JTextField getTxtSDT() {
+        return txtSDT;
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public JTextField getTxtChucVu() {
+        return txtChucVu;
+    }
+
+    public JTextField getTxtLuong() {
+        return txtLuong;
+    }
+
+    public JTextField getTxtNgaySinh() {
+        return txtNgaySinh;
+    }
+
+    //True là nam , false là nữ
+    public JRadioButton getRdiNam() {
+        return rdiNam;
     }
 
     public JButton getBtnXacNhan() {

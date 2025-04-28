@@ -46,6 +46,7 @@ public class EmployeeManagement extends JPanel {
 		add(Middle(), BorderLayout.CENTER);
 		add(Footer(), BorderLayout.SOUTH);
 		
+		idEmp.setEditable(false);
 		// Khởi tạo controller
 		new EmpController(this);
 		
