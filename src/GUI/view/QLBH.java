@@ -96,8 +96,10 @@ public class QLBH extends JPanel{
             container[i].setLayout(new GridLayout(1, 2));
         }
         JPanel[] right= new JPanel[2];
-        for (int i=0; i< 2; i++)
+        for (int i=0; i< 2; i++){
             right[i]= new JPanel();
+            right[i].setLayout(new BoxLayout(right[i], BoxLayout.X_AXIS));
+        }
         right[0].add(maNV);
         right[0].add(ctMaNV);
         right[1].add(maKH);
@@ -152,6 +154,7 @@ public class QLBH extends JPanel{
             out.add(input[i]);
         }
         JPanel temp= new JPanel();
+        temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));
         temp.add(maSach);
         temp.add(ctMaSach);
         input[0].add(new JLabel("Mã sách"));
