@@ -96,7 +96,7 @@ public class EmployeeManagement extends JPanel {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		// Dòng 1
-		String[] maNVOptions = { "MaNV" };
+		String[] maNVOptions = { "MANV", "TENNV", "CHUCVU" };
 		jcbMaNV = new JComboBox<>(maNVOptions);
 		jcbMaNV.setPreferredSize(new Dimension(100, 25));
 		gbc.gridx = 0;
@@ -110,12 +110,7 @@ public class EmployeeManagement extends JPanel {
 		jbAll = addButton(res, gbc, 4, 0, "Tất Cả", 100);
 
 		// Dòng 2
-		String[] luongOptions = { "Lương" };
-		jcbLuong = new JComboBox<>(luongOptions);
-		jcbLuong.setPreferredSize(new Dimension(100, 25));
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		res.add(jcbLuong, gbc);
+		addLabel(res, "Lương :", gbc, 0, 1);
 
 		jtfLuong1 = addTextField(res, gbc, 1, 1);
 		res.add(jtfLuong1, gbc);
@@ -314,6 +309,33 @@ public class EmployeeManagement extends JPanel {
 
 	public JButton getBtnXoa() {
 		return jbXoa;
+	}
+
+	//Tìm kiếm
+	public JComboBox<String> getTimKiemMaNV() {
+		return jcbMaNV;
+	}
+
+	public JButton getTimKiemComboBox() {
+		return jbSearchMaNV;
+	}
+
+	public JTextField getTimKiemMaNVTextField() {
+		return jtfMaNV;
+	}
+
+	public JButton getTimKiemLuong() {
+		return jbSearchLuong;
+	}
+	public JTextField getTimKiemLuong1() {
+		return jtfLuong1;
+	}	
+	public JTextField getTimKiemLuong2() {
+		return jtfLuong2;
+	}
+
+	public JButton getBtnTatca(){
+		return jbAll;
 	}
 
 }

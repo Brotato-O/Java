@@ -41,4 +41,12 @@ public class EmpBLL {
 		return this.empDAL.deleteNV(maNV);
 	}
 
+	public ArrayList<EmployeeManagementDTO> searchComboBox(String item,String value) {
+		return this.empDAL.searchSelectBox(item,value);
+	}
+
+	public ArrayList<EmployeeManagementDTO> searchLuong(float min, float max) {
+		return this.empDAL.searchSalary(min, max);
+	}
+
 }

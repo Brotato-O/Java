@@ -23,7 +23,7 @@ public class EmpController {
 
 	private EmployeeManagement view = null;
 	JTable table;
-	JButton btnThem,btnSua,btnXoa;
+	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll;
 	DefaultTableModel model;
 	private EmpBLL empBLL = new EmpBLL();
 	private boolean isLoadingData = false;//flag load dữ liệu
@@ -36,12 +36,20 @@ public class EmpController {
 		this.btnThem = view.getBtnThem();
 		this.btnSua = view.getBtnSua();
 		this.btnXoa = view.getBtnXoa();
+		this.btnSeachCbb = view.getTimKiemComboBox();
+		this.btnSearchSalary = view.getTimKiemLuong();
+		this.btnSearchAll = view.getBtnTatca();
 
 		// Thêm sự kiện MouseListener vào JTable
 		addTableMouseListener();
+
 		btnClickShowDialogAdd();
 		btnClickUpdateEmp();
 		btnClickDeleteEmp();
+
+		//Tìm kiếm
+		searchComboxBoxEmp();
+		searchSalaryEmp();
 	}
 	
 	private void btnClickShowDialogAdd() {
@@ -116,23 +124,11 @@ public class EmpController {
 		}
     	isLoadingData = false; // Kết thúc load dữ liệu
 	}
+	
 	public void refreshTable() {
 		try {
 			ArrayList<EmployeeManagementDTO> listEmp = empBLL.getDS();
-			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			model.setRowCount(0); // Xóa toàn bộ dữ liệu cũ trong bảng
-				for (EmployeeManagementDTO emp : listEmp) {
-				model.addRow(new Object[]{
-					emp.getId_emp(),
-					emp.getName_emp(),
-					emp.getPhone_emp(),
-					emp.getEmail_emp(),
-					emp.getGender_emp(),
-					emp.getPosition_emp(),
-					emp.getSalary_emp(),
-					emp.getBirth_date()
-				});
-			}
+			loadDataModel(listEmp);
 	
 			System.out.println("Bảng đã được làm mới!");
 		} catch (Exception e) {
@@ -272,7 +268,50 @@ public class EmpController {
 		});
 	}
 
+	private void searchComboxBoxEmp() {
+		btnSeachCbb.addActionListener(e -> {
+			String selectedItem = view.getTimKiemMaNV().getSelectedItem().toString();
+			String value = view.getTimKiemMaNVTextField().getText();
+			ArrayList<EmployeeManagementDTO> listSearch = empBLL.searchComboBox(selectedItem, value);
+			if (listSearch != null) {
+				loadDataModel(listSearch);
+			}	
+		});
+	}
+
+	private void searchSalaryEmp() {
+		this.btnSearchSalary.addActionListener(e -> {
+			String luong1 = view.getTimKiemLuong1().getText();
+			String luong2 = view.getTimKiemLuong2().getText();
+			float luongMin = Float.parseFloat(luong1);
+			float luongMax = Float.parseFloat(luong2);
+			ArrayList<EmployeeManagementDTO> listSearch = empBLL.searchLuong(luongMin, luongMax);
+			if (listSearch != null) {
+				loadDataModel(listSearch);
+			}
+		});
+	}
+
 	public EmpBLL getEmpBLL() {
 		return empBLL;
 	}
+
+	private void loadDataModel(ArrayList<EmployeeManagementDTO> list) {
+
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+			model.setRowCount(0); // Xóa toàn bộ dữ liệu cũ trong bảng
+			for (EmployeeManagementDTO emp : list) {
+				model.addRow(new Object[]{
+					emp.getId_emp(),
+					emp.getName_emp(),
+					emp.getPhone_emp(),
+					emp.getEmail_emp(),
+					emp.getGender_emp(),
+					emp.getPosition_emp(),
+					emp.getSalary_emp(),
+					emp.getBirth_date()
+				});
+			}
+	}
+
 }

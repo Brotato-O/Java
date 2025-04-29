@@ -124,4 +124,57 @@ public class EmpDAL {
 		}
 	}
 
+	public ArrayList<EmployeeManagementDTO> searchSelectBox(String item,String value) {
+		ArrayList<EmployeeManagementDTO> listEmp = new ArrayList<EmployeeManagementDTO>();
+		try {
+			String sql = "SELECT * FROM NHANVIEN WHERE " + item + " LIKE ?";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setString(1,"%" + value + "%");
+			ResultSet res = pre.executeQuery();
+			while(res.next()) {
+				EmployeeManagementDTO emp = new EmployeeManagementDTO();
+				emp.setId_emp(res.getString("MANV"));
+				emp.setName_emp(res.getString("TENNV"));
+				emp.setPhone_emp(res.getString("SDT"));
+				emp.setSalary_emp(res.getFloat("LUONG"));
+				emp.setStatus_emp(res.getInt("STATUS"));
+				emp.setEmail_emp(res.getString("email"));
+				emp.setGender_emp(res.getString("phai"));
+				emp.setPosition_emp(res.getString("chucvu"));
+				emp.setBirth_date(res.getString("ngaysinh"));
+				listEmp.add(emp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listEmp;
+	}
+
+	public ArrayList<EmployeeManagementDTO> searchSalary(float min, float max) {
+		ArrayList<EmployeeManagementDTO> listEmp = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM NHANVIEN WHERE LUONG BETWEEN ? AND ?";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setFloat(1, min);
+			pre.setFloat(2, max);
+			ResultSet res = pre.executeQuery();
+			while(res.next()) {
+				EmployeeManagementDTO emp = new EmployeeManagementDTO();
+				emp.setId_emp(res.getString("MANV"));
+				emp.setName_emp(res.getString("TENNV"));
+				emp.setPhone_emp(res.getString("SDT"));
+				emp.setSalary_emp(res.getFloat("LUONG"));
+				emp.setStatus_emp(res.getInt("STATUS"));
+				emp.setEmail_emp(res.getString("email"));
+				emp.setGender_emp(res.getString("phai"));
+				emp.setPosition_emp(res.getString("chucvu"));
+				emp.setBirth_date(res.getString("ngaysinh"));
+				listEmp.add(emp);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return listEmp;
+	}
+
 }
