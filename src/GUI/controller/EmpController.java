@@ -7,7 +7,10 @@ import GUI.dialog.QLNV.AddQLNVDialog;
 import GUI.view.EmployeeManagement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -159,22 +162,26 @@ public class EmpController {
 		 addFieldChangeListener(view.getNgaySinh());
 
 		btnSua.addActionListener(e -> {
-				String maNV = view.getMaNV().getText();
-				String tenNV = view.getTenNV().getText();
-				String sdt = view.getSdt().getText();
-				String email = view.getEmail().getText();
-				String chucVu = view.getChucVu().getText();
-				float luong = Float.parseFloat(view.getLuong().getText());
-				String ngaySinh = view.getNgaySinh().getText();
-				boolean gioiTinh = view.isGioiTinh().isSelected();
+			String maNV = view.getMaNV().getText();
+			String tenNV = view.getTenNV().getText();
+			String sdt = view.getSdt().getText();
+			String email = view.getEmail().getText();
+			String chucVu = view.getChucVu().getText();
+			float luong = Float.parseFloat(view.getLuong().getText());
+			String ngaySinh = view.getNgaySinh().getText();
+			boolean gioiTinh = view.isGioiTinh().isSelected();
 
-				// Tạo đối tượng EmployeeManagementDTO với thông tin đã lấy
-				EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email, chucVu, luong, ngaySinh, gioiTinh);
+			if(!checkBirthDay(ngaySinh)) {
+				return;
+			}
 
-				// Gọi phương thức updateEmployee để cập nhật thông tin nhân viên
-				updateEmployee(emp);
+			// Tạo đối tượng EmployeeManagementDTO với thông tin đã lấy
+			EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email, chucVu, luong, ngaySinh, gioiTinh);
 
-				btnSua.setEnabled(false); // Vô hiệu hóa nút btnSua sau khi cập nhật	
+			// Gọi phương thức updateEmployee để cập nhật thông tin nhân viên
+			updateEmployee(emp);
+
+			btnSua.setEnabled(false); // Vô hiệu hóa nút btnSua sau khi cập nhật	
 		});
 	}
 
@@ -203,6 +210,26 @@ public class EmpController {
 			}
 		});
 	}
+
+	private boolean checkBirthDay(String birthDate) {
+
+        // Kiểm tra tính hợp lệ của ngày
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false); // Không cho phép ngày không hợp lệ (ví dụ: 30/02)
+        try {
+            Date date = sdf.parse(birthDate);
+
+            // Kiểm tra ngày không được là ngày trong tương lai
+            if (date.after(new Date())) {
+                JOptionPane.showMessageDialog(this.view, "Ngày sinh không lớn hay ngày hiện tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            return true; // Ngày hợp lệ
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this.view, "Ngày sinh không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 
 	public EmpBLL getEmpBLL() {
 		return empBLL;
