@@ -60,4 +60,56 @@ public class EmpDAL {
 		return emp;
 	}
 
+	public boolean addNhanVien(EmployeeManagementDTO emp) {
+		try {
+			String sql = "INSERT INTO NHANVIEN (MANV, TENNV, SDT, LUONG, STATUS, email, phai, chucvu, ngaysinh) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setString(1, emp.getId_emp());
+			pre.setString(2, emp.getName_emp());
+			pre.setString(3, emp.getPhone_emp());
+			pre.setFloat(4, emp.getSalary_emp());
+			pre.setInt(5, emp.getStatus_emp());
+			pre.setString(6, emp.getEmail_emp());
+			pre.setString(7, emp.getGender_emp());
+			pre.setString(8, emp.getPosition_emp());
+			pre.setString(9, emp.getBirth_date());
+			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean checkMaNV(String maNV) {
+		try {
+			String sql = "SELECT * FROM nhanvien WHERE maNV = ?";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setString(1, maNV);
+			ResultSet res = pre.executeQuery();
+			return res.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean updateNV(EmployeeManagementDTO emp) {
+		try {
+			String sql = "UPDATE nhanvien SET TENNV = ?, SDT = ?, LUONG = ?, email = ?, phai = ?, chucvu = ?, ngaysinh = ? WHERE MANV = ?";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setString(1, emp.getName_emp());
+			pre.setString(2, emp.getPhone_emp());
+			pre.setFloat(3, emp.getSalary_emp());
+			pre.setString(4, emp.getEmail_emp());
+			pre.setString(5, emp.getGender_emp());
+			pre.setString(6, emp.getPosition_emp());
+			pre.setString(7, emp.getBirth_date());
+			pre.setString(8, emp.getId_emp());
+			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

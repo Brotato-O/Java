@@ -13,13 +13,11 @@ import java.util.ArrayList;
  * @author ADMIN
  */
 public class CTHDDAL {
+    getConnection get= new getConnection();
     public ArrayList<CTHD> selectAll(){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         ArrayList<CTHD> cthd= new ArrayList<>();
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Select * from CHITIETHOADON where STATUS= 0";
             PreparedStatement prestm= conn.prepareStatement(query);
             ResultSet rs= prestm.executeQuery();
@@ -44,12 +42,9 @@ public class CTHDDAL {
     }
     
     public ArrayList<CTHD> selectById(String id){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         ArrayList<CTHD> cthd= new ArrayList<>();
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Select * from CHITIETHOADON where MAHD=? and STATUS= 0";
             PreparedStatement prestm= conn.prepareCall(query);
             prestm.setString(1, id);
@@ -75,12 +70,9 @@ public class CTHDDAL {
     }
     
     public CTHD selectById(String id, String idSach){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         CTHD cthd= null;
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Select * from CHITIETHOADON where MAHD=? and MASACH=? and STATUS= 0";
             PreparedStatement prestm= conn.prepareCall(query);
             prestm.setString(1, id);
@@ -106,12 +98,9 @@ public class CTHDDAL {
     }
     
     public int delete(String maHD, String maSach){
-        String url = "jdbc:sqlserver://localhost:1433;DatabaseName=QLBS;encrypt=true;trustServerCertificate=true";
-        String pass= "admin123456";
-        String user= "sa";
         int row= 0;
         try{
-            Connection conn= DriverManager.getConnection(url, user, pass);
+            Connection conn= get.getConnection();
             String query= "Update CHITIETHOADON set STATUS= 1 where MAHD= ? and MASACH= ?";
             PreparedStatement prestm= conn.prepareCall(query);
             prestm.setString(1, maHD);
@@ -123,5 +112,18 @@ public class CTHDDAL {
             System.out.println(e);
         }
         return row;
+    }
+    public int delete(String maHD){
+        String query= "Update CHITIETHOADON set STATUS= 1 where maHD= ?";
+        int rs= 0;
+        try{
+            Connection conn= get.getConnection();
+            rs= get.prepareUpdate(query, maHD);
+            conn.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return rs;
     }
 }

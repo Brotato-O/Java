@@ -11,6 +11,8 @@ import GUI.view.QLHD;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,9 +22,12 @@ public class QLHDController {
     public MouseAdapter cthdAdapter;
     public ActionListener showCTHD;
     public ActionListener confirmDelete;
+    public ActionListener deleteHD;
     public ActionListener deleteCTHD;
     public ActionListener addCTHD;
     public ActionListener findHD;
+    public ActionListener showHD;
+    public ActionListener editHD;
     JTable tableCTHD ;
     DefaultTableModel modelCTHD ;
     
@@ -39,25 +44,29 @@ public class QLHDController {
                 
                 int rowSl = table.getSelectedRow();
                 if (rowSl != -1) {
-                    String id = table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã HD")).toString();
+                    String maHD = table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã HD")).toString();
+                    String maNV= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã NV")).toString();
+                    String maKH= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Mã KH")).toString();
+                    String ngayLap= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Ngày lập")).toString();
+                    String tongGG= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Tổng giảm giá")).toString();
+                    String tongSL= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Tổng SL")).toString();
+                    String phuongThuc= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Phương thức")).toString();
+                    String thanhTien= table.getValueAt(rowSl, table.getColumnModel().getColumnIndex("Thành tiền")).toString();
+                    
+                    view.maHD.setText(maHD);
+                    view.maKH.setText(maKH);
+                    view.maNV.setText(maNV);
+                    view.ngayLap.setText(ngayLap);
+                    view.tongTien.setText(thanhTien);
+                    view.tongGG.setText(tongGG);
+                    view.tongSL.setText(tongSL);
+                    JComboBox cbb= view.phuongThuc;
+                    DefaultComboBoxModel modelCbb= (DefaultComboBoxModel) cbb.getModel();
+                    modelCbb.setSelectedItem(phuongThuc);
+                    
                     CTHDBLL cthd = new CTHDBLL();
-                    ArrayList<CTHD> rs = cthd.selectById(id);
-
-                    modelCTHD.setRowCount(0);
-
-                    for (int i = 0; i < rs.size(); i++) {
-                        CTHD item = rs.get(i);
-                        Object[] row = new Object[]{
-                            item.getMaHD(),
-                            item.getMaSach(),
-                            item.getSoLuong(),
-                            item.getGiaTien(),
-                            item.getTongTien(),
-                            item.getGiamGia(),
-                            item.getThanhTien()
-                        };
-                        modelCTHD.addRow(row);
-                    }
+                    ArrayList<CTHD> rs = cthd.selectById(maHD);
+                    updateCTHD(rs);
                 }
             }
         };
@@ -67,18 +76,7 @@ public class QLHDController {
             public void actionPerformed(ActionEvent e){
                 CTHDBLL cthd = new CTHDBLL();
                 ArrayList<CTHD> rs = cthd.selectAll();
-                modelCTHD.setRowCount(0);
-                for (int i=0; i< rs.size(); i++){
-                    CTHD item= rs.get(i);
-                    Object[] row= new Object[]{item.getMaHD(), 
-                        item.getMaSach(), 
-                        item.getSoLuong(), 
-                        item.getGiaTien(),
-                        item.getTongTien(),
-                        item.getGiamGia(),
-                        item.getThanhTien()};
-                    modelCTHD.addRow(row);
-                }
+                updateCTHD(rs);
                 JTable tableHD= view.getTableHD();
                 tableHD.clearSelection();
             }
@@ -111,9 +109,7 @@ public class QLHDController {
                                 
                                 int rowHD= hdbll.updateTongTien(cthd);
 
-                                if (rowHD > 0){
-                                    updateHD(hdbll.selectAll());
-                                }
+                                if (rowHD > 0) updateHD(hdbll.selectAll());
                                 JOptionPane.showMessageDialog(view.frame, "Xóa thành công");
                             }
                         }
@@ -133,11 +129,15 @@ public class QLHDController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HDBLL hdbll= new HDBLL();
+                
                 String maHD = view.timMaHD.getText();
                 String maNV = view.timMaNV.getText();
                 String maKH = view.timMaKH.getText();
                 String phuongThuc = view.timPhuongThuc.getSelectedItem().toString();
                 switch (phuongThuc){
+                    case "Tất cả":
+                        phuongThuc= "Tat ca";
+                        break;
                     case "Tiền mặt":
                         phuongThuc= "Tien mat";
                         break;
@@ -152,11 +152,87 @@ public class QLHDController {
                 String ngayKT = view.tgianKT.getText();
                 String tienBD = view.tienBD.getText();
                 String tienKT = view.tienKT.getText();
-
-                updateHD(hdbll.findHD(maHD, maNV, maKH, phuongThuc, ngayBD, ngayKT, tienBD, tienKT));
+                
+                int check= hdbll.check(ngayBD, ngayKT, tienBD, tienKT);
+                if (check==1) {
+                    JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng định dạng yyyy-MM-dd");
+                    return;
+                }
+                if (check==2) {
+                    JOptionPane.showMessageDialog(view.frame, "Nhập giá tiền hợp lệ");
+                    return;
+                }
+                ArrayList<HD> rs= hdbll.findHD(maHD, maNV, maKH, phuongThuc, ngayBD, ngayKT, tienBD, tienKT);
+                updateHD(rs);
+                
             }
         };
-                
+        showHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HDBLL hdbll= new HDBLL();
+                ArrayList<HD> rs= hdbll.selectAll();
+                updateHD(rs);
+            }
+        };
+        deleteHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable tableHD= view.getTableHD();
+                DefaultTableModel model= (DefaultTableModel) tableHD.getModel();
+                int row= tableHD.getSelectedRow();
+                int column= tableHD.getColumnModel().getColumnIndex("Mã HD");
+                if (row != -1){
+                    String maHD= (String) tableHD.getValueAt(row, column);
+                    int choice= JOptionPane.showConfirmDialog(view.frame, "Xác nhận xóa?", "Xóa hóa đơn", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(choice==0){
+                        HDBLL hd= new HDBLL();
+                        int r =hd.delete(maHD);
+                        if (r >0) {
+                            CTHDBLL cthd= new CTHDBLL();
+                            cthd.delete(maHD);
+                            ArrayList<CTHD> rs= cthd.selectAll();
+                            updateCTHD(rs);
+                        }
+                        JOptionPane.showMessageDialog(view.frame, "Đã xóa thành công");
+                        ArrayList<HD> rs= hd.selectAll();
+                        updateHD(rs);
+                    }
+                }
+                else JOptionPane.showMessageDialog(view.frame, "Vui lòng chọn hóa đơn để xóa");
+            }
+        };
+        editHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String maHD= view.maHD.getText();
+                String maKH= view.maHD.getText();
+                String maNV= view.maNV.getText();
+                String ngayLap= view.ngayLap.getText();
+                JComboBox cbb= view.phuongThuc;
+                DefaultComboBoxModel modelCbb= (DefaultComboBoxModel) cbb.getModel();
+                String phuongThuc= modelCbb.getSelectedItem().toString();
+                HDBLL hd= new HDBLL();
+                int rs= hd.editHD(maHD, maNV, maKH, phuongThuc, ngayLap);
+                switch (rs){
+                    case 0:
+                        JOptionPane.showMessageDialog(view.frame, "Vui lòng không để trống");
+                        return;
+                    case -1:
+                        JOptionPane.showMessageDialog(view.frame, "Nhân viên chưa tồn tại, vui lòng thêm vào trước");
+                        return;
+                    case -2:
+                        JOptionPane.showMessageDialog(view.frame, "Khách hàng chưa tồn tại, vui lòng thêm vào trước");
+                        return;
+                    case -3:
+                        JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng định dạng yyyy-MM-dd");
+                        return;
+                    case 1:
+                        JOptionPane.showMessageDialog(view.frame, "Đã sửa thành công");
+                        return;
+                }
+            }
+        };
     }
     
     public void updateHD(ArrayList<HD> temp){
@@ -188,6 +264,24 @@ public class QLHDController {
         else 
             rs = cthdbll.selectAll();
 
+        modelCTHD.setRowCount(0);
+        for (int i = 0; i < rs.size(); i++) {
+            CTHD item = rs.get(i);
+            Object[] row1 = new Object[]{
+                item.getMaHD(),
+                item.getMaSach(),
+                item.getSoLuong(),
+                item.getGiaTien(),
+                item.getTongTien(),
+                item.getGiamGia(),
+                item.getThanhTien()
+            };
+            modelCTHD.addRow(row1);
+        }
+        
+    }
+    
+    public void updateCTHD(ArrayList<CTHD> rs){
         modelCTHD.setRowCount(0);
         for (int i = 0; i < rs.size(); i++) {
             CTHD item = rs.get(i);

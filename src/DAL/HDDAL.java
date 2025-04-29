@@ -123,15 +123,16 @@ public class HDDAL {
     public ArrayList<HD> findHD(String maHD, String maNV, String maKH, String phuongThuc, LocalDate bd, LocalDate kt, float tienTu, float tienDen){
         ArrayList<HD> hd= new ArrayList<>();
         try{
-            String query= "Select * from HOADON where hinhthuc= '" + phuongThuc +"' " ;
+            String query= "Select * from HOADON where 1=1" ;
             Connection conn= get.getConnection();
+            if (!phuongThuc.equals("Tat ca")) query += "and hinhthuc= '" + phuongThuc +"' ";
             if (!maHD.equals("")) query += " And maHD= '" + maHD +"' ";
             if (!maNV.equals("")) query += " and maNV= '" + maNV +"' ";
             if (!maKH.equals("")) query += " and maKH= '" +maKH + "' ";
             if (bd != null) query += " AND CAST(ngaylap AS DATE)>= '" + bd.toString() + "' ";
             if (kt != null) query += " AND CAST(ngaylap AS DATE)<= '" + kt.toString() + "' ";
-            if (!String.valueOf(tienTu).equals("")) query += " and tongtien >= '" + tienTu + "' ";
-            if (!String.valueOf(tienDen).equals("")) query += " and tongtien <= '" + tienDen + "' ";
+            if (tienTu != 0) query += " AND tongtien >= " + tienTu + " ";
+            if (tienDen != 0) query += " AND tongtien <= " + tienDen + " ";
             PreparedStatement prestm= conn.prepareCall(query);
             ResultSet rs= prestm.executeQuery();
             while (rs.next()){
@@ -147,12 +148,27 @@ public class HDDAL {
                 
                 HD temp= new HD(maHD1, maNV1, maKH1, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
                 hd.add(temp);
-                conn.close();
+               
             }
+            conn.close();
         }
         catch(Exception e){
             System.out.println(e);
         }
         return hd;
+    }
+    
+    public int editHD(String maHD, String maKH, String maNV, LocalDate ngayLap, String phuongThuc){
+        String query= "Update HOadon set maNV=?, maKH=? ngaylap=?, phuongthuc=? where maHD=?";
+        int rs= 0;
+        try{
+            Connection conn= get.getConnection();
+            rs= get.prepareUpdate(query, maNV, maKH, ngayLap, phuongThuc);
+            conn.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return rs;
     }
 }

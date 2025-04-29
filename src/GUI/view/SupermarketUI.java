@@ -6,16 +6,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class SupermarketUI {
@@ -89,8 +85,8 @@ public class SupermarketUI {
 
 
 		// Thêm vào CardLayout
-//		mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
-//		mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
+		mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
+		mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
 		mainPanel.add(new QLS(), "Quản Lý Sách");
 		mainPanel.add(new QLLS(), "Quản lý loại sách");
 		mainPanel.add(new QLHD(), "Nhập sách");

@@ -176,6 +176,11 @@ public class QLHD extends JPanel {
 //        xuat.setForeground(Color.white);
         sua.setBackground(Color.orange);
         lamMoi.setBackground(Color.GREEN);
+        
+        maHD.setEditable(false);
+        tongTien.setEditable(false);
+        tongSL.setEditable(false);
+        tongGG.setEditable(false);
         return p;
     }
     
@@ -183,9 +188,11 @@ public class QLHD extends JPanel {
         JPanel p= new JPanel();
 //        JPanel p1= new JPanel();
 //        p1.setLayout(new GridLayout(1, 1));
+        modelTimPT.addElement("Tất cả");
         modelTimPT.addElement("Tiền mặt");
         modelTimPT.addElement("Chuyển khoản");
         modelTimPT.addElement("Quẹt thẻ");
+        modelTimPT.setSelectedItem("Tất cả");
         timPhuongThuc.setModel(modelTimPT);
         p.setLayout(new BorderLayout());
         p.setPreferredSize(new Dimension(0, (int)(0.2*height)));
@@ -399,6 +406,9 @@ public class QLHD extends JPanel {
         xoaCTHD.addActionListener(controller.confirmDelete);
         themCTHD.addActionListener(controller.addCTHD);
         tim.addActionListener(controller.findHD);
+        lamMoi.addActionListener(controller.showHD);
+        xoa.addActionListener(controller.deleteHD);
+        sua.addActionListener(controller.editHD);
     }
     
     public JTable getTableHD() {
