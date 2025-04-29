@@ -23,7 +23,7 @@ public class EmpController {
 
 	private EmployeeManagement view = null;
 	JTable table;
-	JButton btnThem,btnSua;
+	JButton btnThem,btnSua,btnXoa;
 	DefaultTableModel model;
 	private EmpBLL empBLL = new EmpBLL();
 	private boolean isLoadingData = false;//flag load dữ liệu
@@ -35,11 +35,13 @@ public class EmpController {
 		
 		this.btnThem = view.getBtnThem();
 		this.btnSua = view.getBtnSua();
+		this.btnXoa = view.getBtnXoa();
 
 		// Thêm sự kiện MouseListener vào JTable
 		addTableMouseListener();
 		btnClickShowDialogAdd();
 		btnClickUpdateEmp();
+		btnClickDeleteEmp();
 	}
 	
 	private void btnClickShowDialogAdd() {
@@ -74,6 +76,7 @@ public class EmpController {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				btnSua.setEnabled(false);
+		
 				// Lấy dòng được chọn
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow >= 0) {
@@ -87,6 +90,7 @@ public class EmpController {
 					if (emp != null) {
 						// Xử lý dữ liệu và gửi đến view để hiển thị
 						displayEmployeeData(emp);
+						btnXoa.setEnabled(true);
 					}
 				}
 			}
@@ -105,6 +109,11 @@ public class EmpController {
     	view.getChucVu().setText(emp.getPosition_emp());
     	view.getLuong().setText(String.valueOf(emp.getSalary_emp()));
     	view.getNgaySinh().setText(emp.getBirth_date());
+		if ("Nam".equals(emp.getGender_emp())) {
+			view.getRdiNam().setSelected(true); // Chọn "Nam"
+		} else {
+			view.getRdiNu().setSelected(true); // Chọn "Nữ"
+		}
     	isLoadingData = false; // Kết thúc load dữ liệu
 	}
 	public void refreshTable() {
@@ -162,6 +171,19 @@ public class EmpController {
 		 addFieldChangeListener(view.getNgaySinh());
 
 		btnSua.addActionListener(e -> {
+
+			int confirm = JOptionPane.showConfirmDialog(
+            	view,
+            	"Bạn có chắc chắn muốn cập nhật thông tin nhân viên này không?",
+            	"Xác nhận cập nhật",
+            	JOptionPane.YES_NO_OPTION
+        	);
+
+        	// Nếu người dùng chọn "No", dừng quá trình
+        	if (confirm == JOptionPane.NO_OPTION) {
+            	return;
+        	}
+
 			String maNV = view.getMaNV().getText();
 			String tenNV = view.getTenNV().getText();
 			String sdt = view.getSdt().getText();
@@ -169,7 +191,7 @@ public class EmpController {
 			String chucVu = view.getChucVu().getText();
 			float luong = Float.parseFloat(view.getLuong().getText());
 			String ngaySinh = view.getNgaySinh().getText();
-			boolean gioiTinh = view.isGioiTinh().isSelected();
+			boolean gioiTinh = view.getRdiNam().isSelected();
 
 			if(!checkBirthDay(ngaySinh)) {
 				return;
@@ -230,6 +252,25 @@ public class EmpController {
             return false;
         }
     }
+
+	private void deleteEmpDialog(String maNV) {
+		if(empBLL.deleteNV(maNV)) {
+			JOptionPane.showMessageDialog(view,"Xóa nhân viên thành công","Thông báo" ,JOptionPane.INFORMATION_MESSAGE);
+			refreshTable();
+		} else {
+			JOptionPane.showMessageDialog(view,"Xóa nhân viên thất bại","Lỗi" ,JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void btnClickDeleteEmp() {
+		btnXoa.addActionListener(e -> {
+			String maNV = this.view.getMaNV().getText();
+			int confirm = JOptionPane.showConfirmDialog(view, "Bạn có chắc chắn muốn xóa nhân viên này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);			
+			if (confirm == JOptionPane.YES_OPTION) {
+				deleteEmpDialog(maNV);
+			}
+		});
+	}
 
 	public EmpBLL getEmpBLL() {
 		return empBLL;

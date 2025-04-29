@@ -112,4 +112,16 @@ public class EmpDAL {
 		}
 	}
 
+	public boolean deleteNV(String maNV) {
+		try {
+			String sql = "DELETE FROM nhanvien WHERE MANV = ?";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			pre.setString(1, maNV);
+			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

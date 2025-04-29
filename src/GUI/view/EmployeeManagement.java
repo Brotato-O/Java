@@ -48,6 +48,7 @@ public class EmployeeManagement extends JPanel {
 		
 		idEmp.setEditable(false);
 		jbSua.setEnabled(false);
+		jbXoa.setEnabled(false);
 		// Khởi tạo controller
 		new EmpController(this);
 		
@@ -294,8 +295,13 @@ public class EmployeeManagement extends JPanel {
 		return txtNgaySinh;
 	}
 
-	public JRadioButton isGioiTinh() {
-		return rdiNam;//true nam, false nu
+	//True là nam, false là nữ
+	public JRadioButton getRdiNam() {
+		return rdiNam;
+	}
+
+	public JRadioButton getRdiNu()	{
+		return rdiNu;
 	}
 
 	public JButton getBtnThem() {
@@ -304,6 +310,10 @@ public class EmployeeManagement extends JPanel {
 
 	public JButton getBtnSua() {
 		return jbSua;
+	}
+
+	public JButton getBtnXoa() {
+		return jbXoa;
 	}
 
 }

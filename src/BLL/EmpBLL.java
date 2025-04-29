@@ -37,4 +37,8 @@ public class EmpBLL {
 		return this.empDAL.updateNV(empDTO);
 	}
 
+	public boolean deleteNV(String maNV) {
+		return this.empDAL.deleteNV(maNV);
+	}
+
 }
