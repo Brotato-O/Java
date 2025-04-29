@@ -64,7 +64,7 @@ public class QLHD extends JPanel {
     public JTextField ctTimTongTienKT = new JTextField();
     public JTextField ctTimGGBD = new JTextField();
     public JTextField ctTimGGKT= new JTextField();
-    public JButton timCTHD= new JButton("TÌM KIẾM");
+//    public JButton timCTHD= new JButton("TÌM KIẾM");
     
     public JTable tableCTHD= new JTable();
     public JButton ctTong= new JButton("LÀM MỚI");
@@ -314,13 +314,13 @@ public class QLHD extends JPanel {
         Border bd= BorderFactory.createLineBorder(Color.BLACK);
         bd= BorderFactory.createTitledBorder(ttbd);
         
-        JPanel temp1= new JPanel(new GridLayout(1, 5, 10, 0));
+        JPanel temp1= new JPanel(new GridLayout(1, 4, 10, 0));
         temp1.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         temp1.add(themCTHD);
         temp1.add(suaCTHD);
         temp1.add(xoaCTHD);
-        temp1.add(timCTHD);
+//        temp1.add(timCTHD);
         temp1.add(ctTong);
         temp1.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
         
