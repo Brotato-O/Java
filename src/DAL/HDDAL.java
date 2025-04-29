@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package DAL;
 
 import DTO.CTHD;
@@ -9,11 +6,6 @@ import DTO.HD;
 import java.util.ArrayList;
 import java.sql.*;
 import java.time.LocalDate;
-
-/**
- *
- * @author ADMIN
- */
 public class HDDAL {
     getConnection get= new getConnection();
     
