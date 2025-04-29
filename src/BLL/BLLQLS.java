@@ -21,10 +21,12 @@ public class BLLQLS {
         ArrayList<map> listBook = dal.getAllNCC();
         return listBook;
     }
-    public ArrayList<String> getAllTl(){
-        ArrayList<String> listBook = dal.getAllTL();
+    public ArrayList<map> getAllLS(){
+        ArrayList<map> listBook = dal.getAllLS();
         return listBook;
     }
+
+
     public String generateNewBookId(){
         return dal.generateNewBookId();
     }

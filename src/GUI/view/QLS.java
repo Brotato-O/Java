@@ -76,7 +76,7 @@ public class QLS extends JPanel{
         for (map item : bllqls.getAllTg()) {
             txtMaTacGia.addItem(item);
         }
-        for (String item : bllqls.getAllTl()) {
+        for (map item : bllqls.getAllLS()) {
             txtMaTheLoai.addItem(item);
         }
         container.add(inputFieldsQLS());
@@ -103,8 +103,11 @@ btnThem.addActionListener(event  ->{
         if (selectedItem1 != null) {
             book.setMaTacGia(selectedItem1.getMa());
         }
-        String maTheLoai = (String) txtMaTheLoai.getSelectedItem();
-        book.setMaLoai(maTheLoai);
+    map selectedItem2 = (map) txtMaTheLoai.getSelectedItem();
+        if (selectedItem2 != null) {
+            book.setMaLoai(selectedItem2.getMa());
+        }
+      
         book.setNamXB(Integer.parseInt(txtNamXuatBan.getText()));
         book.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
         book.setDonGia(Float.parseFloat(txtDonGia.getText()));
@@ -128,8 +131,10 @@ btnSua.addActionListener(event -> {
     if (selectedItem1 != null) {
         book.setMaTacGia(selectedItem1.getMa());
     }
-    String maTheLoai = (String) txtMaTheLoai.getSelectedItem();
-    book.setMaLoai(maTheLoai);
+    map selectedItem2 = (map) txtMaTheLoai.getSelectedItem();
+    if (selectedItem2 != null) {
+        book.setMaLoai(selectedItem2.getMa());
+    }
     book.setNamXB(Integer.parseInt(txtNamXuatBan.getText()));
     book.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
     book.setDonGia(Float.parseFloat(txtDonGia.getText()));
@@ -248,14 +253,14 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             txtMaSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
             txtTenSach.setText(tableHD.getValueAt(selectedRow, 1).toString());
                 setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
-                txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
-                // setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
+               // txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
+                setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
                 setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 4).toString());
             txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
             txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
             txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
-            String imageName = tableHD.getValueAt(selectedRow, 8).toString(); // Cột 8 là ảnh
-            showImageOnPanel(imgQLS, imageName);
+           // String imageName = tableHD.getValueAt(selectedRow, 8).toString(); // Cột 8 là ảnh
+           // showImageOnPanel(imgQLS, imageName);
            
         }
     }
@@ -493,26 +498,26 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         return true;
     }
     // chưa biết làm
-    public void showImageOnPanel(JPanel panel, String imageName) {
-        String imagePath = "src/img/" + imageName; 
-        ImageIcon icon = new ImageIcon(imagePath);
+    // public void showImageOnPanel(JPanel panel, String imageName) {
+    //     String imagePath = "src/img/" + imageName; 
+    //     ImageIcon icon = new ImageIcon(imagePath);
         
-        if (icon.getIconWidth() == -1) {
-            System.out.println("Không tìm thấy ảnh: " + imagePath);
-            icon = new ImageIcon("src/img/book-stack.png");
-        } else {
-            System.out.println("Đang hiển thị ảnh: " + imagePath);
-        }
+    //     if (icon.getIconWidth() == -1) {
+    //         System.out.println("Không tìm thấy ảnh: " + imagePath);
+    //         icon = new ImageIcon("src/img/book-stack.png");
+    //     } else {
+    //         System.out.println("Đang hiển thị ảnh: " + imagePath);
+    //     }
         
-        Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(img);
-        JLabel lblImage = new JLabel(icon);
+    //     Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
+    //     icon = new ImageIcon(img);
+    //     JLabel lblImage = new JLabel(icon);
         
-        panel.removeAll();
-        panel.add(lblImage, BorderLayout.CENTER);
-        panel.revalidate();
-        panel.repaint();
-    }
+    //     panel.removeAll();
+    //     panel.add(lblImage, BorderLayout.CENTER);
+    //     panel.revalidate();
+    //     panel.repaint();
+    // }
 
     public ArrayList<Book> timKiemSach() {
     String maSach = txtMaSach1.getText().trim();

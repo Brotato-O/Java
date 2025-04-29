@@ -12,7 +12,7 @@ public class DALQLS {
         String sql = "SELECT \r\n" + //
                         "    masach, \r\n" + //
                         "    tensach, \r\n" + //
-                        "    maloai, \r\n" + //
+                        "    tenloai, \r\n" + //
                         "    solg, \r\n" + //
                         "    dongia, \r\n" + //
                         "    hinhanh, \r\n" + //
@@ -25,6 +25,8 @@ public class DALQLS {
                         "    TACGIA ON SACH.matg = TACGIA.matg\r\n" + //
                         "JOIN \r\n" + //
                         "    NHACUNGCAP ON SACH.mancc = NHACUNGCAP.mancc\r\n" + //
+                        "JOIN \r\n" + //
+                        "   LOAISACH ON SACH.maloai = LOAISACH.maloai\r\n" + //
                         "WHERE \r\n" + //
                         "    SACH.status = 1;\r\n" + //
                         "";
@@ -39,7 +41,7 @@ public class DALQLS {
                 Book b = new Book();
                 b.setMaSach(rs.getString("maSach"));
                 b.setTenSach(rs.getString("tenSach"));
-                b.setMaLoai(rs.getString("maLoai"));
+                b.setMaLoai(rs.getString("tenLoai"));
                 b.setMaTacGia(rs.getString("tentg"));
                 b.setMaNCC(rs.getString("tenncc"));
                 b.setSoLuong(rs.getInt("soLg"));
@@ -278,6 +280,28 @@ public class DALQLS {
         return -1; 
     }
     
-    
+    public ArrayList<map> getAllLS(){
+        ArrayList<map> list = new ArrayList<>();
+        try {
+            // Gọi getConnection từ class khác
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement("Select * from LOAISACH");
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                String ma = rs.getString("maloai");
+                String ten = rs.getString("tenloai");
+                list.add(new map(ma, ten));
+                
+            }
+            rs.close();
+            ps.close();
+            conn.close(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
      
 }

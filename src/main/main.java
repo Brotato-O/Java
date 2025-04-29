@@ -44,25 +44,5 @@ public class main extends JFrame {
 		 SupermarketUI sm = new SupermarketUI();
 		 sm.createAndShowGUI();
 		 sm.getSuperMarketUI();
-
-//		String url= "jdbc:sqlserver://localhost:1433;databaseName=QLSV;encrypt=false;";
-//		String user= "sa";
-//		String pass= "admin123456";
-//		System.out.println("DriverManager loaded: " + DriverManager.class	);
-//		try{
-//			Connection conn= DriverManager.getConnection(url,user,pass);
-//			System.out.println("Kết nối thành công!");
-//                        Statement stmt=conn.createStatement();
-//                        ResultSet rs = stmt.executeQuery("SELECT * FROM SVIEN");
-//                        while (rs.next()) {
-//                            String maSV = rs.getString("MASV");
-//                            String tenSV = rs.getString("TENSV");
-//                            int tuoi = rs.getInt("NAMHOC");
-//                            System.out.println(maSV + " - " + tenSV + " - " + tuoi);
-//                           }
-//		}
-//		catch (SQLException e) {
-//            System.out.println("loi ket noi: " + e.getMessage());
-//        }
 	}
 }
