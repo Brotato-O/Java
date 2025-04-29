@@ -136,4 +136,35 @@ public class DALGG {
         }
         return false;
      }
-}
+    public ArrayList<GG> selectOneGG(String id){
+        ArrayList<GG> list = new ArrayList<>();
+        String sql = "select * from CHITIETGIAMGIA join GIAMGIA on CHITIETGIAMGIA.magg = GIAMGIA.magg where masach = ?";
+       
+       try {
+           // Gọi getConnection từ class khác
+           Connection conn = new getConnection().getConnection();
+           PreparedStatement ps = conn.prepareStatement(sql);
+           ps.setString(1, id);
+           ResultSet rs = ps.executeQuery();
+          
+           
+           while (rs.next()) {
+               GG b = new GG();
+               b.setMaGG(rs.getString("magg"));
+               b.setTenGG(rs.getString("tengg"));
+               b.setLuongGiam(rs.getFloat("luonggiam"));
+               b.setNgayBD(rs.getString("ngaybd"));
+               b.setNgayKT(rs.getString("ngaykt"));
+               list.add(b);
+           }
+           rs.close();
+           ps.close();
+           conn.close(); 
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       
+       return list;
+
+    }
+    }

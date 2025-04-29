@@ -46,4 +46,8 @@ public class BLLQLGG {
         }
         return false;
     }
+    public ArrayList<GG> getOneGG(String id){
+        ArrayList<GG> list = dal.selectOneGG(id);
+        return list;
+    }
 }
