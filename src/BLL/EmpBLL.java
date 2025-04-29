@@ -49,4 +49,8 @@ public class EmpBLL {
 		return this.empDAL.searchSalary(min, max);
 	}
 
+	public ArrayList<EmployeeManagementDTO> searchAll(String item,String value, float min, float max) {
+		return this.empDAL.searchAll(item, value, min, max);
+	}
+
 }

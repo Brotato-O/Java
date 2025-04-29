@@ -50,6 +50,7 @@ public class EmpController {
 		//Tìm kiếm
 		searchComboxBoxEmp();
 		searchSalaryEmp();
+		searchAllEmp();
 	}
 	
 	private void btnClickShowDialogAdd() {
@@ -286,6 +287,21 @@ public class EmpController {
 			float luongMin = Float.parseFloat(luong1);
 			float luongMax = Float.parseFloat(luong2);
 			ArrayList<EmployeeManagementDTO> listSearch = empBLL.searchLuong(luongMin, luongMax);
+			if (listSearch != null) {
+				loadDataModel(listSearch);
+			}
+		});
+	}
+
+	private void searchAllEmp() {
+		this.btnSearchAll.addActionListener(e-> {
+			String selectedItem = view.getTimKiemMaNV().getSelectedItem().toString();
+			String value = view.getTimKiemMaNVTextField().getText();
+			String luong1 = view.getTimKiemLuong1().getText();
+			String luong2 = view.getTimKiemLuong2().getText();
+			float luongMin = Float.parseFloat(luong1);
+			float luongMax = Float.parseFloat(luong2);
+			ArrayList<EmployeeManagementDTO> listSearch = empBLL.searchAll(selectedItem, value, luongMin, luongMax);
 			if (listSearch != null) {
 				loadDataModel(listSearch);
 			}
