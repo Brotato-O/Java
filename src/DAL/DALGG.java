@@ -104,6 +104,31 @@ public class DALGG {
         return list;
     }
     
+    public ArrayList<GG> selectGGByBook(String id) {
+        ArrayList<GG> list = new ArrayList<>();
+        String sql = "SELECT * FROM GIAMGIA join CHITIETGIAMGIA ON GIAMGIA.MAGG = CHITIETGIAMGIA.MAGG where MASACH = ?";
+        try (
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+        ) {
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    GG b = new GG();
+                    b.setMaGG(rs.getString("magg"));
+                    b.setTenGG(rs.getString("tengg"));
+                    b.setLuongGiam(rs.getFloat("LUONGGIAM"));
+                    b.setNgayBD(rs.getString("NgayBD"));
+                    b.setNgayKT(rs.getString("NgayKT"));
+                    list.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     public boolean addCTGG( CTGG ctgg){
         
         String sql ="insert into CHITIETGIAMGIA (masach, magg) values(?, ?)";

@@ -14,29 +14,35 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ADMIN
  */
 public class addQLHD extends JDialog{
-    private JButton yes= new JButton("Xác nhận");
+    public JButton yes= new JButton("Xác nhận");
     private JButton no= new JButton("Hủy");
     
     public JTextField ctMaHD= new JTextField();
     public JTextField ctMaSach= new JTextField();
+    public JButton maSach= new JButton("...");
     public JTextField ctSolg= new JTextField();
     public JTextField ctTongtien= new JTextField();
     public JTextField ctGiamGia= new JTextField();
     public JTextField ctDonGia= new JTextField();
     public JTextField ctThanhTien= new JTextField();
     
+    public JTable tableSach= new JTable();
+    public JButton xacNhan= new JButton("Xác nhận");
+    
     QLHD view;
     QLHDController controller;
     
     public addQLHD(JFrame parent, QLHD qlhd){
-        super(parent, "THÊM CHI TIẾT HÓA ĐƠN", true);
+        super(parent, "THÊM CHI TIẾT HÓA ĐƠN");
         this.view= qlhd;
+        controller= new QLHDController(view);
         JPanel top= new JPanel();
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
         top.add(addPanel());
@@ -49,8 +55,6 @@ public class addQLHD extends JDialog{
         setSize(300, 300);
         setLocationRelativeTo(parent);
         setResizable(false);
-        setVisible(true);
-        
     }
     
     public JPanel addPanel(){
@@ -72,8 +76,12 @@ public class addQLHD extends JDialog{
             leftTop.add(inp[i]);
             rightTop.add(inpPanel[i]);
         }
+        JPanel temp= new JPanel();
+        temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));
+        temp.add(ctMaSach);
+        temp.add(maSach);
         inpPanel[0].add(ctMaHD);
-        inpPanel[1].add(ctMaSach);
+        inpPanel[1].add(temp);
         inpPanel[2].add(ctSolg);
         inpPanel[3].add(ctDonGia);
         inpPanel[4].add(ctTongtien);
@@ -101,4 +109,6 @@ public class addQLHD extends JDialog{
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         return top;
     }
+    
+    
 }

@@ -29,4 +29,7 @@ public class CTHDBLL {
     public int delete(String maHD){
         return cthd.delete(maHD);
     }
+    public int add(CTHD cthd1){
+        return cthd.add(cthd1);
+    }
 }

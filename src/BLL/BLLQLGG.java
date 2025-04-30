@@ -34,6 +34,10 @@ public class BLLQLGG {
         ArrayList<CTGG> listCTGG = dal.seleCtgg(id);
         return listCTGG;
     }
+    public ArrayList<GG> getAllGGByBook(String id){
+        ArrayList<GG> listGG = dal.selectGGByBook(id);
+        return listGG;
+    }
     public boolean addCTGG(CTGG ctgg){
         if(dal.addCTGG(ctgg)){
             return true;

@@ -106,6 +106,24 @@ public class HDDAL {
         System.out.println("row" + row);
         return row;
     }
+    public int updateTongTienAdd(CTHD cthd){
+        int row= 0;
+        try{
+            Connection conn= get.getConnection();
+            String query= "Update HOADON set TONGTIEN= TONGTIEN + ?, TONGSOLG= TONGSOLG+?, TONGGG= TONGGG+? where maHD=?";
+            String query1= "Update HOADON set THANHTIEN= TONGTIEN+ TONGGG";
+            row= get.prepareUpdate(query, cthd.getTongTien(), cthd.getSoLuong(),  cthd.getGiamGia(), cthd.getMaHD());
+            
+            PreparedStatement prestm= conn.prepareStatement(query1);
+            prestm.executeUpdate();
+            conn.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        System.out.println("row" + row);
+        return row;
+    }
     
     public int delete(String maHD){
         int row= 0;
