@@ -124,4 +124,7 @@ public class HDBLL {
         hd.editHD(maHD, maKH, maNV, ngayLap1, phuongThuc);
         return 1;
     }
+    public int updateAdd(CTHD cthd){
+        return  hd.updateTongTienAdd(cthd);
+    }
 }

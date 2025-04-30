@@ -126,4 +126,17 @@ public class CTHDDAL {
         }
         return rs;
     }
+    public int add(CTHD cthd){
+        String query =" Insert into Chitiethoadon(mahd, masach, solg, dongia, tongtien, giamgia, thanhtien, status) values (?, ?, ?, ?, ?, ?, ? ,?)";
+        int rs= 0;
+        try{
+            Connection conn= get.getConnection();
+            rs= get.prepareUpdate(query, cthd.getMaHD(), cthd.getMaSach(), cthd.getSoLuong(), cthd.getGiaTien(), cthd.getTongTien(), cthd.getGiamGia(), cthd.getThanhTien(), 0);
+            conn.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
 }

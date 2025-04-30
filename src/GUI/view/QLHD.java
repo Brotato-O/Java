@@ -28,7 +28,9 @@ public class QLHD extends JPanel {
     public JFrame frame = sp.getSuperMarketUI();
     public JTextField maHD= new JTextField();
     public JTextField maNV= new JTextField();
+    public JButton ctMaNV= new JButton("...");
     public JTextField maKH= new JTextField();
+    public JButton ctMaKH= new JButton("...");
     public JTextField ngayLap = new JTextField();
     public JComboBox phuongThuc= new JComboBox();
     public DefaultComboBoxModel modelPT= new DefaultComboBoxModel();
@@ -128,9 +130,17 @@ public class QLHD extends JPanel {
         t1[6].add(new JLabel("Tổng số lượng"));
         t1[7].add(new JLabel("Tổng giảm giá"));
         
+        JPanel temp= new JPanel();
+        temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));
+        temp.add(maNV);
+        temp.add(ctMaNV);
+        JPanel temp1= new JPanel();
+        temp1.setLayout(new BoxLayout(temp1, BoxLayout.X_AXIS));
+        temp1.add(maKH);
+        temp1.add(ctMaKH);
         t[0].add(maHD);
-        t[1].add(maKH);
-        t[2].add(maNV);
+        t[1].add(temp1);
+        t[2].add(temp);
         t[3].add(ngayLap);
         t[4].add(phuongThuc);
         t[5].add(tongTien);
@@ -409,6 +419,8 @@ public class QLHD extends JPanel {
         lamMoi.addActionListener(controller.showHD);
         xoa.addActionListener(controller.deleteHD);
         sua.addActionListener(controller.editHD);
+        ctMaNV.addActionListener(controller.ctNV);
+        ctMaKH.addActionListener(controller.ctKH);
     }
     
     public JTable getTableHD() {
