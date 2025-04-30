@@ -5,6 +5,7 @@ import DTO.EmployeeManagementDTO;
 import GUI.dialog.QLNV.AddQLNVController;
 import GUI.dialog.QLNV.AddQLNVDialog;
 import GUI.view.EmployeeManagement;
+import excel.XuLyFileExcel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
@@ -23,7 +24,7 @@ public class EmpController {
 
 	private EmployeeManagement view = null;
 	JTable table;
-	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll;
+	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll,btnXuatExcel;
 	DefaultTableModel model;
 	private EmpBLL empBLL = new EmpBLL();
 	private boolean isLoadingData = false;//flag load dữ liệu
@@ -39,6 +40,7 @@ public class EmpController {
 		this.btnSeachCbb = view.getTimKiemComboBox();
 		this.btnSearchSalary = view.getTimKiemLuong();
 		this.btnSearchAll = view.getBtnTatca();
+		this.btnXuatExcel = view.getBtnXuatExcel();
 
 		// Thêm sự kiện MouseListener vào JTable
 		addTableMouseListener();
@@ -46,6 +48,7 @@ public class EmpController {
 		btnClickShowDialogAdd();
 		btnClickUpdateEmp();
 		btnClickDeleteEmp();
+		btnClickExportExcel();
 
 		//Tìm kiếm
 		searchComboxBoxEmp();
@@ -310,6 +313,16 @@ public class EmpController {
 
 	public EmpBLL getEmpBLL() {
 		return empBLL;
+	}
+
+	private void btnClickExportExcel() {
+		btnXuatExcel.addActionListener(e -> {
+			try {
+				XuLyFileExcel.xuatExcel(table);
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(view, "Xuất file thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 	}
 
 	private void loadDataModel(ArrayList<EmployeeManagementDTO> list) {

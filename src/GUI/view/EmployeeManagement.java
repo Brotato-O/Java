@@ -338,4 +338,8 @@ public class EmployeeManagement extends JPanel {
 		return jbAll;
 	}
 
+	public JButton getBtnXuatExcel() {
+		return jbXuatExcel;
+	}
+
 }

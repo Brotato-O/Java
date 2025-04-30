@@ -4,16 +4,13 @@
  */
 package main;
 
-import java.awt.Color;
-import java.sql.*;
-import javax.swing.JFrame;
-
 import GUI.view.CustomerManagement;
 import GUI.view.EmployeeManagement;
-import GUI.view.GiamGia;
 import GUI.view.QLHD;
 import GUI.view.SupermarketUI;
 import GUI.view.loginForm;
+import java.awt.Color;
+import javax.swing.JFrame;
 
 public class main extends JFrame {
 	public static int width = 400;
@@ -45,4 +42,6 @@ public class main extends JFrame {
 		 sm.createAndShowGUI();
 		 sm.getSuperMarketUI();
 	}
+
+	
 }
