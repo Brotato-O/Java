@@ -51,7 +51,10 @@ public class QLBH extends JPanel{
     public JTextField tongTien= new JTextField();
     public JButton sua= new JButton("Sửa");
     public JButton xoa= new JButton("Xóa");
-    
+    public ArrayList<CTHD> listCTHD = new ArrayList<>();
+    DefaultTableModel model= (DefaultTableModel) table.getModel();
+    float total = 0;
+    public CTHDBLL cthdbll = new CTHDBLL();
     public QLBH(){
         setLayout(new BorderLayout());
         JPanel header= new JPanel();
@@ -88,8 +91,59 @@ public class QLBH extends JPanel{
     ctMaNV.addActionListener(event -> {
         ctNV();
     });
+    taoHD.addActionListener(even -> {
+
+    });
+    them.addActionListener(even -> {
+        if (soLg.getText().trim().isEmpty() || donGia.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ số lượng, đơn giá và mã giảm giá.");
+            return;
+        }
+        CTHD cthd = new CTHD();
+        cthd.setMaSach(maSach.getText());
+        //hiện tại đang cho thêm cố định vào HD001
+        cthd.setMaHD("HD001");
+        cthd.setSoLuong(Integer.parseInt(soLg.getText()));
+        int soluong = Integer.parseInt(soLg.getText());
+        float dongia = Float.parseFloat(donGia.getText());
+        float a;
+        if (maGG.getText().trim().isEmpty()) {
+            cthd.setGiamGia(0);
+            a=0;
+        }else {
+            cthd.setGiamGia(Float.parseFloat(maGG.getText()));
+            a= Float.parseFloat(maGG.getText());
+        }
+        cthd.setGiaTien(Float.parseFloat(donGia.getText()));
+        cthd.setTongTien((float)soluong*dongia);
+        float tt = (float)soluong * dongia;
+        cthd.setThanhTien(tt-a);
+        float tt1= tt-a;
+        total = total + tt1;
+        thanhTien.setText(String.valueOf(total));
+        listCTHD.add(cthd);
+        model.addRow(new Object[]{
+            cthd.getMaSach(),
+            cthd.getSoLuong(),
+            cthd.getGiaTien(),
+            cthd.getTongTien(),
+            cthd.getGiamGia(),
+            cthd.getThanhTien()
+        });
+
+    });
+    xacNhan.addActionListener(even -> {
+        if (cthdbll.addall(listCTHD)){
+            JOptionPane.showMessageDialog(container, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+
+        }
+    });
+
     }
-    
+   
     public JPanel HD(){
         JPanel p= new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -172,19 +226,23 @@ public class QLBH extends JPanel{
         temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));
         temp.add(maSach);
         temp.add(ctMaSach);
+        maSach.setEditable(false);
         JPanel temp1= new JPanel();
         temp1.setLayout(new BoxLayout(temp1, BoxLayout.X_AXIS));
         temp1.add(maGG);
         temp1.add(ctMAGG);
+        maGG.setEditable(false);
         input[0].add(new JLabel("Mã sách"));
         input[0].add(temp);
         input[1].add(new JLabel("Tên sách"));
         input[1].add(tenSach);
+        tenSach.setEditable(false);
         input[2].add(new JLabel("Số lượng"));
         input[2].add(soLg);
         input[3].add(new JLabel("Đơn giá"));
         input[3].add(donGia);
-        input[4].add(new JLabel("Mã GG"));
+        donGia.setEditable(false);
+        input[4].add(new JLabel("Giảm giá"));
         input[4].add(temp1);
         out.add(them);
         
@@ -197,9 +255,9 @@ public class QLBH extends JPanel{
         p.setLayout(new BorderLayout());
         
         DefaultTableModel model= (DefaultTableModel) table.getModel();
-        String[] column= new String[]{"Mã sách", "Tên sách", "Số lượng", "Đơn giá", "Giảm giá", "Thành tiền"};
+        String[] column= new String[]{"Mã sách", "Số lượng", "Đơn giá", "Tổng tiền", "Giảm giá", "Thành tiền"};
         model.setColumnIdentifiers(column);
-        model.setRowCount(20);
+        showTable();
         JScrollPane pane= new JScrollPane(table);
         p.add(pane);
         
@@ -321,7 +379,7 @@ public class QLBH extends JPanel{
             chon.addActionListener(even -> {
                 int selectedRow = tableHD.getSelectedRow();
                 if (selectedRow >= 0) {
-                maGG.setText(tableHD.getValueAt(selectedRow, 0).toString());
+                maGG.setText(tableHD.getValueAt(selectedRow, 2).toString());
     
                     fr1.dispose(); 
                 } else {
@@ -330,7 +388,7 @@ public class QLBH extends JPanel{
             });
             
         }
-        private void ctNV(){
+    private void ctNV(){
             JFrame fr1 = new JFrame();
                 fr1.dispose();
                 fr1.setSize(400, 550);
@@ -382,4 +440,18 @@ public class QLBH extends JPanel{
                 });
                 
             }
+    public void showTable() {
+    model.setRowCount(0); 
+    for (CTHD s : listCTHD) {
+     model.addRow(new Object[]{
+    s.getMaSach(),
+    s.getSoLuong(),
+    s.getGiaTien(),        
+    s.getTongTien(),
+    s.getGiamGia(),
+    s.getThanhTien(),                
+    ""                   
+      });
+     }
+  }   
 }

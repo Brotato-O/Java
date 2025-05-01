@@ -1,8 +1,8 @@
-package GUI.dialog.QLNV;
+// package GUI.dialog.QLNV;
 
-import javax.swing.*;
-import java.awt.*;
+// import javax.swing.*;
+// import java.awt.*;
 
-public class ImportQLNVDialog extends Dialog {
+// public class ImportQLNVDialog extends Dialog {
     
-}
+// }

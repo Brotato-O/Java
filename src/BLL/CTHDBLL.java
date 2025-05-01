@@ -32,4 +32,11 @@ public class CTHDBLL {
     public int add(CTHD cthd1){
         return cthd.add(cthd1);
     }
+    public Boolean addall(ArrayList<CTHD> list){
+        int i = 0;
+        if (i == cthd.addAll(list)){
+            return false;
+        }
+        return true;
+    }
 }

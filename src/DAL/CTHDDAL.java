@@ -139,4 +139,19 @@ public class CTHDDAL {
         }
         return rs;
     }
+    public int addAll(ArrayList<CTHD> list) {
+        String query = "INSERT INTO Chitiethoadon(mahd, masach, solg, dongia, tongtien, giamgia, thanhtien, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        int count = 0;
+        try (Connection conn = get.getConnection()) {
+            for (CTHD cthd : list) {
+                int result = get.prepareUpdate(query, cthd.getMaHD(), cthd.getMaSach(), cthd.getSoLuong(),
+                        cthd.getGiaTien(), cthd.getTongTien(), cthd.getGiamGia(), cthd.getThanhTien(), 0);
+                if (result > 0) count++;
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi thêm danh sách CTHD: " + e);
+        }
+        return count;
+    }
+    
 }
