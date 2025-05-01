@@ -139,4 +139,29 @@ public class CTHDDAL {
         }
         return rs;
     }
+    public int update(CTHD cthd, String oldMaHD, String oldMaSach) {
+    String query = "UPDATE Chitiethoadon SET mahd = ?, masach = ?, solg = ?, dongia = ?, tongtien = ?, giamgia = ?, thanhtien = ?, status = ? WHERE mahd = ? AND masach = ?";
+    int rs = 0;
+    try {
+        Connection conn = get.getConnection();
+        rs = get.prepareUpdate(query,
+            cthd.getMaHD(),        // mới
+            cthd.getMaSach(),      // mới
+            cthd.getSoLuong(),
+            cthd.getGiaTien(),
+            cthd.getTongTien(),
+            cthd.getGiamGia(),
+            cthd.getThanhTien(),
+            0,                     // status mới
+            oldMaHD,               // điều kiện cũ
+            oldMaSach              // điều kiện cũ
+        );
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace(); // để bạn dễ debug
+    }
+    return rs;
+}
+
+
 }
