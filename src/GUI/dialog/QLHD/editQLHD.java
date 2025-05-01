@@ -108,6 +108,12 @@ public class editQLHD extends JDialog{
         });
         
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        ctMaHD.setEditable(false);
+        ctMaSach.setEditable(false);
+        ctDonGia.setEditable(false);
+        ctTongtien.setEditable(false);
+        ctGiamGia.setEditable(false);
+        ctThanhTien.setEditable(false);
         return top;
     }
     

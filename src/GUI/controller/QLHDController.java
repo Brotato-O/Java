@@ -348,7 +348,7 @@ public class QLHDController {
                         addDialog.ctThanhTien.setText(String.valueOf(thanhTien));
                     }
                     catch(Exception er){
-                        JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
+                        System.out.println("");
                     }
                 }
                 qlhdkh.dispose();
@@ -357,6 +357,7 @@ public class QLHDController {
         ctSolg= new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
+                if (!addDialog.ctMaSach.getText().equals(""))
                 try{
                     BLLQLGG bllqlgg= new BLLQLGG();
                     ArrayList<GG> gg= bllqlgg.getAllGGByBook(addDialog.ctMaSach.getText());
@@ -376,7 +377,7 @@ public class QLHDController {
                     addDialog.ctThanhTien.setText(String.valueOf(thanhTien));
                 }
                 catch(Exception er){
-                    JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
+                    System.out.println("");
                 }
             }
         }; 
@@ -452,7 +453,7 @@ public class QLHDController {
                         editDialog.ctThanhTien.setText(String.valueOf(thanhTien));
                     }
                     catch(Exception er){
-                        JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
+                        System.out.println("");
                     }
                 }
                 qlhdkh.dispose();
@@ -462,26 +463,26 @@ public class QLHDController {
             @Override
             public void focusLost(FocusEvent e) {
                 
-                try{
-                    BLLQLGG bllqlgg= new BLLQLGG();
-                    ArrayList<GG> gg= bllqlgg.getAllGGByBook(editDialog.ctMaSach.getText());
-                    float s= 0;
-                    for (int i=0; i< gg.size(); i++){
-                        s+= gg.get(i).getLuongGiam();
+                    try{
+                        BLLQLGG bllqlgg= new BLLQLGG();
+                        ArrayList<GG> gg= bllqlgg.getAllGGByBook(editDialog.ctMaSach.getText());
+                        float s= 0;
+                        for (int i=0; i< gg.size(); i++){
+                            s+= gg.get(i).getLuongGiam();
+                        }
+                        System.out.println(s+1000);
+                        int solg= Integer.parseInt(editDialog.ctSolg.getText());
+                        float donGia= Float.parseFloat(editDialog.ctDonGia.getText());
+                        float giamGia= (s/100) * donGia * solg;
+                        float tongTien= solg* donGia;
+                        float thanhTien= tongTien- giamGia;
+                        editDialog.ctGiamGia.setText(String.valueOf(giamGia));
+                        editDialog.ctTongtien.setText(String.valueOf(tongTien));
+                        editDialog.ctThanhTien.setText(String.valueOf(thanhTien));
                     }
-                    System.out.println(s+1000);
-                    int solg= Integer.parseInt(editDialog.ctSolg.getText());
-                    float donGia= Float.parseFloat(editDialog.ctDonGia.getText());
-                    float giamGia= (s/100) * donGia * solg;
-                    float tongTien= solg* donGia;
-                    float thanhTien= tongTien- giamGia;
-                    editDialog.ctGiamGia.setText(String.valueOf(giamGia));
-                    editDialog.ctTongtien.setText(String.valueOf(tongTien));
-                    editDialog.ctThanhTien.setText(String.valueOf(thanhTien));
-                }
-                catch(Exception er){
-                    JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
-                }
+                    catch(Exception er){
+                        System.out.println("");
+                    }
             }
         }; 
         
