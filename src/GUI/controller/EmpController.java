@@ -4,6 +4,8 @@ import BLL.*;
 import DTO.EmployeeManagementDTO;
 import GUI.dialog.QLNV.AddQLNVController;
 import GUI.dialog.QLNV.AddQLNVDialog;
+import GUI.dialog.QLNV.ImportQLNVController;
+import GUI.dialog.QLNV.ImportQLNVDialog;
 import GUI.view.EmployeeManagement;
 import excel.XuLyFileExcel;
 import java.awt.event.MouseAdapter;
@@ -18,13 +20,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 public class EmpController {
 
 	private EmployeeManagement view = null;
 	JTable table;
-	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll,btnXuatExcel;
+	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll,btnXuatExcel,btnNhapExcel;
 	DefaultTableModel model;
 	private EmpBLL empBLL = new EmpBLL();
 	private boolean isLoadingData = false;//flag load dữ liệu
@@ -41,6 +44,7 @@ public class EmpController {
 		this.btnSearchSalary = view.getTimKiemLuong();
 		this.btnSearchAll = view.getBtnTatca();
 		this.btnXuatExcel = view.getBtnXuatExcel();
+		this.btnNhapExcel = view.getBtnNhapExcel();
 
 		// Thêm sự kiện MouseListener vào JTable
 		addTableMouseListener();
@@ -49,6 +53,7 @@ public class EmpController {
 		btnClickUpdateEmp();
 		btnClickDeleteEmp();
 		btnClickExportExcel();
+		btnClickImportExcel();
 
 		//Tìm kiếm
 		searchComboxBoxEmp();
@@ -343,4 +348,53 @@ public class EmpController {
 			}
 	}
 
+	private void btnClickImportExcel() {
+		btnNhapExcel.addActionListener(e -> {
+			// Sử dụng SwingWorker để thực hiện tác vụ nặng
+			SwingWorker<DefaultTableModel, Void> worker = new SwingWorker<>() {
+				@Override
+				protected DefaultTableModel doInBackground() throws Exception {
+					// Tác vụ nặng: Đọc file Excel và xử lý dữ liệu
+					DefaultTableModel modelEx = new DefaultTableModel();
+					System.out.println("Bắt đầu đọc file Excel...");
+					XuLyFileExcel.nhapExcel(modelEx); // Đọc dữ liệu từ file Excel
+					System.out.println("Đọc file Excel thành công!");
+	
+					// Đặt tiêu đề cột
+					String[] columnNames = {"Mã NV", "Tên NV", "SĐT", "Email", "Giới tính", "Chức vụ", "Lương", "Ngày sinh"};
+					modelEx.setColumnIdentifiers(columnNames);
+	
+	
+					System.out.println("Hoàn thành xử lý dữ liệu từ file Excel!");
+					return modelEx;
+				}
+	
+				@Override
+				protected void done() {
+					try {
+						// Lấy kết quả từ doInBackground()
+						DefaultTableModel modelEx = get();
+	
+						// Hiển thị dialog trên EDT
+						JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(view);
+						ImportQLNVDialog importQLNVDialog = new ImportQLNVDialog(parentFrame, modelEx);
+						
+						// Khởi tạo controller cho dialog và truyền chính class này vô
+                    	ImportQLNVController importController = new ImportQLNVController(importQLNVDialog, modelEx,EmpController.this);
+						
+						importQLNVDialog.setVisible(true);
+	
+						System.out.println("Hiển thị dialog thành công!");
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(view, "Nhập file thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+						ex.printStackTrace();
+					}
+				}
+			};
+	
+			// Thực thi SwingWorker
+			worker.execute();
+		});
+	}
+		
 }

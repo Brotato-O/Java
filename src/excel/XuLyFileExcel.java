@@ -7,7 +7,7 @@ import javax.swing.table.TableModel;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.*;
+import java.io.*    ;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,53 +56,47 @@ public class XuLyFileExcel {
         }
     }
 
-    public static void nhapExcel(JTable tbl) {
+    public static void nhapExcel(DefaultTableModel model) {
         try {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Chọn file");
             FileNameExtensionFilter fnef = new FileNameExtensionFilter("Excel Files", "xls", "xlsx", "xlsm");
             chooser.setFileFilter(fnef);
-
+    
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 File fileSelected = chooser.getSelectedFile();
                 FileInputStream fis = new FileInputStream(fileSelected);
                 XSSFWorkbook wb = new XSSFWorkbook(fis);
                 Sheet sheet = wb.getSheetAt(0);
-
-                DefaultTableModel dtm = (DefaultTableModel) tbl.getModel();
-                dtm.setRowCount(0);
-
+    
+                // Xóa dữ liệu cũ trong model
+                model.setRowCount(0);
+    
+                // Đặt tiêu đề cột
+                Row headerRow = sheet.getRow(0);
+                String[] columnNames = new String[headerRow.getLastCellNum()];
+                for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+                    columnNames[i] = headerRow.getCell(i).toString();
+                }
+                model.setColumnIdentifiers(columnNames);
+    
+                // Đọc dữ liệu từ Excel và thêm vào model
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                     Row row = sheet.getRow(i);
-                    List<Object> list = new ArrayList<>();
+                    Object[] rowData = new Object[row.getLastCellNum()];
                     for (int j = 0; j < row.getLastCellNum(); j++) {
                         Cell cell = row.getCell(j);
-                        list.add(cell.toString());
+                        rowData[j] = cell != null ? cell.toString() : "";
                     }
-                    dtm.addRow(list.toArray());
+                    model.addRow(rowData);
                 }
-
+    
                 wb.close();
                 JOptionPane.showMessageDialog(null, "Nhập file thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Nhập file thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-    }
-    public static void main(String[] args) {
-        // Tạo một JTable mẫu để kiểm tra
-        JTable table = new JTable(new DefaultTableModel(
-            new Object[][] {
-                {"1", "John", "Doe"},
-                {"2", "Jane", "Smith"}
-            },
-            new String[] {"ID", "First Name", "Last Name"}
-        ));
-    
-        // Gọi phương thức xuatExcel để kiểm tra
-        xuatExcel(table);
-    
-        // Gọi phương thức nhapExcel để kiểm tra
-        nhapExcel(table);
     }
 }
