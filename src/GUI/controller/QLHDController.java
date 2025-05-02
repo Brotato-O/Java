@@ -11,7 +11,6 @@ import DTO.Book;
 import DTO.GG;
 import DTO.HD;
 import GUI.dialog.QLHD.QLHDKH;
-import GUI.dialog.QLHD.QLHDNV;
 import GUI.dialog.QLHD.addQLHD;
 import GUI.dialog.QLHD.editQLHD;
 import GUI.view.QLHD;
@@ -19,15 +18,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 public class QLHDController {
     private QLHD view;
@@ -54,6 +62,7 @@ public class QLHDController {
     public ActionListener confirmAdd;
     public ActionListener confirmEdit;
     public ActionListener editCTHD;
+    public ActionListener xuatHD;
     JTable tableCTHD ;
     DefaultTableModel modelCTHD ;
     
@@ -601,6 +610,29 @@ public class QLHDController {
                 else JOptionPane.showMessageDialog(view.frame, "Chọn chi tiết hóa đơn muốn sửa");
             }
         };
+        xuatHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable table= view.getTableHD();
+                int row= table.getSelectedRow();
+                int column= table.getColumnModel().getColumnIndex("Mã HD");
+                if (row != -1){
+                    String maHD = table.getValueAt(row, column).toString(); // hoặc lấy từ bảng, tùy cách bạn hiển thị
+
+                    // Cho người dùng chọn nơi lưu file
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setSelectedFile(new File("hoadon_" + maHD + ".pdf"));
+                    int result = fileChooser.showSaveDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File file = fileChooser.getSelectedFile();
+
+                        // Gọi hàm xuất PDF
+                        exportHoaDonPDF(maHD, file.getAbsolutePath());
+                    }
+                }
+                else JOptionPane.showMessageDialog(view.frame, "Chọn hóa đơn để xuất");
+            }
+        };
     }
     
     
@@ -667,4 +699,58 @@ public class QLHDController {
         }
         
     }
+    public void exportHoaDonPDF(String maHD, String filePath) {
+        Document document = new Document();
+
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+            String fontPath = "C:\\D\\New folder (7) Java\\bruh\\src\\img\\font-times-new-roman.ttf";
+             BaseFont baseFont = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font font = new Font(baseFont, 12, Font.NORMAL);
+            // Tiêu đề
+            document.add(new Paragraph("HÓA ĐƠN BÁN SÁCH", font));
+            document.add(new Paragraph("Mã hóa đơn: " + maHD, font));
+            document.add(new Paragraph("Ngày in: " + new java.util.Date().toString(), font));
+            document.add(new Paragraph(" ")); // dòng trắng
+
+            // Bảng chi tiết hóa đơn
+            PdfPTable pdfTable = new PdfPTable(7); // 5 cột: Mã sách, Tên sách, SL, Đơn giá, Thành tiền
+            pdfTable.addCell("Mã HD");
+            pdfTable.addCell("Mã sách");
+            pdfTable.addCell("Số lượng");
+            pdfTable.addCell("Đơn giá");
+            pdfTable.addCell("Tổng tiền");
+            pdfTable.addCell("Giảm giá");
+            pdfTable.addCell("Thành tiền");
+
+            // Lấy chi tiết hóa đơn từ CTHDBUS hoặc CTHDDAL
+            CTHDBLL cthd= new CTHDBLL();
+            ArrayList<CTHD> ds = cthd.selectById(maHD);
+
+            
+            for (int i=0; i< ds.size(); i++) {
+                CTHD ct= ds.get(i);
+                pdfTable.addCell(ct.getMaHD());
+                pdfTable.addCell(ct.getMaSach());
+                pdfTable.addCell(String.valueOf(ct.getSoLuong()));
+                pdfTable.addCell(String.valueOf(ct.getGiaTien()));
+                pdfTable.addCell(String.valueOf(ct.getTongTien()));
+                pdfTable.addCell(String.valueOf(ct.getGiamGia()));
+                pdfTable.addCell(String.valueOf(ct.getThanhTien()));
+            }
+
+            document.add(pdfTable);
+
+            document.add(new Paragraph(" "));
+//            document.add(new Paragraph("Tổng cộng: " + tongTien + " VND"));
+
+            document.close();
+            JOptionPane.showMessageDialog(null, "Xuất PDF thành công!");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Xuất PDF thất bại!");
+        }
+    }
+
 }

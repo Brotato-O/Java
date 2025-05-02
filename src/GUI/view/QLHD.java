@@ -414,6 +414,7 @@ public class QLHD extends JPanel {
         ctMaNV.addActionListener(controller.ctNV);
         ctMaKH.addActionListener(controller.ctSach);
         suaCTHD.addActionListener(controller.editCTHD);
+        xuat.addActionListener(controller.xuatHD);
     }
     
     public JTable getTableHD() {
