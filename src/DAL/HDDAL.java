@@ -111,7 +111,7 @@ public class HDDAL {
         try{
             Connection conn= get.getConnection();
             String query= "Update HOADON set TONGTIEN= TONGTIEN + ?, TONGSOLG= TONGSOLG+?, TONGGG= TONGGG+? where maHD=?";
-            String query1= "Update HOADON set THANHTIEN= TONGTIEN+ TONGGG";
+            String query1= "Update HOADON set THANHTIEN= TONGTIEN- TONGGG";
             row= get.prepareUpdate(query, cthd.getTongTien(), cthd.getSoLuong(),  cthd.getGiamGia(), cthd.getMaHD());
             
             PreparedStatement prestm= conn.prepareStatement(query1);

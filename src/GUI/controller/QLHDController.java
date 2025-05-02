@@ -13,6 +13,7 @@ import DTO.HD;
 import GUI.dialog.QLHD.QLHDKH;
 import GUI.dialog.QLHD.QLHDNV;
 import GUI.dialog.QLHD.addQLHD;
+import GUI.dialog.QLHD.editQLHD;
 import GUI.view.QLHD;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 public class QLHDController {
     private QLHD view;
     private addQLHD addDialog;
-    private QLHDNV qlhdnv;
+    private editQLHD editDialog;
     private QLHDKH qlhdkh;
     public MouseAdapter cthdAdapter;
     public ActionListener showCTHD;
@@ -44,10 +45,15 @@ public class QLHDController {
     public ActionListener editHD;
     public ActionListener confirmNV;
     public ActionListener ctNV;
-    public ActionListener confirmKH;
-    public ActionListener ctKH;
+    public ActionListener confirmSach;
+    public ActionListener confirmSachEdit;
+    public ActionListener ctSach;
+    public ActionListener ctSachEdit;
     public FocusAdapter ctSolg; //ko biết là gì nhưng sẽ ôn sau
+    public FocusAdapter ctSolgEdit; //ko biết là gì nhưng sẽ ôn sau
     public ActionListener confirmAdd;
+    public ActionListener confirmEdit;
+    public ActionListener editCTHD;
     JTable tableCTHD ;
     DefaultTableModel modelCTHD ;
     
@@ -149,7 +155,7 @@ public class QLHDController {
                     String maHD= table.getValueAt(row, column).toString();
                     addDialog.ctMaHD.setText(maHD);
                     addDialog.setVisible(true);
-                    addDialog.maSach.addActionListener(ctKH);
+                    addDialog.maSach.addActionListener(ctSach);
                     addDialog.ctSolg.addFocusListener(ctSolg);
                     addDialog.yes.addActionListener(confirmAdd);
                     BLLQLS bllqls= new BLLQLS();
@@ -273,41 +279,7 @@ public class QLHDController {
             }
         };
         
-        ctNV= new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (qlhdnv == null) {
-                    qlhdnv = new QLHDNV(view);
-                    qlhdnv.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            qlhdnv = null;
-                        }
-                    });
-                }
-                qlhdnv.xacNhan.addActionListener(confirmNV);
-                JTable table= qlhdnv.table;
-                DefaultTableModel model= (DefaultTableModel) table.getModel();
-                model.setRowCount(0);
-                table.setModel(model);
-                HDBLL hd= new HDBLL();
-                ArrayList<HD> rs= hd.selectAll();
-                for (int i=0; i< rs.size(); i++){
-                    HD item= rs.get(i);
-                    Object[] row1= new Object[] {item.getMaHD(), 
-                        item.getMaKH(), 
-                        item.getMaNV(), 
-                        item.getNgayLap(), 
-                        item.getTongTien(), 
-                        item.getTongGG(), 
-                        item.getTongSL(), 
-                        item.getPhuongThuc(), 
-                        item.getThanhTien() };
-                    model.addRow(row1);
-                }
-            }
-        };
-        ctKH= new ActionListener() {
+        ctSach= new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (qlhdkh == null) {
@@ -319,7 +291,7 @@ public class QLHDController {
                         }
                     });
                 }
-                qlhdkh.xacNhan.addActionListener(confirmKH);
+                qlhdkh.xacNhan.addActionListener(confirmSach);
                 JTable table= qlhdkh.table;
                 DefaultTableModel model= (DefaultTableModel) table.getModel();
                 model.setRowCount(0);
@@ -343,20 +315,8 @@ public class QLHDController {
                 }
             }
         };
-        confirmNV= new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTable table= qlhdnv.table;
-                int row= table.getSelectedRow();
-                int column= table.getColumnModel().getColumnIndex("Mã HD");
-                if (row !=-1){
-                    String maNV= table.getValueAt(row, column).toString();
-                    addDialog.ctMaSach.setText(maNV);
-                }
-                qlhdnv.dispose();
-            }
-        };
-        confirmKH= new ActionListener() {
+        
+        confirmSach= new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTable table= qlhdkh.table;
@@ -375,8 +335,21 @@ public class QLHDController {
                         s+= gg.get(i).getLuongGiam();
                         System.out.println(s +"gg");
                     }
-                    float giamGia= s* (Float.parseFloat(donGia1)/100);
-                    addDialog.ctGiamGia.setText(String.valueOf(giamGia));
+                    
+                    try{
+                        int solg= Integer.parseInt(addDialog.ctSolg.getText());
+                        float giamGia= (s/100) *(Float.parseFloat(donGia1)) * solg;
+                        addDialog.ctGiamGia.setText(String.valueOf(giamGia));
+                        float donGia2= Float.parseFloat(addDialog.ctDonGia.getText());
+                        float giamGia2= Float.parseFloat(addDialog.ctGiamGia.getText());
+                        float tongTien= solg* donGia2;
+                        float thanhTien= tongTien- giamGia2*solg;
+                        addDialog.ctTongtien.setText(String.valueOf(tongTien));
+                        addDialog.ctThanhTien.setText(String.valueOf(thanhTien));
+                    }
+                    catch(Exception er){
+                        System.out.println("");
+                    }
                 }
                 qlhdkh.dispose();
             }
@@ -384,38 +357,252 @@ public class QLHDController {
         ctSolg= new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
+                if (!addDialog.ctMaSach.getText().equals(""))
                 try{
+                    BLLQLGG bllqlgg= new BLLQLGG();
+                    ArrayList<GG> gg= bllqlgg.getAllGGByBook(addDialog.ctMaSach.getText());
+                    float s= 0;
+                    System.out.println(gg.size());
+                    for (int i=0; i< gg.size(); i++){
+                        s+= gg.get(i).getLuongGiam();
+                    }
+                    System.out.println(s+1000);
                     int solg= Integer.parseInt(addDialog.ctSolg.getText());
                     float donGia= Float.parseFloat(addDialog.ctDonGia.getText());
-                    float giamGia= Float.parseFloat(addDialog.ctGiamGia.getText());
+                    float giamGia= (s/100)*donGia*solg;
                     float tongTien= solg* donGia;
                     float thanhTien= tongTien- giamGia;
+                    addDialog.ctGiamGia.setText(String.valueOf(giamGia));
                     addDialog.ctTongtien.setText(String.valueOf(tongTien));
                     addDialog.ctThanhTien.setText(String.valueOf(thanhTien));
                 }
                 catch(Exception er){
-                    JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
+                    System.out.println("");
                 }
             }
         }; 
+        
+        
+        
+        
+        ctSachEdit= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (qlhdkh == null) {
+                    qlhdkh = new QLHDKH(view.frame, view);
+                    qlhdkh.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            qlhdkh = null;
+                        }
+                    });
+                }
+                qlhdkh.xacNhan.addActionListener(confirmSachEdit);
+                JTable table= qlhdkh.table;
+                DefaultTableModel model= (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+                table.setModel(model);
+                BLLQLS bllqls= new BLLQLS();
+                ArrayList<Book> rs= bllqls.getAllBooks();
+                for (int i = 0; i < rs.size(); i++) {
+                    Book s = rs.get(i);
+                    Object[] row1 = new Object[]{
+                        s.getMaSach(),
+                        s.getTenSach(),
+                        s.getMaNCC(),        
+                        s.getMaLoai(),
+                        s.getMaTacGia(),
+                        s.getNamXB(),                
+                        s.getSoLuong(),
+                        s.getDonGia(),
+                        s.getHA(),
+                    };
+                    model.addRow(row1);
+                }
+            }
+        };
+        confirmSachEdit= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable table= qlhdkh.table;
+                int row= table.getSelectedRow();
+                int maSach= table.getColumnModel().getColumnIndex("MÃ SÁCH");
+                int donGia= table.getColumnModel().getColumnIndex("ĐƠN GIÁ");
+                if (row !=-1){
+                    String maSach1= table.getValueAt(row, maSach).toString();
+                    String donGia1= table.getValueAt(row, donGia).toString();
+                    editDialog.ctMaSach.setText(maSach1);
+                    editDialog.ctDonGia.setText(donGia1);
+                    BLLQLGG bllqlgg= new BLLQLGG();
+                    ArrayList<GG> gg= bllqlgg.getAllGGByBook(maSach1);
+                    float s= 0;
+                    for (int i=0; i< gg.size(); i++){
+                        s+= gg.get(i).getLuongGiam();
+                        System.out.println(s +"gg");
+                    }
+                    
+                    try{
+                        int solg= Integer.parseInt(editDialog.ctSolg.getText());
+                        float giamGia= (s/100) *Float.parseFloat(donGia1) * solg;
+                        editDialog.ctGiamGia.setText(String.valueOf(giamGia));
+                        float donGia2= Float.parseFloat(editDialog.ctDonGia.getText());
+                        float giamGia2= Float.parseFloat(editDialog.ctGiamGia.getText());
+                        float tongTien= solg* donGia2;
+                        float thanhTien= tongTien- giamGia2*solg;
+                        editDialog.ctTongtien.setText(String.valueOf(tongTien));
+                        editDialog.ctThanhTien.setText(String.valueOf(thanhTien));
+                    }
+                    catch(Exception er){
+                        System.out.println("");
+                    }
+                }
+                qlhdkh.dispose();
+            }
+        };
+        ctSolgEdit= new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                
+                    try{
+                        BLLQLGG bllqlgg= new BLLQLGG();
+                        ArrayList<GG> gg= bllqlgg.getAllGGByBook(editDialog.ctMaSach.getText());
+                        float s= 0;
+                        for (int i=0; i< gg.size(); i++){
+                            s+= gg.get(i).getLuongGiam();
+                        }
+                        System.out.println(s+1000);
+                        int solg= Integer.parseInt(editDialog.ctSolg.getText());
+                        float donGia= Float.parseFloat(editDialog.ctDonGia.getText());
+                        float giamGia= (s/100) * donGia * solg;
+                        float tongTien= solg* donGia;
+                        float thanhTien= tongTien- giamGia;
+                        editDialog.ctGiamGia.setText(String.valueOf(giamGia));
+                        editDialog.ctTongtien.setText(String.valueOf(tongTien));
+                        editDialog.ctThanhTien.setText(String.valueOf(thanhTien));
+                    }
+                    catch(Exception er){
+                        System.out.println("");
+                    }
+            }
+        }; 
+        
+        
+        
+        
         confirmAdd= new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String maHD= addDialog.ctMaHD.getText();
-                String maSach= addDialog.ctMaSach.getText();
-                int soLuong= Integer.parseInt(addDialog.ctSolg.getText());
-                float donGia= Float.parseFloat(addDialog.ctDonGia.getText());
-                float tongTien= Float.parseFloat(addDialog.ctTongtien.getText());
-                float giamGia= Float.parseFloat(addDialog.ctGiamGia.getText());
-                float thanhTien= Float.parseFloat(addDialog.ctThanhTien.getText());
-                CTHD cthd= new CTHD(maHD, maSach, soLuong, donGia, tongTien, giamGia, thanhTien);
-                HDBLL hd= new HDBLL();
-                hd.updateAdd(cthd);
-                CTHDBLL cthdbll= new CTHDBLL();
-                cthdbll.add(cthd);
+                int choice = JOptionPane.showConfirmDialog(addDialog, "Bạn muốn thêm hóa đơn?", "Xác nhận thêm", JOptionPane.YES_NO_OPTION);
+                if (choice ==0){
+                    String maHD= addDialog.ctMaHD.getText();
+                    String maSach= addDialog.ctMaSach.getText();
+                    String soLuong= addDialog.ctSolg.getText();
+                    String donGia= addDialog.ctDonGia.getText();
+                    String tongTien= addDialog.ctTongtien.getText();
+                    String giamGia= addDialog.ctGiamGia.getText();
+                    String thanhTien= addDialog.ctThanhTien.getText();
+                    CTHDBLL cthdbll= new CTHDBLL();
+                    int rs= cthdbll.add(maHD, maSach, soLuong, donGia, tongTien, giamGia, thanhTien);
+                    if (rs== -2) JOptionPane.showMessageDialog(view.frame, "Chi tiết hóa đơn đã tồn tại");
+                    
+                    else if (rs== -1) JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
+                    else if (rs== 0) JOptionPane.showMessageDialog(view.frame, "Đã tồn tại");
+                    else {
+                        CTHD cthd= cthdbll.selectById(maHD, maSach);
+                        HDBLL hd= new HDBLL();
+                        hd.updateAdd(cthd);
+                        ArrayList<HD> tableHD= hd.selectAll();
+                        updateHD(tableHD);
+
+                        ArrayList<CTHD> tableCTHD= cthdbll.selectAll();
+                        updateCTHD(tableCTHD);
+                        addDialog.dispose();
+                        JOptionPane.showMessageDialog(addDialog, "Đã thêm thành công");
+                    }
+                }
+            }
+        };
+        confirmEdit= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int choice = JOptionPane.showConfirmDialog(editDialog, "Bạn muốn sủa hóa đơn này?", "Xác nhận sửa", JOptionPane.YES_NO_OPTION);
+                if (choice ==0){
+                    JTable tableCTHD= view.getTableCTHD();
+                    int row= tableCTHD.getSelectedRow();
+                        String maHD= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Mã HĐ")).toString();
+                        String maSach= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Mã sách")).toString();
+                        String soLuong= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Số lượng")).toString();
+                        String donGia= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Đơn giá")).toString();
+                        String tongTien= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Tổng tiền")).toString();
+                        String giamGia= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Giảm giá")).toString();
+                        String thanhTien= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Thành tiền")).toString();
+
+                        String maHD1= editDialog.ctMaHD.getText();
+                        String maSach1= editDialog.ctMaSach.getText();
+                        String soLuong1= editDialog.ctSolg.getText();
+                        String donGia1= editDialog.ctDonGia.getText();
+                        String tongTien1= editDialog.ctTongtien.getText();
+                        String giamGia1= editDialog.ctGiamGia.getText();
+                        String thanhTien1= editDialog.ctThanhTien.getText();
+                        CTHDBLL cthd= new CTHDBLL();
+                        int rs= cthd.update(maHD1, maSach1, soLuong1, donGia1, tongTien1, giamGia1, thanhTien1, maHD, maSach);
+                        if (rs== -2) JOptionPane.showMessageDialog(view.frame, "Chi tiết hóa đơn đã tồn tại");
+                    
+                        else if (rs== -1) JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
+                        else if (rs== 0) JOptionPane.showMessageDialog(view.frame, "Đã tồn tại");
+                        else {
+                            CTHD cthdOld= new CTHD(maHD, maSach, Integer.parseInt(soLuong), Float.parseFloat(donGia), Float.parseFloat(tongTien), Float.parseFloat(giamGia), Float.parseFloat(thanhTien));
+                            CTHD cthdNew= cthd.selectById(maHD1, maSach1);
+
+                            HDBLL hd= new HDBLL();
+                            hd.updateTongTien(cthdOld);
+                            hd.updateAdd(cthdNew);
+
+                            ArrayList<HD> tableHD= hd.selectAll();
+                            updateHD(tableHD);
+
+                            ArrayList<CTHD> tableCTHD1= cthd.selectAll();
+                            updateCTHD(tableCTHD1);
+                            editDialog.dispose();
+                            JOptionPane.showMessageDialog(editDialog, "Đã sửa thành công");
+                        }
+                }
+            }
+        };
+        editCTHD= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTable tableCTHD= view.getTableCTHD();
+                int row= tableCTHD.getSelectedRow();
+                if(row != -1){
+                    editDialog= new editQLHD(view.frame, view);
+                    int columnMaHD= tableCTHD.getColumnModel().getColumnIndex("Mã HĐ");
+                    String maHD= tableCTHD.getValueAt(row, columnMaHD).toString();
+                    String maSach= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Mã sách")).toString();
+                    String soLuong= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Số lượng")).toString();
+                    String donGia= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Đơn giá")).toString();
+                    String tongTien= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Tổng tiền")).toString();
+                    String giamGia= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Giảm giá")).toString();
+                    String thanhTien= tableCTHD.getValueAt(row, tableCTHD.getColumnModel().getColumnIndex("Thành tiền")).toString();
+                    editDialog.ctMaHD.setText(maHD);
+                    editDialog.ctMaSach.setText(maSach);
+                    editDialog.ctSolg.setText(soLuong);
+                    editDialog.ctDonGia.setText(donGia);
+                    editDialog.ctTongtien.setText(tongTien);
+                    editDialog.ctGiamGia.setText(giamGia);
+                    editDialog.ctThanhTien.setText(thanhTien);
+                    editDialog.setVisible(true);
+                    
+                    editDialog.maSach.addActionListener(ctSachEdit);
+                    editDialog.ctSolg.addFocusListener(ctSolgEdit);
+                    editDialog.yes.addActionListener(confirmEdit);
+                    
+                }
+                else JOptionPane.showMessageDialog(view.frame, "Chọn chi tiết hóa đơn muốn sửa");
             }
         };
     }
+    
     
     public void updateHD(ArrayList<HD> temp){
         ArrayList<HD> listHD=temp;
