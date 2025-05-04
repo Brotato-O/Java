@@ -48,4 +48,11 @@ public class CTHDBLL {
         CTHD cthd1= new CTHD(maHD, maSach, solg1, donGia1, tongTien1, giamGia1, thanhTien1);
         return cthd.add(cthd1);
     }
+    public Boolean addall(ArrayList<CTHD> list){
+        int i = 0;
+        if (i == cthd.addAll(list)){
+            return false;
+        }
+        return true;
+    }
 }
