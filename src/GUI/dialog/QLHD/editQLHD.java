@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ADMIN
  */
-public class addQLHD extends JDialog{
+public class editQLHD extends JDialog{
     public JButton yes= new JButton("Xác nhận");
     private JButton no= new JButton("Hủy");
     
@@ -39,8 +39,8 @@ public class addQLHD extends JDialog{
     QLHD view;
     QLHDController controller;
     
-    public addQLHD(JFrame parent, QLHD qlhd){
-        super(parent, "THÊM CHI TIẾT HÓA ĐƠN");
+    public editQLHD(JFrame parent, QLHD qlhd){
+        super(parent, "SỬA CHI TIẾT HÓA ĐƠN");
         this.view= qlhd;
         controller= new QLHDController(view);
         JPanel top= new JPanel();
