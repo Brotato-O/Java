@@ -5,6 +5,7 @@
 package BLL;
 
 import DAL.CTHDDAL;
+import DAL.DALQLS;
 import DTO.CTHD;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class CTHDBLL {
     CTHDDAL cthd= new CTHDDAL();
+    DALQLS dalqls = new DALQLS();
     public ArrayList<CTHD> selectAll(){
         return cthd.selectAll();
     }
@@ -49,10 +51,23 @@ public class CTHDBLL {
         return cthd.add(cthd1);
     }
     public Boolean addall(ArrayList<CTHD> list){
-        int i = 0;
-        if (i == cthd.addAll(list)){
-            return false;
+        boolean allSuccess = true;
+        for (CTHD cthd1 : list) {
+            int currentStock = dalqls.getSoLuong(cthd1.getMaSach());
+            if (currentStock < cthd1.getSoLuong()) {
+                System.out.println("Không đủ sách cho mã sách: " + cthd1.getMaSach());
+                allSuccess = false;
+                continue;
+            }
+    
+            int result = cthd.saveCTHD(cthd1);
+            if (result > 0) {
+                dalqls.truSoLuong(cthd1.getMaSach(), cthd1.getSoLuong());
+            } else {
+                System.out.println("Lỗi khi thêm CTHD: " + cthd1.getMaHD());
+                allSuccess = false;
+            }
         }
-        return true;
+        return allSuccess;
     }
 }

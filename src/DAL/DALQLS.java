@@ -303,5 +303,31 @@ public class DALQLS {
 
         return list;
     }
-     
+    public int getSoLuong(String maSach) {
+        String query = "SELECT solg FROM SACH WHERE masach = ?";
+        try ( Connection conn = new getConnection().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, maSach);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("solg");
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi getSoLuong: " + e);
+        }
+        return -1; // hoặc throw exception tùy cách bạn xử lý
+    }
+    
+    public int truSoLuong(String maSach, int soLuong) {
+        String query = "UPDATE SACH SET solg = solg - ? WHERE masach = ?";
+        try (Connection conn = new getConnection().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, soLuong);
+            ps.setString(2, maSach);
+            return ps.executeUpdate(); 
+        } catch (Exception e) {
+            System.out.println("Lỗi truSoLuong: " + e);
+        }
+        return 0;
+    }    
 }

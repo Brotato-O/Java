@@ -135,6 +135,9 @@ public class QLBH extends JPanel{
     xacNhan.addActionListener(even -> {
         if (cthdbll.addall(listCTHD)){
             model.setRowCount(0);
+            listCTHD.clear();
+            total = 0 ;
+            thanhTien.setText(String.valueOf(total));
             JOptionPane.showMessageDialog(container, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -158,7 +161,6 @@ public class QLBH extends JPanel{
         // Lấy dữ liệu từ các JTextField
         String soLuongStr = soLg.getText();
         String donGiaStr = donGia.getText();
-        String ten = tenSach.getText();
         String maGiam = maGG.getText();
         int soluong = Integer.parseInt(soLg.getText());
         float dongia = Float.parseFloat(donGia.getText());
@@ -206,6 +208,7 @@ public class QLBH extends JPanel{
         soLg.setText("");
         donGia.setText("");
         maGG.setText("");
+        tenSach.setText("");
     });
     table.getSelectionModel().addListSelectionListener(e -> {
     
