@@ -1,4 +1,3 @@
-package GUI.dialog.QLNV;
 
 import java.awt.*;
 import javax.swing.JButton;
@@ -49,3 +48,4 @@ public class ImportQLNVDialog extends JDialog {
         return this.btnHuy;
     }
 }
+

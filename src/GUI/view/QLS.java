@@ -68,7 +68,7 @@ public class QLS extends JPanel{
         header.add(new JLabel("QUẢN LÝ HÓA ĐƠN"){{setFont(new Font("Arial", Font.BOLD, 26));}});
         add(header, BorderLayout.NORTH);
         JPanel container= new JPanel();
-        txtMaSach.setEditable(false); // Không cho phép người dùng nhập vào trường này
+        txtMaSach.setEditable(false); 
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         for (map item : bllqls.getAllNcc()) {
             txtMaNXB.addItem(item);
