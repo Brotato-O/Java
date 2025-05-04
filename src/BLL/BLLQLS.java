@@ -105,4 +105,7 @@ public class BLLQLS {
     
         return max;
     }
+    public boolean addBook1(Book book) {
+        return dal.addBook1(book);
+    }
 }

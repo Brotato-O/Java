@@ -79,6 +79,8 @@ public class QLS extends JPanel{
         for (map item : bllqls.getAllLS()) {
             txtMaTheLoai.addItem(item);
         }
+        btnThem.setVisible(false);
+
         container.add(inputFieldsQLS());
         container.add(findFields());
         container.add(tbQLS());
