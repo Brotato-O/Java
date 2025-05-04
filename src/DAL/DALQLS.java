@@ -139,7 +139,7 @@ public class DALQLS {
            ps.setString(2, book.getTenSach());
            ps.setString(3, book.getMaLoai());
            ps.setString(4, book.getMaTacGia());
-           ps.setString(5, book.getMaNCC());
+           ps.setString(5,"NCC001");
            ps.setInt(6, book.getSoLuong());
            ps.setFloat(7, book.getDonGia());
            ps.setString(8, book.getHA());
@@ -190,7 +190,7 @@ public class DALQLS {
             ps.setString(1, book.getTenSach());
             ps.setString(2, book.getMaLoai());
             ps.setString(3, book.getMaTacGia());
-            ps.setString(4, book.getMaNCC());
+            ps.setString(4, "NCC001");
             ps.setInt(5, book.getSoLuong());
             ps.setFloat(6, book.getDonGia());
             ps.setString(7, book.getHA());
@@ -393,44 +393,44 @@ public class DALQLS {
         }
         return list;
     }
-    public boolean addBook1(Book book) {
-        String checkSql = "SELECT * FROM SACH WHERE masach = ? AND mancc = ?";
-        String updateSql = "UPDATE SACH SET solg = solg + ? WHERE masach = ? AND mancc = ?";
-        String insertSql = "INSERT INTO SACH (masach, tensach, maloai, matg, mancc, solg, dongia, hinhanh, namxb, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+    // public boolean addBook1(Book book) {
+    //     String checkSql = "SELECT * FROM SACH WHERE masach = ? AND mancc = ?";
+    //     String updateSql = "UPDATE SACH SET solg = solg + ? WHERE masach = ? AND mancc = ?";
+    //     String insertSql = "INSERT INTO SACH (masach, tensach, maloai, matg, mancc, solg, dongia, hinhanh, namxb, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
     
-        try (Connection conn = new getConnection().getConnection()) {
-            // 1. Kiểm tra xem masach + mancc đã tồn tại chưa
-            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
-            checkStmt.setString(1, book.getMaSach());
-            checkStmt.setString(2, book.getMaNCC());
+    //     try (Connection conn = new getConnection().getConnection()) {
+    //         // 1. Kiểm tra xem masach + mancc đã tồn tại chưa
+    //         PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+    //         checkStmt.setString(1, book.getMaSach());
+    //         checkStmt.setString(2, book.getMaNCC());
     
-            ResultSet rs = checkStmt.executeQuery();
+    //         ResultSet rs = checkStmt.executeQuery();
     
-            if (rs.next()) {
-                // 2. Nếu tồn tại → cộng thêm số lượng
-                PreparedStatement updateStmt = conn.prepareStatement(updateSql);
-                updateStmt.setInt(1, book.getSoLuong());
-                updateStmt.setString(2, book.getMaSach());
-                updateStmt.setString(3, book.getMaNCC());
-                return updateStmt.executeUpdate() > 0;
-            } else {
-                // 3. Nếu không → thêm mới
-                PreparedStatement insertStmt = conn.prepareStatement(insertSql);
-                insertStmt.setString(1, book.getMaSach());
-                insertStmt.setString(2, book.getTenSach());
-                insertStmt.setString(3, book.getMaLoai());
-                insertStmt.setString(4, book.getMaTacGia());
-                insertStmt.setString(5, book.getMaNCC());
-                insertStmt.setInt(6, book.getSoLuong());
-                insertStmt.setFloat(7, book.getDonGia());
-                insertStmt.setString(8, book.getHA());
-                insertStmt.setInt(9, book.getNamXB());
-                return insertStmt.executeUpdate() > 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    //         if (rs.next()) {
+    //             // 2. Nếu tồn tại → cộng thêm số lượng
+    //             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+    //             updateStmt.setInt(1, book.getSoLuong());
+    //             updateStmt.setString(2, book.getMaSach());
+    //             updateStmt.setString(3, book.getMaNCC());
+    //             return updateStmt.executeUpdate() > 0;
+    //         } else {
+    //             // 3. Nếu không → thêm mới
+    //             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+    //             insertStmt.setString(1, book.getMaSach());
+    //             insertStmt.setString(2, book.getTenSach());
+    //             insertStmt.setString(3, book.getMaLoai());
+    //             insertStmt.setString(4, book.getMaTacGia());
+    //             insertStmt.setString(5, book.getMaNCC());
+    //             insertStmt.setInt(6, book.getSoLuong());
+    //             insertStmt.setFloat(7, book.getDonGia());
+    //             insertStmt.setString(8, book.getHA());
+    //             insertStmt.setInt(9, book.getNamXB());
+    //             return insertStmt.executeUpdate() > 0;
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return false;
+    // }
     
 }

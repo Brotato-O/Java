@@ -24,7 +24,7 @@ public class QLS extends JPanel{
     int height= main.height;
     int width= main.width;
     JTextField txtMaSach = new JTextField();
-    private JComboBox txtMaNXB = new  JComboBox();
+    // private JComboBox txtMaNXB = new  JComboBox();
     private JComboBox txtMaTheLoai = new JComboBox();
     private JComboBox txtMaTacGia = new JComboBox();
     JTextField txtTenSach = new JTextField();
@@ -70,16 +70,16 @@ public class QLS extends JPanel{
         JPanel container= new JPanel();
         txtMaSach.setEditable(false); 
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        for (map item : bllqls.getAllNcc()) {
-            txtMaNXB.addItem(item);
-        }
+        // for (map item : bllqls.getAllNcc()) {
+        //     txtMaNXB.addItem(item);
+        // }
         for (map item : bllqls.getAllTg()) {
             txtMaTacGia.addItem(item);
         }
         for (map item : bllqls.getAllLS()) {
             txtMaTheLoai.addItem(item);
         }
-        btnThem.setVisible(false);
+        //btnThem.setVisible(false);
 
         container.add(inputFieldsQLS());
         container.add(findFields());
@@ -97,10 +97,10 @@ btnThem.addActionListener(event  ->{
     txtMaSach.setText(newBookId); 
     book.setMaSach(newBookId);
     book.setTenSach(txtTenSach.getText());
-    map selectedItem = (map) txtMaNXB.getSelectedItem();
-        if (selectedItem != null) {
-            book.setMaNCC(selectedItem.getMa());
-        }
+    // map selectedItem = (map) txtMaNXB.getSelectedItem();
+    //     if (selectedItem != null) {
+    //         book.setMaNCC(selectedItem.getMa());
+    //     }
     map selectedItem1 = (map) txtMaTacGia.getSelectedItem();
         if (selectedItem1 != null) {
             book.setMaTacGia(selectedItem1.getMa());
@@ -125,10 +125,10 @@ btnSua.addActionListener(event -> {
     Book book = new Book();
     book.setMaSach(txtMaSach.getText());  
     book.setTenSach(txtTenSach.getText());  
-    map selectedItem = (map) txtMaNXB.getSelectedItem();
-    if (selectedItem != null) {
-        book.setMaNCC(selectedItem.getMa());
-    }
+    // map selectedItem = (map) txtMaNXB.getSelectedItem();
+    // if (selectedItem != null) {
+    //     book.setMaNCC(selectedItem.getMa());
+    // }
     map selectedItem1 = (map) txtMaTacGia.getSelectedItem();
     if (selectedItem1 != null) {
         book.setMaTacGia(selectedItem1.getMa());
@@ -186,7 +186,7 @@ btnLamMoi.addActionListener(event -> {
     txtNamXuatBan.setText("");
     txtSoLuong.setText("");
     txtDonGia.setText("");
-    txtMaNXB.setSelectedIndex(0);  
+    // txtMaNXB.setSelectedIndex(0);  
     txtMaTheLoai.setSelectedIndex(0); 
     txtMaTacGia.setSelectedIndex(0);
 
@@ -206,20 +206,19 @@ btnLamMoi.addActionListener(event -> {
     txtKhoangGiaTu.setText("");
     txtKhoangGiaDen.setText("");
 
-    // Đổ lại dữ liệu vào các JComboBox
-    // Cập nhật dữ liệu vào txtMaNXB (Mã Nhà Xuất Bản)
-    txtMaNXB.removeAllItems();
-    for (map item : bllqls.getAllNcc()) {
-        txtMaNXB.addItem(item);
-    }
+  
+    // txtMaNXB.removeAllItems();
+    // for (map item : bllqls.getAllNcc()) {
+    //     txtMaNXB.addItem(item);
+    // }
 
-    // Cập nhật dữ liệu vào txtMaTacGia (Mã Tác Giả)
+
     txtMaTacGia.removeAllItems();
     for (map item : bllqls.getAllTg()) {
         txtMaTacGia.addItem(item);
     }
 
-    // Cập nhật dữ liệu vào txtMaTheLoai (Mã Thể Loại)
+  
     txtMaTheLoai.removeAllItems();
     for (map item : bllqls.getAllLS()) {
         txtMaTheLoai.addItem(item);
@@ -275,7 +274,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             
             txtMaSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
             txtTenSach.setText(tableHD.getValueAt(selectedRow, 1).toString());
-                setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
+                //setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
                // txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
                 setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
                 setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 4).toString());
@@ -295,12 +294,12 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         QLS.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20)); 
 
         
-        JPanel txtQLS= new JPanel(new GridLayout(8,2));
+        JPanel txtQLS= new JPanel(new GridLayout(7,2));
        
     	     txtQLS.add(new JLabel ("Mã Sách: "));
              txtQLS.add(txtMaSach);
-    	     txtQLS.add( new JLabel ("Mã NXB: "));
-             txtQLS.add(txtMaNXB);
+    	    //  txtQLS.add( new JLabel ("Mã NXB: "));
+            //  txtQLS.add(txtMaNXB);
              txtQLS.add(new JLabel ("Mã Thể Loại: "));
 			 txtQLS.add(txtMaTheLoai);
              txtQLS.add(new JLabel ("Mã Tác Giả: "));
@@ -381,9 +380,9 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         c2[1].add(txtTenSach1);
         c1[2].add(new JLabel("Mã TG"));
         c2[2].add(txtMaTacGia1);
-        c1[3].add(new JLabel("Mã NXB"));
+        // c1[3].add(new JLabel("Mã NCC"));
         
-        c2[3].add(txtMaNXB1);
+        // c2[3].add(txtMaNXB1);
         c1[4].add(new JLabel("Mã TL"));
         c2[4].add(txtMaTheLoai1);
         c1[5].add(new JLabel("Năm xuất bản từ"));
@@ -430,7 +429,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-        String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
         modelHD.setColumnIdentifiers(colums);
         showTable();
         tableHD.setModel(modelHD);
@@ -447,7 +446,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),
                 s.getTenSach(),
-                s.getMaNCC(),        
+                //s.getMaNCC(),        
                 s.getMaLoai(),
                 s.getMaTacGia(),
                 s.getNamXB(),                
@@ -497,7 +496,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         if (
             // txtMaSach.getText().trim().isEmpty() ||
             txtTenSach.getText().trim().isEmpty() ||
-            txtMaNXB.getSelectedItem() == null ||
+            // txtMaNXB.getSelectedItem() == null ||
             txtMaTacGia.getSelectedItem() == null ||
             txtMaTheLoai.getSelectedItem() == null ||
             txtNamXuatBan.getText().trim().isEmpty() ||
