@@ -4,7 +4,7 @@
  */
 package DAL;
 
-import DTO.CTHD;
+import DTO.CTPN;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -12,98 +12,92 @@ import java.util.ArrayList;
  *
  * @author ADMIN
  */
-public class CTHDDAL {
+public class CTPNDAL {
     getConnection get= new getConnection();
-    public ArrayList<CTHD> selectAll(){
-        ArrayList<CTHD> cthd= new ArrayList<>();
+    public ArrayList<CTPN> selectAll(){
+        ArrayList<CTPN> ctpn= new ArrayList<>();
         try{
             Connection conn= get.getConnection();
-            String query= "Select * from CHITIETHOADON where STATUS= 0";
+            String query= "Select * from CHITIETPHIEUNHAP where STATUS= 0";
             PreparedStatement prestm= conn.prepareStatement(query);
             ResultSet rs= prestm.executeQuery();
             while(rs.next()){
-                String maHD= rs.getString("MAHD");
+                String maPN= rs.getString("MAPN");
                 String maSach= rs.getString("MASACH");
                 int solg= rs.getInt("SOLG");
                 float donGia= rs.getFloat("DONGIA");
                 float thanhTien= rs.getFloat("THANHTIEN");
-                float tongTien= rs.getFloat("TONGTIEN");
-                float giamGia= rs.getFloat("GIAMGIA");
                 
-                CTHD temp= new CTHD(maHD, maSach, solg, donGia, tongTien, giamGia, thanhTien);
-                cthd.add(temp);
+                CTPN temp= new CTPN(maPN, maSach, solg, donGia, thanhTien);
+                ctpn.add(temp);
             }
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
-        return cthd;
+        return ctpn;
     }
     
-    public ArrayList<CTHD> selectById(String id){
-        ArrayList<CTHD> cthd= new ArrayList<>();
+    public ArrayList<CTPN> selectById(String id){
+        ArrayList<CTPN> ctpn= new ArrayList<>();
         try{
             Connection conn= get.getConnection();
-            String query= "Select * from CHITIETHOADON where MAHD=? and STATUS= 0";
+            String query= "Select * from CHITIETPHIEUNHAP where MAPN=? and STATUS= 0";
             PreparedStatement prestm= conn.prepareCall(query);
             prestm.setString(1, id);
             ResultSet rs= prestm.executeQuery();
             while (rs.next()){
-                String maHD= rs.getString("MAHD");
+                String maPN= rs.getString("MAPN");
                 String maSach= rs.getString("MASACH");
                 int solg= rs.getInt("SOLG");
                 float donGia= rs.getFloat("DONGIA");
                 float thanhTien= rs.getFloat("THANHTIEN");
-                float tongTien= rs.getFloat("TONGTIEN");
-                float giamGia= rs.getFloat("GIAMGIA");
                 
-                CTHD temp= new CTHD(maHD, maSach, solg, donGia, tongTien, giamGia, thanhTien);
-                cthd.add(temp);
+                CTPN temp= new CTPN(maPN, maSach, solg, donGia, thanhTien);
+                ctpn.add(temp);
             }
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
-        return cthd;
+        return ctpn;
     }
     
-    public CTHD selectById(String id, String idSach){
-        CTHD cthd= null;
+    public CTPN selectById(String id, String idSach){
+        CTPN ctpn= null;
         try{
             Connection conn= get.getConnection();
-            String query= "Select * from CHITIETHOADON where MAHD=? and MASACH=? and STATUS= 0";
+            String query= "Select * from CHITIETPHIEUNHAP where MAPN=? and MASACH=? and STATUS= 0";
             PreparedStatement prestm= conn.prepareCall(query);
             prestm.setString(1, id);
             prestm.setString(2, idSach);
             ResultSet rs= prestm.executeQuery();
             while (rs.next()){
-                String maHD= rs.getString("MAHD");
+                String maPN= rs.getString("MAPN");
                 String maSach= rs.getString("MASACH");
                 int solg= rs.getInt("SOLG");
                 float donGia= rs.getFloat("DONGIA");
                 float thanhTien= rs.getFloat("THANHTIEN");
-                float tongTien= rs.getFloat("TONGTIEN");
-                float giamGia= rs.getFloat("GIAMGIA");
                 
-                cthd= new CTHD(maHD, maSach, solg, donGia, tongTien, giamGia, thanhTien);
+                ctpn= new CTPN(maPN, maSach, solg, donGia, thanhTien);
             }
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
-        return cthd;
+        return ctpn;
     }
     
-    public int delete(String maHD, String maSach){
+    public int delete(String maPN, String maSach){
         int row= 0;
         try{
             Connection conn= get.getConnection();
-            String query= "Update CHITIETHOADON set STATUS= 1 where MAHD= ? and MASACH= ?";
+            String query= "Update CHITIETPHIEUNHAP set STATUS= 1 where MAPN= ? and MASACH= ?";
             PreparedStatement prestm= conn.prepareCall(query);
-            prestm.setString(1, maHD);
+            prestm.setString(1, maPN);
             prestm.setString(2, maSach);
             row= prestm.executeUpdate();
             conn.close();
@@ -113,12 +107,12 @@ public class CTHDDAL {
         }
         return row;
     }
-    public int delete(String maHD){
-        String query= "Update CHITIETHOADON set STATUS= 1 where maHD= ?";
+    public int delete(String maPN){
+        String query= "Update CHITIETPHIEUNHAP set STATUS= 1 where maPN= ?";
         int rs= 0;
         try{
             Connection conn= get.getConnection();
-            rs= get.prepareUpdate(query, maHD);
+            rs= get.prepareUpdate(query, maPN);
             conn.close();
         }
         catch (Exception e){
@@ -126,12 +120,12 @@ public class CTHDDAL {
         }
         return rs;
     }
-    public int add(CTHD cthd){
-        String query =" Insert into Chitiethoadon(mahd, masach, solg, dongia, tongtien, giamgia, thanhtien, status) values (?, ?, ?, ?, ?, ?, ? ,?)";
+    public int add(CTPN ctpn){
+        String query =" Insert into Chitietphieunhap(mapn, masach, solg, dongia, thanhtien, status) values (?, ?, ?, ?, ?, ?)";
         int rs= 0;
         try{
             Connection conn= get.getConnection();
-            rs= get.prepareUpdate(query, cthd.getMaHD(), cthd.getMaSach(), cthd.getSoLuong(), cthd.getGiaTien(), cthd.getTongTien(), cthd.getGiamGia(), cthd.getThanhTien(), 0);
+            rs= get.prepareUpdate(query, ctpn.getMaPN(), ctpn.getMaSach(), ctpn.getSoLg(), ctpn.getDonGia(), ctpn.getThanhTien(), 0);
             conn.close();
         }
         catch(Exception e){
@@ -139,31 +133,29 @@ public class CTHDDAL {
         }
         return rs;
     }
-    public int add1(CTHD cthd) {
-        String query = "INSERT INTO Chitiethoadon(mahd, masach, solg, dongia, tongtien, giamgia, thanhtien, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public int add1(CTPN ctpn) {
+        String query = "INSERT INTO Chitiethoadon(mahd, masach, solg, dongia, thanhtien, status) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = get.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
     
-            ps.setString(1, cthd.getMaHD());
-            ps.setString(2, cthd.getMaSach());
-            ps.setInt(3, cthd.getSoLuong());
-            ps.setDouble(4, cthd.getGiaTien());
-            ps.setDouble(5, cthd.getTongTien());
-            ps.setDouble(6, cthd.getGiamGia());
-            ps.setDouble(7, cthd.getThanhTien());
-            ps.setInt(8, 0); // status mặc định
+            ps.setString(1, ctpn.getMaPN());
+            ps.setString(2, ctpn.getMaSach());
+            ps.setInt(3, ctpn.getSoLg());
+            ps.setDouble(4, ctpn.getDonGia());
+            ps.setDouble(5, ctpn.getThanhTien());
+            ps.setInt(6, 0); // status mặc định
     
             return ps.executeUpdate();
         } catch (Exception e) {
-            System.out.println("Lỗi add CTHD: " + e);
+            System.out.println("Lỗi add CTPN: " + e);
             return 0;
         }
     }
-    public boolean exists(String maHD, String maSach) {
-        String query = "SELECT 1 FROM Chitiethoadon WHERE mahd = ? AND masach = ?";
+    public boolean exists(String maPN, String maSach) {
+        String query = "SELECT 1 FROM Chitietphieunhap WHERE mapn = ? AND masach = ?";
         try (Connection conn = get.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, maHD);
+            ps.setString(1, maPN);
             ps.setString(2, maSach);
             ResultSet rs = ps.executeQuery();
             return rs.next();
@@ -172,43 +164,40 @@ public class CTHDDAL {
         }
         return false;
     }
-    public int updateSoLuong(CTHD cthd) {
-        String query = "UPDATE Chitiethoadon SET solg = solg + ?, tongtien = tongtien + ?, thanhtien = thanhtien + ? WHERE mahd = ? AND masach = ?";
+    public int updateSoLuong(CTPN ctpn) {
+        String query = "UPDATE Chitiethoadon SET solg = solg + ?, thanhtien = thanhtien + ? WHERE mapn = ? AND masach = ?";
         try (Connection conn = get.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, cthd.getSoLuong());
-            ps.setDouble(2, cthd.getTongTien());
-            ps.setDouble(3, cthd.getThanhTien());
-            ps.setString(4, cthd.getMaHD());
-            ps.setString(5, cthd.getMaSach());
+            ps.setInt(1, ctpn.getSoLg());
+            ps.setDouble(2, ctpn.getThanhTien());
+            ps.setString(3, ctpn.getMaPN());
+            ps.setString(4, ctpn.getMaSach());
             return ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("Lỗi updateSoLuong: " + e);
         }
         return 0;
     }
-    public int saveCTHD(CTHD cthd) {
-        if (exists(cthd.getMaHD(), cthd.getMaSach())) {
-            return updateSoLuong(cthd);
+    public int saveCTPN(CTPN ctpn) {
+        if (exists(ctpn.getMaPN(), ctpn.getMaSach())) {
+            return updateSoLuong(ctpn);
         } else {
-            return add1(cthd);
+            return add1(ctpn);
         }
     }
-    public int update(CTHD cthd, String oldMaHD, String oldMaSach) {
-    String query = "UPDATE Chitiethoadon SET mahd = ?, masach = ?, solg = ?, dongia = ?, tongtien = ?, giamgia = ?, thanhtien = ?, status = ? WHERE mahd = ? AND masach = ?";
+    public int update(CTPN ctpn, String oldMaPN, String oldMaSach) {
+    String query = "UPDATE Chitietphieunhap SET mapn = ?, masach = ?, solg = ?, dongia = ?,  thanhtien = ?, status = ? WHERE mahd = ? AND masach = ?";
     int rs = 0;
     try {
         Connection conn = get.getConnection();
         rs = get.prepareUpdate(query,
-            cthd.getMaHD(),        // mới
-            cthd.getMaSach(),      // mới
-            cthd.getSoLuong(),
-            cthd.getGiaTien(),
-            cthd.getTongTien(),
-            cthd.getGiamGia(),
-            cthd.getThanhTien(),
+            ctpn.getMaPN(),        // mới
+            ctpn.getMaSach(),      // mới
+            ctpn.getSoLg(),
+            ctpn.getDonGia(),
+            ctpn.getThanhTien(),
             0,                     // status mới
-            oldMaHD,               // điều kiện cũ
+            oldMaPN,               // điều kiện cũ
             oldMaSach              // điều kiện cũ
         );
         conn.close();
@@ -221,21 +210,21 @@ public class CTHDDAL {
 
     
     
-    // public int addAll(ArrayList<CTHD> list) {
+    // public int addAll(ArrayList<CTPN> list) {
     //     String query = "INSERT INTO Chitiethoadon(mahd, masach, solg, dongia, tongtien, giamgia, thanhtien, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     //     int count = 0;
     //     String updateQuery = "UPDATE SACH SET soluong = soluong - ? WHERE masach = ?";
     //     try (Connection conn = get.getConnection()) {
-    //         for (CTHD cthd : list) {
-    //             int result = get.prepareUpdate(query, cthd.getMaHD(), cthd.getMaSach(), cthd.getSoLuong(),
-    //                     cthd.getGiaTien(), cthd.getTongTien(), cthd.getGiamGia(), cthd.getThanhTien(), 0);
+    //         for (CTPN ctpn : list) {
+    //             int result = get.prepareUpdate(query, ctpn.getMaPN(), ctpn.getMaSach(), ctpn.getSoLuong(),
+    //                     ctpn.getGiaTien(), ctpn.getTongTien(), ctpn.getGiamGia(), ctpn.getThanhTien(), 0);
     //             if (result > 0){
-    //                 get.prepareUpdate(updateQuery, cthd.getSoLuong(), cthd.getMaSach());
+    //                 get.prepareUpdate(updateQuery, ctpn.getSoLuong(), ctpn.getMaSach());
     //                 count++;
     //             }
     //         }
     //     } catch (Exception e) {
-    //         System.out.println("Lỗi khi thêm danh sách CTHD: " + e);
+    //         System.out.println("Lỗi khi thêm danh sách CTPN: " + e);
     //     }
     //     return count;
     // }

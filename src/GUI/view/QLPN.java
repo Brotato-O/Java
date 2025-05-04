@@ -1,5 +1,5 @@
 package GUI.view;
-import BLL.CTHDBLL;
+import BLL.CTPNBLL;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,11 +12,10 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import DTO.HD;
-import DTO.CTHD;
-import BLL.HDBLL;
-import GUI.controller.QLHDController;
-import java.awt.Insets;
+import DTO.PN;
+import DTO.CTPN;
+import BLL.PNBLL;
+import GUI.controller.QLPNController;
 import java.util.ArrayList;
 import main.main;
 
@@ -40,8 +39,6 @@ public class QLPN extends JPanel {
     public JTextField timMaPN= new JTextField();
     public JTextField timMaNV= new JTextField();
     public JTextField timMaNCC= new JTextField();
-    public JComboBox timPhuongThuc= new JComboBox();
-    public DefaultComboBoxModel modelTimPT= new DefaultComboBoxModel();
     public JTextField tgianBD= new JTextField();
     public JTextField tgianKT= new JTextField();
     public JTextField tienBD= new JTextField();
@@ -69,7 +66,7 @@ public class QLPN extends JPanel {
     public JButton suaCTPN= new JButton("SỬA");
     public JButton xoaCTPN= new JButton("XÓA");
     public JButton themCTPN= new JButton("THÊM");
-    
+    public QLPNController controller;
     
     
     public QLPN(){
@@ -85,7 +82,7 @@ public class QLPN extends JPanel {
         container.add(PN());
         container.add(CTPN());
         add(container, BorderLayout.CENTER);
-        
+        addEvent();
     }
     
     public JPanel inputFields(){
@@ -251,7 +248,7 @@ public class QLPN extends JPanel {
         };
         modelPN.setColumnIdentifiers(colums);
         tablePN.setModel(modelPN);
-        
+        setTable();
         JPanel pTable= new JPanel(new BorderLayout());
         JScrollPane p1= new JScrollPane(tablePN);
         pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -295,7 +292,7 @@ public class QLPN extends JPanel {
         };
         modelCTPN.setColumnIdentifiers(colums);
         tableCTPN.setModel(modelCTPN);
-        
+        setTableCTPN();
         JScrollPane pane= new JScrollPane(tableCTPN);
         JPanel pTable= new JPanel(new BorderLayout());
         pTable.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
@@ -314,9 +311,57 @@ public class QLPN extends JPanel {
     }
     
     
-
+    public void addEvent(){
+        controller = new QLPNController(this);
+        tablePN.addMouseListener(controller.cthdAdapter);
+        ctTong.addActionListener(controller.showCTPN);
+        xoaCTPN.addActionListener(controller.confirmDelete);
+        themCTPN.addActionListener(controller.addCTPN);
+        tim.addActionListener(controller.findPN);
+        lamMoi.addActionListener(controller.showPN);
+        xoa.addActionListener(controller.deletePN);
+        sua.addActionListener(controller.editPN);
+//        ctMaNV.addActionListener(controller.ctNV);
+//        ctMaKH.addActionListener(controller.ctSach);
+        suaCTPN.addActionListener(controller.editCTPN);
+        xuat.addActionListener(controller.xuatPN);
+    }
    
+    public void setTable(){
+        PNBLL pnbll= new PNBLL();
+        ArrayList<PN> pn= pnbll.selectAll();
+        DefaultTableModel modelPN= (DefaultTableModel) tablePN.getModel();
+        modelPN.setRowCount(0);
+        for (int i=0; i< pn.size(); i++){
+            PN item= pn.get(i);
+            Object[] row= new Object[] {
+                item.getMaPN(), 
+                item.getMaNV(), 
+                item.getMaNCC(), 
+                item.getNgayNhap(), 
+                item.getTongTien(), 
+                item.getTongSL()
+            };
+            modelPN.addRow(row);
+        }
+    }
     
+    public void setTableCTPN(){
+        CTPNBLL ctpnbll= new CTPNBLL();
+        ArrayList<CTPN> ctpn= ctpnbll.selectAll();
+        DefaultTableModel modelCTPN= (DefaultTableModel) tableCTPN.getModel();
+        modelCTPN.setRowCount(0);
+        for (int i=0; i< ctpn.size(); i++){
+            CTPN item= ctpn.get(i);
+            Object[] row= new Object[]{
+                item.getMaPN(), 
+                item.getMaSach(), 
+                item.getSoLg(), 
+                item.getDonGia(),
+                item.getThanhTien()};
+            modelCTPN.addRow(row);
+        }
+    }
     
     public JTable getTablePN() {
     return tablePN;

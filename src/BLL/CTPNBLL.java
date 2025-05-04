@@ -1,0 +1,87 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package BLL;
+
+import DAL.CTPNDAL;
+import DAL.DALQLS;
+import DTO.CTPN;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author ADMIN
+ */
+public class CTPNBLL {
+    CTPNDAL ctpn= new CTPNDAL();
+    DALQLS dalqls = new DALQLS();
+    public ArrayList<CTPN> selectAll(){
+        return ctpn.selectAll();
+    }
+    public ArrayList<CTPN> selectById(String id){
+        return ctpn.selectById(id);
+    }
+    public CTPN selectById(String id, String maSach){
+        return ctpn.selectById(id, maSach);
+    }
+    public int delete(String maPN, String maSach){
+        return ctpn.delete(maPN, maSach);
+    }
+    public int delete(String maPN){
+        return ctpn.delete(maPN);
+    }
+    public int add(String maPN, String maSach, String soLuong, String donGia, String thanhTien){
+        int solg1;
+        float donGia1, thanhTien1;
+        try{
+            solg1= Integer.parseInt(soLuong);
+            donGia1= Float.parseFloat(donGia);
+            thanhTien1= solg1* donGia1;
+        }
+        catch(Exception er){
+            return -1;
+        }
+        if (solg1==0) return -1;
+        if (ctpn.selectById(maPN, maSach) != null) return -2;
+        CTPN ctpn1= new CTPN(maPN, maSach, solg1, donGia1, thanhTien1);
+        return ctpn.add(ctpn1);
+    }
+    public Boolean addall(ArrayList<CTPN> list){
+        boolean allSuccess = true;
+        for (CTPN ctpn1 : list) {
+            int currentStock = dalqls.getSoLuong(ctpn1.getMaSach());
+            if (currentStock < ctpn1.getSoLg()) {
+                System.out.println("Không đủ sách cho mã sách: " + ctpn1.getMaSach());
+                allSuccess = false;
+                continue;
+            }
+    
+            int result = ctpn.saveCTPN(ctpn1);
+            if (result > 0) {
+                dalqls.truSoLuong(ctpn1.getMaSach(), ctpn1.getSoLg());
+            } else {
+                System.out.println("Lỗi khi thêm CTPN: " + ctpn1.getMaPN());
+                allSuccess = false;
+            }
+        }
+        return allSuccess;
+    }
+    public int update(String maPN, String maSach, String soLuong, String donGia, String thanhTien, String maPN1, String maSach1){
+        int solg1;
+        float donGia1, giamGia1, tongTien1, thanhTien1;
+        try{
+            solg1= Integer.parseInt(soLuong);
+            donGia1= Float.parseFloat(donGia);
+            thanhTien1= solg1* donGia1;
+        }
+        catch(Exception er){
+            return -1;
+        }
+        if (solg1==0) return -1;
+        if (!maPN.equals(maPN1) && ctpn.selectById(maPN1, maSach1) != null) return -2;
+        CTPN ctpn1= new CTPN(maPN, maSach, solg1, donGia1 , thanhTien1);
+        return ctpn.update(ctpn1, maPN1, maSach1);
+    }
+}

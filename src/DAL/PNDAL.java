@@ -90,40 +90,33 @@ public class PNDAL {
         return row;
     }
     
-    public int updateTongTien(CTPN cthd){
+    public int updateTongTien(CTPN ctpn){
         int row= 0;
         try{
             Connection conn= get.getConnection();
-            String query= "Update PHIEUNHAP set TONGTIEN= TONGTIEN - ?, TONGSOLG= TONGSOLG-?, TONGGG= TONGGG-? where maPN=?";
-            String query1= "Update PHIEUNHAP set THANHTIEN= TONGTIEN- TONGGG";
-            row= get.prepareUpdate(query, cthd.getTongTien(), cthd.getSoLuong(),  cthd.getGiamGia(), cthd.getMaPN());
+            String query= "Update PHIEUNHAP set TONGTIEN= TONGTIEN - ?, TONGSOLG= TONGSOLG-? where maPN=?";
+            row= get.prepareUpdate(query, ctpn.getThanhTien(), ctpn.getSoLg(), ctpn.getMaPN());
             
-            PreparedStatement prestm= conn.prepareStatement(query1);
-            prestm.executeUpdate();
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
-        System.out.println("row" + row);
         return row;
     }
-    public int updateTongTienAdd(CTPN cthd){
+    public int updateTongTienAdd(CTPN ctpn){
         int row= 0;
         try{
             Connection conn= get.getConnection();
-            String query= "Update PHIEUNHAP set TONGTIEN= TONGTIEN + ?, TONGSOLG= TONGSOLG+?, TONGGG= TONGGG+? where maPN=?";
-            String query1= "Update PHIEUNHAP set THANHTIEN= TONGTIEN- TONGGG";
-            row= get.prepareUpdate(query, cthd.getTongTien(), cthd.getSoLuong(),  cthd.getGiamGia(), cthd.getMaPN());
+            String query= "Update PHIEUNHAP set TONGTIEN= TONGTIEN + ?, TONGSOLG= TONGSOLG+? where maPN=?";
+            row= get.prepareUpdate(query, ctpn.getThanhTien(), ctpn.getSoLg(), ctpn.getMaPN());
             
-            PreparedStatement prestm= conn.prepareStatement(query1);
-            prestm.executeUpdate();
+            
             conn.close();
         }
         catch (Exception e){
             System.out.println(e);
         }
-        System.out.println("row" + row);
         return row;
     }
     
@@ -140,17 +133,16 @@ public class PNDAL {
         }
         return row;
     }
-    public ArrayList<PN> findPN(String maPN, String maNV, String maNCC, String phuongThuc, LocalDate bd, LocalDate kt, float tienTu, float tienDen){
+    public ArrayList<PN> findPN(String maPN, String maNV, String maNCC, LocalDate bd, LocalDate kt, float tienTu, float tienDen){
         ArrayList<PN> hd= new ArrayList<>();
         try{
             String query= "Select * from PHIEUNHAP where 1=1" ;
             Connection conn= get.getConnection();
-            if (!phuongThuc.equals("Tat ca")) query += "and hinhthuc= '" + phuongThuc +"' ";
             if (!maPN.equals("")) query += " And maPN= '" + maPN +"' ";
             if (!maNV.equals("")) query += " and maNV= '" + maNV +"' ";
             if (!maNCC.equals("")) query += " and maNCC= '" +maNCC + "' ";
-            if (bd != null) query += " AND CAST(ngaylap AS DATE)>= '" + bd.toString() + "' ";
-            if (kt != null) query += " AND CAST(ngaylap AS DATE)<= '" + kt.toString() + "' ";
+            if (bd != null) query += " AND CAST(ngaynhap AS DATE)>= '" + bd.toString() + "' ";
+            if (kt != null) query += " AND CAST(ngaynhap AS DATE)<= '" + kt.toString() + "' ";
             if (tienTu != 0) query += " AND tongtien >= " + tienTu + " ";
             if (tienDen != 0) query += " AND tongtien <= " + tienDen + " ";
             PreparedStatement prestm= conn.prepareCall(query);
@@ -159,14 +151,11 @@ public class PNDAL {
                 String maPN1= rs.getString("MAPN");
                 String maNV1= rs.getString("MANV");
                 String maNCC1= rs.getString("MANCC");
-                String ngayLap= rs.getString("NGAYLAP");
+                String ngayLap= rs.getString("NGAYNHAP");
                 float tongTien= rs.getFloat("TONGTIEN");
                 int tongSL= rs.getInt("TONGSOLG");
-                String hinhThuc= rs.getString("HINHTHUC");
-                float thanhTien= rs.getFloat("THANHTIEN");
-                float tongGG= rs.getFloat("TONGGG");
                 
-                PN temp= new PN(maPN1, maNV1, maNCC1, ngayLap, hinhThuc, tongGG, tongTien, tongSL, thanhTien);
+                PN temp= new PN(maPN1, maNV1, maNCC1, ngayLap, tongTien, tongSL);
                 hd.add(temp);
                
             }
@@ -178,12 +167,12 @@ public class PNDAL {
         return hd;
     }
     
-    public int editPN(String maPN, String maNCC, String maNV, LocalDate ngayLap, String phuongThuc){
-        String query= "Update HOadon set maNV=?, maNCC=? ngaylap=?, phuongthuc=? where maPN=?";
+    public int editPN(String maPN, String maNCC, String maNV, LocalDate ngayLap){
+        String query= "Update HOadon set maNV=?, maNCC=? ngaylap=? where maPN=?";
         int rs= 0;
         try{
             Connection conn= get.getConnection();
-            rs= get.prepareUpdate(query, maNV, maNCC, ngayLap, phuongThuc);
+            rs= get.prepareUpdate(query, maNV, maNCC, ngayLap);
             conn.close();
         }
         catch (Exception e){

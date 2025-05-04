@@ -20,7 +20,7 @@ public class CTPN {
     }
 
     // Constructor đầy đủ
-    public CTPN(String maPN, String maSach, float donGia, int soLg, float thanhTien) {
+    public CTPN(String maPN, String maSach, int soLg, float donGia, float thanhTien) {
         this.maPN = maPN;
         this.maSach = maSach;
         this.donGia = donGia;
