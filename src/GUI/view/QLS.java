@@ -259,8 +259,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
             txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
             txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
-           // String imageName = tableHD.getValueAt(selectedRow, 8).toString(); // Cột 8 là ảnh
-           // showImageOnPanel(imgQLS, imageName);
+           
            
         }
     }
@@ -497,27 +496,6 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
     
         return true;
     }
-    // chưa biết làm
-    // public void showImageOnPanel(JPanel panel, String imageName) {
-    //     String imagePath = "src/img/" + imageName; 
-    //     ImageIcon icon = new ImageIcon(imagePath);
-        
-    //     if (icon.getIconWidth() == -1) {
-    //         System.out.println("Không tìm thấy ảnh: " + imagePath);
-    //         icon = new ImageIcon("src/img/book-stack.png");
-    //     } else {
-    //         System.out.println("Đang hiển thị ảnh: " + imagePath);
-    //     }
-        
-    //     Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
-    //     icon = new ImageIcon(img);
-    //     JLabel lblImage = new JLabel(icon);
-        
-    //     panel.removeAll();
-    //     panel.add(lblImage, BorderLayout.CENTER);
-    //     panel.revalidate();
-    //     panel.repaint();
-    // }
 
     public ArrayList<Book> timKiemSach() {
     String maSach = txtMaSach1.getText().trim();
