@@ -134,6 +134,10 @@ public class QLBH extends JPanel{
     });
     xacNhan.addActionListener(even -> {
         if (cthdbll.addall(listCTHD)){
+            model.setRowCount(0);
+            listCTHD.clear();
+            total = 0 ;
+            thanhTien.setText(String.valueOf(total));
             JOptionPane.showMessageDialog(container, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -141,7 +145,87 @@ public class QLBH extends JPanel{
 
         }
     });
+    xoa.addActionListener(even -> {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow >= 0) {
+        listCTHD.remove(selectedRow);
+        float tt = Float.parseFloat(table.getValueAt(selectedRow, 5).toString());
+        total = total - tt;
+        thanhTien.setText(String.valueOf(total));
+        showTable();
+    }
+});
+    sua.addActionListener(even -> {
+        int selectedRow = table.getSelectedRow();
+    if (selectedRow >= 0) {
+        // Lấy dữ liệu từ các JTextField
+        String soLuongStr = soLg.getText();
+        String donGiaStr = donGia.getText();
+        String maGiam = maGG.getText();
+        int soluong = Integer.parseInt(soLg.getText());
+        float dongia = Float.parseFloat(donGia.getText());
+        float a;
+        float tt = (float)soluong * dongia;
 
+        try {
+            CTHD cthd = listCTHD.get(selectedRow);
+            cthd.setMaSach(maSach.getText());
+        //hiện tại đang cho thêm cố định vào HD001
+        cthd.setMaHD("HD001");
+        cthd.setSoLuong(Integer.parseInt(soLg.getText()));
+        if (maGG.getText().trim().isEmpty()) {
+            cthd.setGiamGia(0);
+            a=0;
+        }else {
+            cthd.setGiamGia(Float.parseFloat(maGG.getText()));
+            a= Float.parseFloat(maGG.getText());
+        }
+        cthd.setGiaTien(Float.parseFloat(donGia.getText()));
+        cthd.setTongTien((float)soluong*dongia);
+        cthd.setThanhTien(tt-a);
+        float tt1= tt-a;
+        float tt2 = Float.parseFloat(table.getValueAt(selectedRow, 5).toString());
+        total = total - tt2;
+        total = total + tt1;
+        thanhTien.setText(String.valueOf(total));
+        table.setValueAt(maSach.getText().trim(), selectedRow, 0);
+        table.setValueAt(soLuongStr, selectedRow, 1);
+        table.setValueAt(donGiaStr, selectedRow, 2);
+        table.setValueAt(tt, selectedRow, 3);
+        table.setValueAt(maGiam, selectedRow, 4);
+        table.setValueAt(tt1, selectedRow, 5);
+            JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Số lượng hoặc đơn giá không hợp lệ!");
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Vui lòng chọn một dòng để sửa.");
+    }
+    });
+    huy.addActionListener(even -> {
+        table.clearSelection();
+        maSach.setText("");
+        soLg.setText("");
+        donGia.setText("");
+        maGG.setText("");
+        tenSach.setText("");
+    });
+    table.getSelectionModel().addListSelectionListener(e -> {
+    
+        if (!e.getValueIsAdjusting()) {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow >= 0) {
+                
+                maSach.setText(table.getValueAt(selectedRow, 0).toString());
+                soLg.setText(table.getValueAt(selectedRow, 1).toString());
+                donGia.setText(table.getValueAt(selectedRow, 2).toString());
+                tenSach.setText("");
+                maGG.setText(table.getValueAt(selectedRow, 4).toString());
+
+               
+            }
+        }
+    });
     }
    
     public JPanel HD(){

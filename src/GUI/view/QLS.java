@@ -24,7 +24,7 @@ public class QLS extends JPanel{
     int height= main.height;
     int width= main.width;
     JTextField txtMaSach = new JTextField();
-    private JComboBox txtMaNXB = new  JComboBox();
+    // private JComboBox txtMaNXB = new  JComboBox();
     private JComboBox txtMaTheLoai = new JComboBox();
     private JComboBox txtMaTacGia = new JComboBox();
     JTextField txtTenSach = new JTextField();
@@ -70,15 +70,17 @@ public class QLS extends JPanel{
         JPanel container= new JPanel();
         txtMaSach.setEditable(false); 
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        for (map item : bllqls.getAllNcc()) {
-            txtMaNXB.addItem(item);
-        }
+        // for (map item : bllqls.getAllNcc()) {
+        //     txtMaNXB.addItem(item);
+        // }
         for (map item : bllqls.getAllTg()) {
             txtMaTacGia.addItem(item);
         }
         for (map item : bllqls.getAllLS()) {
             txtMaTheLoai.addItem(item);
         }
+        //btnThem.setVisible(false);
+
         container.add(inputFieldsQLS());
         container.add(findFields());
         container.add(tbQLS());
@@ -95,10 +97,10 @@ btnThem.addActionListener(event  ->{
     txtMaSach.setText(newBookId); 
     book.setMaSach(newBookId);
     book.setTenSach(txtTenSach.getText());
-    map selectedItem = (map) txtMaNXB.getSelectedItem();
-        if (selectedItem != null) {
-            book.setMaNCC(selectedItem.getMa());
-        }
+    // map selectedItem = (map) txtMaNXB.getSelectedItem();
+    //     if (selectedItem != null) {
+    //         book.setMaNCC(selectedItem.getMa());
+    //     }
     map selectedItem1 = (map) txtMaTacGia.getSelectedItem();
         if (selectedItem1 != null) {
             book.setMaTacGia(selectedItem1.getMa());
@@ -123,10 +125,10 @@ btnSua.addActionListener(event -> {
     Book book = new Book();
     book.setMaSach(txtMaSach.getText());  
     book.setTenSach(txtTenSach.getText());  
-    map selectedItem = (map) txtMaNXB.getSelectedItem();
-    if (selectedItem != null) {
-        book.setMaNCC(selectedItem.getMa());
-    }
+    // map selectedItem = (map) txtMaNXB.getSelectedItem();
+    // if (selectedItem != null) {
+    //     book.setMaNCC(selectedItem.getMa());
+    // }
     map selectedItem1 = (map) txtMaTacGia.getSelectedItem();
     if (selectedItem1 != null) {
         book.setMaTacGia(selectedItem1.getMa());
@@ -184,14 +186,16 @@ btnLamMoi.addActionListener(event -> {
     txtNamXuatBan.setText("");
     txtSoLuong.setText("");
     txtDonGia.setText("");
-    txtMaNXB.setSelectedIndex(0);  
+    // txtMaNXB.setSelectedIndex(0);  
     txtMaTheLoai.setSelectedIndex(0); 
     txtMaTacGia.setSelectedIndex(0);
 
+    // Làm mới các TextField thống kê
     txtDonGiaCaoNhat.setText("");
     txtDonGiaThapNhat.setText("");
     txtTongSoSach.setText(""); 
 
+    // Làm mới các điều kiện tìm kiếm
     txtMaSach1.setText("");
     txtTenSach1.setText("");
     txtMaTacGia1.setText("");
@@ -201,7 +205,25 @@ btnLamMoi.addActionListener(event -> {
     txtNXBDen.setText("");
     txtKhoangGiaTu.setText("");
     txtKhoangGiaDen.setText("");
-    
+
+  
+    // txtMaNXB.removeAllItems();
+    // for (map item : bllqls.getAllNcc()) {
+    //     txtMaNXB.addItem(item);
+    // }
+
+
+    txtMaTacGia.removeAllItems();
+    for (map item : bllqls.getAllTg()) {
+        txtMaTacGia.addItem(item);
+    }
+
+  
+    txtMaTheLoai.removeAllItems();
+    for (map item : bllqls.getAllLS()) {
+        txtMaTheLoai.addItem(item);
+    }
+
     list = bllqls.getAllBooks();  
     showTable(); 
 });
@@ -252,15 +274,14 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             
             txtMaSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
             txtTenSach.setText(tableHD.getValueAt(selectedRow, 1).toString());
-                setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
+                //setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
                // txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
                 setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
                 setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 4).toString());
             txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
             txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
             txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
-           // String imageName = tableHD.getValueAt(selectedRow, 8).toString(); // Cột 8 là ảnh
-           // showImageOnPanel(imgQLS, imageName);
+           
            
         }
     }
@@ -273,12 +294,12 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         QLS.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20)); 
 
         
-        JPanel txtQLS= new JPanel(new GridLayout(8,2));
+        JPanel txtQLS= new JPanel(new GridLayout(7,2));
        
     	     txtQLS.add(new JLabel ("Mã Sách: "));
              txtQLS.add(txtMaSach);
-    	     txtQLS.add( new JLabel ("Mã NXB: "));
-             txtQLS.add(txtMaNXB);
+    	    //  txtQLS.add( new JLabel ("Mã NXB: "));
+            //  txtQLS.add(txtMaNXB);
              txtQLS.add(new JLabel ("Mã Thể Loại: "));
 			 txtQLS.add(txtMaTheLoai);
              txtQLS.add(new JLabel ("Mã Tác Giả: "));
@@ -316,7 +337,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
              
     	    //  imgQLS.setBackground(Color.gray);
              ImageIcon icon = new ImageIcon("src/img/book-stack.png");
-            Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
+            Image img = icon.getImage().getScaledInstance(100, 160, Image.SCALE_SMOOTH);
             icon = new ImageIcon(img);
             JLabel lblImage = new JLabel(icon);
             imgQLS.add(lblImage);
@@ -359,9 +380,9 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         c2[1].add(txtTenSach1);
         c1[2].add(new JLabel("Mã TG"));
         c2[2].add(txtMaTacGia1);
-        c1[3].add(new JLabel("Mã NXB"));
+        // c1[3].add(new JLabel("Mã NCC"));
         
-        c2[3].add(txtMaNXB1);
+        // c2[3].add(txtMaNXB1);
         c1[4].add(new JLabel("Mã TL"));
         c2[4].add(txtMaTheLoai1);
         c1[5].add(new JLabel("Năm xuất bản từ"));
@@ -408,7 +429,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-        String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
         modelHD.setColumnIdentifiers(colums);
         showTable();
         tableHD.setModel(modelHD);
@@ -425,7 +446,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),
                 s.getTenSach(),
-                s.getMaNCC(),        
+                //s.getMaNCC(),        
                 s.getMaLoai(),
                 s.getMaTacGia(),
                 s.getNamXB(),                
@@ -475,7 +496,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         if (
             // txtMaSach.getText().trim().isEmpty() ||
             txtTenSach.getText().trim().isEmpty() ||
-            txtMaNXB.getSelectedItem() == null ||
+            // txtMaNXB.getSelectedItem() == null ||
             txtMaTacGia.getSelectedItem() == null ||
             txtMaTheLoai.getSelectedItem() == null ||
             txtNamXuatBan.getText().trim().isEmpty() ||
@@ -497,27 +518,6 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
     
         return true;
     }
-    // chưa biết làm
-    // public void showImageOnPanel(JPanel panel, String imageName) {
-    //     String imagePath = "src/img/" + imageName; 
-    //     ImageIcon icon = new ImageIcon(imagePath);
-        
-    //     if (icon.getIconWidth() == -1) {
-    //         System.out.println("Không tìm thấy ảnh: " + imagePath);
-    //         icon = new ImageIcon("src/img/book-stack.png");
-    //     } else {
-    //         System.out.println("Đang hiển thị ảnh: " + imagePath);
-    //     }
-        
-    //     Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
-    //     icon = new ImageIcon(img);
-    //     JLabel lblImage = new JLabel(icon);
-        
-    //     panel.removeAll();
-    //     panel.add(lblImage, BorderLayout.CENTER);
-    //     panel.revalidate();
-    //     panel.repaint();
-    // }
 
     public ArrayList<Book> timKiemSach() {
     String maSach = txtMaSach1.getText().trim();

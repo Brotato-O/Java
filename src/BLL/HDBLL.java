@@ -127,4 +127,8 @@ public class HDBLL {
     public int updateAdd(CTHD cthd){
         return  hd.updateTongTienAdd(cthd);
     }
+    public int conutAll(){
+        ArrayList<HD> list =hd.selectAll();
+        return list.size();
+    }
 }

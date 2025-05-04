@@ -25,8 +25,6 @@ public class BLLQLS {
         ArrayList<map> listBook = dal.getAllLS();
         return listBook;
     }
-
-
     public String generateNewBookId(){
         return dal.generateNewBookId();
     }
@@ -76,4 +74,38 @@ public class BLLQLS {
         ArrayList<Book> list = dal.getAllBooks();
         return list.size();
     }
+    public int countTypeBook(){
+        ArrayList<map> list = dal.getAllLS();
+        return list.size();
+    }
+    public ArrayList<map> getoneType(){
+        ArrayList<map> listBook = dal.typeBook();
+        return listBook;
+    }
+    public ArrayList<map> getonencc(){
+        ArrayList<map> listBook = dal.NXBBook();
+        return listBook;
+    }
+    public ArrayList<map> getonetg(){
+        ArrayList<map> listBook = dal.tgBook();
+        return listBook;
+    }
+    public map getSachMuaNhieuNhat() {
+        ArrayList<map> list = getonetg();
+        map max = null;
+        int maxSoLuong = Integer.MIN_VALUE;
+    
+        for (map m : list) {
+            int sl = Integer.parseInt(m.getTen());
+            if (sl > maxSoLuong) {
+                maxSoLuong = sl;
+                max = m;
+            }
+        }
+    
+        return max;
+    }
+    // public boolean addBook1(Book book) {
+    //     return dal.addBook1(book);
+    // }
 }

@@ -41,7 +41,7 @@ public class SupermarketUI {
 
 		// Menu Items
 		String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên",
-				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Quản lý hóa đơn", "Xuất sách", "Giảm Giá", "Thống Kê",
+				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê",
 				"Nhà Cung Cấp" };
 
 		JPanel menuPanel = new JPanel();
@@ -91,8 +91,11 @@ public class SupermarketUI {
 		mainPanel.add(new QLBH(), "Bán Hàng");
 		mainPanel.add(new QLS(), "Quản Lý Sách");
 		mainPanel.add(new QLLS(), "Quản lý loại sách");
-		mainPanel.add(new QLHD(), "Quản lý hóa đơn");
+		mainPanel.add(new QLHD(), "Xuất sách");
+		mainPanel.add(new QLPN(), "Nhập sách");
 		mainPanel.add(new GiamGia(), "Giảm Giá");
+		mainPanel.add(new QLNCC(), "Nhà Cung Cấp");
+		mainPanel.add(new TK(), "Thống Kê");
 
 		sidePanel.add(menuPanel);
 
