@@ -5,20 +5,27 @@ public class NCC {
     private String tenNCC;
     private String diaChi;
     private String email;
-
+    private String soDienThoai;
     
     public NCC() {
     }
 
     
-    public NCC(String maNCC, String tenNCC, String diaChi, String email) {
+    public NCC(String maNCC, String tenNCC, String diaChi, String email, String soDienThoai) {
         this.maNCC = maNCC;
         this.tenNCC = tenNCC;
         this.diaChi = diaChi;
         this.email = email;
+        this.soDienThoai = soDienThoai;
     }
 
-    
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
     public String getMaNCC() {
         return maNCC;
     }

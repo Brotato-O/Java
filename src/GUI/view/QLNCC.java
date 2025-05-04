@@ -9,8 +9,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import BLL.BLLNCC;
+import DTO.NCC;
 
 /**
  *
@@ -21,6 +26,7 @@ public class QLNCC extends JPanel{
     public JTextField tenNCC= new JTextField();
     public JTextField diaChi= new JTextField();
     public JTextField email= new JTextField();
+    public JTextField sdt= new JTextField();
     
     public JButton them= new JButton("Thêm");
     public JButton sua= new JButton("Sửa");
@@ -32,8 +38,11 @@ public class QLNCC extends JPanel{
     public JTextField timTenNCC= new JTextField();
     public JTextField timDiaChi= new JTextField();
     public JTextField timEmail= new JTextField();
+    public ArrayList<NCC> list = new ArrayList<>();
+     public BLLNCC bllncc = new BLLNCC();
     
     public JTable table= new JTable();
+    DefaultTableModel model= (DefaultTableModel) table.getModel();
     
     public QLNCC(){
         setLayout(new BorderLayout());
@@ -41,14 +50,26 @@ public class QLNCC extends JPanel{
         temp.setLayout(new BoxLayout(temp, BoxLayout.Y_AXIS));
         temp.add(inputFieldsQLS());
         temp.add(timKiemField());
-        
-        DefaultTableModel model= (DefaultTableModel) table.getModel();
-        String[] column= {"Mã ncc", "Tên ncc", "Dia chi", "Email"};
+        list = bllncc.getAllNCC();
+        String[] column= {"Mã ncc", "Tên ncc", "Dia chi", "Email", "SĐT"};
         model.setColumnIdentifiers(column);
-        model.setRowCount(20);
+        showTable();
         JScrollPane pane= new JScrollPane(table);
         add(temp, BorderLayout.NORTH);
         add(pane);
+        table.getSelectionModel().addListSelectionListener(even -> {
+            if (!even.getValueIsAdjusting()) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow >= 0) {
+                    maNCC.setText(table.getValueAt(selectedRow, 0).toString());
+                    tenNCC.setText(table.getValueAt(selectedRow, 1).toString());
+                    diaChi.setText(table.getValueAt(selectedRow, 2).toString());
+                    email.setText(table.getValueAt(selectedRow, 3).toString());
+                   sdt.setText(table.getValueAt(selectedRow, 4).toString());
+                   
+                }
+            }
+        });
     }
     
     public JPanel inputFieldsQLS(){
@@ -57,7 +78,7 @@ public class QLNCC extends JPanel{
         
         JPanel mot= new JPanel();
         
-            mot.setLayout(new GridLayout(4, 2));
+        mot.setLayout(new GridLayout(5, 2));
         
         mot.add(new JLabel("Mã NCC"));
         mot.add(maNCC);
@@ -67,6 +88,8 @@ public class QLNCC extends JPanel{
         mot.add(diaChi);
         mot.add(new JLabel("Email"));
         mot.add(email);
+        mot.add(new JLabel("Số điện thoại"));
+        mot.add(sdt);
         
         JPanel hai= new JPanel();
             hai.setLayout(new GridLayout(4, 1));
@@ -101,6 +124,18 @@ public class QLNCC extends JPanel{
 
         return p;
     }
-    
+    public void showTable() {
+    model.setRowCount(0); 
+    for (NCC ncc : list) {
+        model.addRow(new Object[]{
+            ncc.getMaNCC(),
+            ncc.getTenNCC(),
+            ncc.getDiaChi(),
+            ncc.getEmail(),
+            ncc.getSoDienThoai()
+        });
+    }
+}
+
    
 }
