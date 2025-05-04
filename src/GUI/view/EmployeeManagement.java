@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class EmployeeManagement extends JPanel {
 
-	private JTextField idEmp, txtEmployeeName, txtChucVu, txtEmail, txtSDT, txtLuong;
+	private JTextField idEmp, txtEmployeeName, txtChucVu, txtEmail, txtSDT, txtLuong,txtPassword;
 	private JRadioButton rdiNam, rdiNu;
 	private JTextField txtNgaySinh;
 	//Fields Button
@@ -131,7 +131,7 @@ public class EmployeeManagement extends JPanel {
 		res.add(separator, BorderLayout.NORTH);
 
 		//Table
-		String[] columnNames = { "Mã NV", "Tên nhân viên", "Số điện thoại", "Email", "Phái", "Chức vụ", "Lương",
+		String[] columnNames = { "Mã NV", "Tên nhân viên", "Số điện thoại", "Email", "Password","Phái", "Chức vụ", "Lương",
 				"Ngày sinh" };
 
 		EmpBLL empBLL = new EmpBLL();
@@ -145,6 +145,7 @@ public class EmployeeManagement extends JPanel {
 					nv.getName_emp(), 
 					nv.getPhone_emp(), 
 					nv.getEmail_emp(),
+					nv.getPassword_emp(),
 					nv.getGender_emp(),
 					nv.getPosition_emp(),
 					nv.getSalary_emp(),
@@ -164,24 +165,24 @@ public class EmployeeManagement extends JPanel {
 	public JPanel FormInformation() {
 		JPanel res = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-
+	
 		gbc.insets = new Insets(8, 8, 8, 8);
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		//Dòng 1
+	
+		// Dòng 1
 		addLabel(res, "Mã Nhân Viên:", gbc, 0, 0);
 		this.idEmp = addTextField(res, gbc, 1, 0);
 		addLabel(res, "SĐT:", gbc, 2, 0);
 		this.txtSDT = addTextField(res, gbc, 3, 0);
-
-		//Dòng 2
+	
+		// Dòng 2
 		addLabel(res, "Tên Nhân Viên:", gbc, 0, 1);
 		this.txtEmployeeName = addTextField(res, gbc, 1, 1);
 		addLabel(res, "Lương:", gbc, 2, 1);
 		this.txtLuong = addTextField(res, gbc, 3, 1);
-
-		//Dòng 3
+	
+		// Dòng 3
 		addLabel(res, "Chức Vụ:", gbc, 0, 2);
 		this.txtChucVu = addTextField(res, gbc, 1, 2);
 		addLabel(res, "Giới Tính:", gbc, 2, 2);
@@ -195,13 +196,17 @@ public class EmployeeManagement extends JPanel {
 		pnlGender.add(rdiNu);
 		gbc.gridx = 3;
 		res.add(pnlGender, gbc);
-
-		//Dòng 4
+	
+		// Dòng 4
 		addLabel(res, "Email:", gbc, 0, 3);
 		this.txtEmail = addTextField(res, gbc, 1, 3);
 		addLabel(res, "Ngày Sinh:", gbc, 2, 3);
 		this.txtNgaySinh = addTextField(res, gbc, 3, 3);
-
+	
+		// Dòng 5: Thêm trường mật khẩu
+		addLabel(res, "Mật Khẩu:", gbc, 0, 4);
+		this.txtPassword = addTextField(res, gbc, 1, 4);
+	
 		return res;
 	}
 
@@ -276,6 +281,10 @@ public class EmployeeManagement extends JPanel {
 
 	public JTextField getEmail() {
 		return txtEmail;
+	}
+
+	public JTextField getPassword() {
+		return txtPassword;
 	}
 
 	public JTextField getChucVu() {

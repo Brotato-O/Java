@@ -12,26 +12,28 @@ public class EmployeeManagementDTO {
 	private String gender_emp;    // phai
 	private String position_emp;  // chucvu
 	private String birth_date;    // ngaysinh
+	private String password_emp;  // matkhau
 
 	public EmployeeManagementDTO() {
 
 	}
 
 	//Constructor cho thêm một nhân viên
-	public EmployeeManagementDTO(String maNV, String tenNV, String sdt, String email, String chucVu, float luong, String ngaySinh, boolean gioiTinh) {
+	public EmployeeManagementDTO(String maNV, String tenNV, String sdt, String email, String mk,String chucVu, float luong, String ngaySinh, boolean gioiTinh) {
 		this.id_emp = maNV;
 		this.name_emp = tenNV;
 		this.phone_emp = sdt;
 		this.salary_emp = luong;
 		this.status_emp = 1; // Mặc định là 1 (có mặt)
 		this.email_emp = email;
+		this.password_emp = mk; // Mật khẩu
 		this.birth_date = ngaySinh;
 		this.gender_emp = gioiTinh ? "Nam" : "Nu"; // true nếu nam, false nếu nữ
 		this.position_emp = chucVu;
 	}
 
 	public EmployeeManagementDTO(String id_emp, String name_emp, String phone_emp, 
-			float salary_emp, int status_emp, String email_emp, 
+			float salary_emp, int status_emp, String email_emp, String password_emp,
 			String gender_emp, String position_emp, String birth_date) {
 		this.id_emp = id_emp;
 		this.name_emp = name_emp;
@@ -39,6 +41,7 @@ public class EmployeeManagementDTO {
 		this.salary_emp = salary_emp;
 		this.status_emp = status_emp;
 		this.email_emp = email_emp;
+		this.password_emp = password_emp;
 		this.gender_emp = gender_emp;
 		this.position_emp = position_emp;
 		this.birth_date = birth_date;
@@ -114,5 +117,13 @@ public class EmployeeManagementDTO {
 
 	public void setBirth_date(String birth_date) {
 		this.birth_date = birth_date;
+	}
+
+	public String getPassword_emp() {
+		return password_emp;
+	}
+
+	public void setPassword_emp(String password_emp) {
+		this.password_emp = password_emp;
 	}
 }

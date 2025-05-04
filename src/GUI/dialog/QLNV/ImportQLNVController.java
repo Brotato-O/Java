@@ -36,12 +36,13 @@ public class ImportQLNVController {
                 String tenNV = model.getValueAt(i, 1).toString(); 
                 String sdt = model.getValueAt(i, 2).toString(); 
                 String email = model.getValueAt(i, 3).toString(); 
-                boolean gioiTinh = model.getValueAt(i, 4).toString().equalsIgnoreCase("Nam"); 
-                String chucVu = model.getValueAt(i, 5).toString(); 
-                float luong = Float.parseFloat(model.getValueAt(i, 6).toString()); 
-                String ngaySinh = model.getValueAt(i, 7).toString(); 
+                String mk = model.getValueAt(i, 4).toString();
+                boolean gioiTinh = model.getValueAt(i, 5).toString().equalsIgnoreCase("Nam"); 
+                String chucVu = model.getValueAt(i, 6).toString(); 
+                float luong = Float.parseFloat(model.getValueAt(i, 7).toString()); 
+                String ngaySinh = model.getValueAt(i, 8).toString(); 
 
-                EmployeeManagementDTO employee = new EmployeeManagementDTO(maNV, tenNV, sdt, email, chucVu, luong, ngaySinh, gioiTinh);
+                EmployeeManagementDTO employee = new EmployeeManagementDTO(maNV, tenNV, sdt, email,mk, chucVu, luong, ngaySinh, gioiTinh);
                 if (empBLL.addNV(employee)) {
                     soLuongThem++;
                     danhSachThemThanhCong.add(maNV);

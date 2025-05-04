@@ -123,6 +123,7 @@ public class EmpController {
     	view.getTenNV().setText(emp.getName_emp());
     	view.getSdt().setText(emp.getPhone_emp());
     	view.getEmail().setText(emp.getEmail_emp());
+		view.getPassword().setText(emp.getPassword_emp());
     	view.getChucVu().setText(emp.getPosition_emp());
     	view.getLuong().setText(String.valueOf(emp.getSalary_emp()));
     	view.getNgaySinh().setText(emp.getBirth_date());
@@ -145,8 +146,8 @@ public class EmpController {
 		}	
 	}
 
-	public void addEmployee(String maNV, String tenNV, String sdt, String email, String chucVu, float luong, String ngaySinh, boolean gioiTinh) {
-		EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email, chucVu, luong, ngaySinh, gioiTinh);
+	public void addEmployee(String maNV, String tenNV, String sdt, String email,String password ,String chucVu, float luong, String ngaySinh, boolean gioiTinh) {
+		EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email,password ,chucVu, luong, ngaySinh, gioiTinh);
 		if (empBLL.addNV(emp)) {
 			System.out.println("Thêm nhân viên thành công!");
 			refreshTable(); // Cập nhật bảng hiển thị
@@ -197,13 +198,14 @@ public class EmpController {
 			float luong = Float.parseFloat(view.getLuong().getText());
 			String ngaySinh = view.getNgaySinh().getText();
 			boolean gioiTinh = view.getRdiNam().isSelected();
+			String password = view.getPassword().getText();
 
 			if(!checkBirthDay(ngaySinh)) {
 				return;
 			}
 
 			// Tạo đối tượng EmployeeManagementDTO với thông tin đã lấy
-			EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email, chucVu, luong, ngaySinh, gioiTinh);
+			EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email,password , chucVu, luong, ngaySinh, gioiTinh);
 
 			// Gọi phương thức updateEmployee để cập nhật thông tin nhân viên
 			updateEmployee(emp);
@@ -340,6 +342,7 @@ public class EmpController {
 					emp.getName_emp(),
 					emp.getPhone_emp(),
 					emp.getEmail_emp(),
+					emp.getPassword_emp(),
 					emp.getGender_emp(),
 					emp.getPosition_emp(),
 					emp.getSalary_emp(),
@@ -361,7 +364,7 @@ public class EmpController {
 					System.out.println("Đọc file Excel thành công!");
 	
 					// Đặt tiêu đề cột
-					String[] columnNames = {"Mã NV", "Tên NV", "SĐT", "Email", "Giới tính", "Chức vụ", "Lương", "Ngày sinh"};
+					String[] columnNames = {"Mã NV", "Tên NV", "SĐT", "Email","MK", "Giới tính", "Chức vụ", "Lương", "Ngày sinh"};
 					modelEx.setColumnIdentifiers(columnNames);
 	
 	

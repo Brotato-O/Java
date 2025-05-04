@@ -11,6 +11,7 @@ public class AddQLNVDialog extends JDialog {
     public JTextField txtTenNV = new JTextField();
     public JTextField txtSDT = new JTextField();
     public JTextField txtEmail = new JTextField();
+    public JTextField password = new JTextField(); 
     public JRadioButton rdiNam = new JRadioButton("Nam");
     public JRadioButton rdiNu = new JRadioButton("Nữ");
     public ButtonGroup genderGroup = new ButtonGroup();
@@ -30,7 +31,7 @@ public class AddQLNVDialog extends JDialog {
     }
     
     private JPanel addMiddle() {
-        JPanel panel = new JPanel(new GridLayout(8, 2, 5, 5));
+        JPanel panel = new JPanel(new GridLayout(9, 2, 5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel lbMaNV = new JLabel("Mã nhân viên: ");
@@ -48,6 +49,10 @@ public class AddQLNVDialog extends JDialog {
         JLabel lbEmail = new JLabel("Email: ");
         panel.add(lbEmail);
         panel.add(txtEmail);
+
+        JLabel lbMatKhau = new JLabel("Mật khẩu: ");
+        panel.add(lbMatKhau);
+        panel.add(password);
 
         JLabel lbGioiTinh = new JLabel("Giới tính: ");
         JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -101,6 +106,10 @@ public class AddQLNVDialog extends JDialog {
 
     public JTextField getTxtEmail() {
         return txtEmail;
+    }
+
+    public JTextField getPassword() {
+        return password;
     }
 
     public JTextField getTxtChucVu() {

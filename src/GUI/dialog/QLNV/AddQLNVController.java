@@ -53,13 +53,14 @@ public class AddQLNVController {
             String tenNV = addQLNVDialog.getTxtTenNV().getText();
             String sdt = addQLNVDialog.getTxtSDT().getText();
             String email = addQLNVDialog.getTxtEmail().getText();
+            String mk = addQLNVDialog.getPassword().getText();
             String chucVu = addQLNVDialog.getTxtChucVu().getText();
             String luongStr = addQLNVDialog.getTxtLuong().getText();
             String ngaySinh = addQLNVDialog.getTxtNgaySinh().getText();
             boolean gioiTinh = addQLNVDialog.getRdiNam().isSelected();
 
             // Kiểm tra giá trị nhập liệu
-            if (maNV.isEmpty() || tenNV.isEmpty() || sdt.isEmpty() || email.isEmpty() || chucVu.isEmpty() || luongStr.isEmpty() || ngaySinh.isEmpty()) {
+            if (maNV.isEmpty() || tenNV.isEmpty() || sdt.isEmpty() || email.isEmpty() || chucVu.isEmpty() || luongStr.isEmpty() || ngaySinh.isEmpty() || mk.isEmpty()) {
                 JOptionPane.showMessageDialog(addQLNVDialog, "Vui lòng điền đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -77,7 +78,7 @@ public class AddQLNVController {
                 float luong = Float.parseFloat(luongStr);
 
                 // Gọi phương thức thêm nhân viên từ EmpController
-                mainController.addEmployee(maNV, tenNV, sdt, email, chucVu, luong, ngaySinh, gioiTinh);
+                mainController.addEmployee(maNV, tenNV, sdt, email,mk, chucVu, luong, ngaySinh, gioiTinh);
                 addQLNVDialog.dispose(); // Đóng dialog sau khi thêm nhân viên thành công
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(addQLNVDialog, "Lương phải là một số hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);

@@ -10,7 +10,7 @@ public class EmpDAL {
 
 	public ArrayList<EmployeeManagementDTO> getDanhSachNhanVien() {
 		try {
-			String sql = "SELECT * FROM NHANVIEN";
+			String sql = "SELECT * FROM NHANVIEN where STATUS = 0";
 			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
 			ResultSet res = pre.executeQuery();
 			ArrayList<EmployeeManagementDTO> listEmp = new ArrayList<EmployeeManagementDTO>();
@@ -20,6 +20,7 @@ public class EmpDAL {
 				emp.setName_emp(res.getString("TENNV"));
 				emp.setPhone_emp(res.getString("SDT"));
 				emp.setSalary_emp(res.getFloat("LUONG"));
+				emp.setPassword_emp(res.getString("MK"));
 				emp.setStatus_emp(res.getInt("STATUS"));
 				emp.setEmail_emp(res.getString("email"));
 				emp.setGender_emp(res.getString("phai"));
@@ -49,6 +50,7 @@ public class EmpDAL {
 				emp.setSalary_emp(res.getFloat("LUONG"));
 				emp.setStatus_emp(res.getInt("STATUS"));
 				emp.setEmail_emp(res.getString("email"));
+				emp.setPassword_emp(res.getString("MK"));
 				emp.setGender_emp(res.getString("phai"));
 				emp.setPosition_emp(res.getString("chucvu"));
 				emp.setBirth_date(res.getString("ngaysinh"));
@@ -62,7 +64,7 @@ public class EmpDAL {
 
 	public boolean addNhanVien(EmployeeManagementDTO emp) {
 		try {
-			String sql = "INSERT INTO NHANVIEN (MANV, TENNV, SDT, LUONG, STATUS, email, phai, chucvu, ngaysinh) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO NHANVIEN (MANV, TENNV, SDT, LUONG, STATUS, email,mk,  phai, chucvu, ngaysinh) VALUES (?, ?, ?, ?, ?, ?,?, ?, ?, ?)";
 			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
 			pre.setString(1, emp.getId_emp());
 			pre.setString(2, emp.getName_emp());
@@ -70,9 +72,10 @@ public class EmpDAL {
 			pre.setFloat(4, emp.getSalary_emp());
 			pre.setInt(5, emp.getStatus_emp());
 			pre.setString(6, emp.getEmail_emp());
-			pre.setString(7, emp.getGender_emp());
-			pre.setString(8, emp.getPosition_emp());
-			pre.setString(9, emp.getBirth_date());
+			pre.setString(7, emp.getPassword_emp());
+			pre.setString(8, emp.getGender_emp());
+			pre.setString(9, emp.getPosition_emp());
+			pre.setString(10, emp.getBirth_date());
 			return pre.executeUpdate() > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,16 +98,17 @@ public class EmpDAL {
 
 	public boolean updateNV(EmployeeManagementDTO emp) {
 		try {
-			String sql = "UPDATE nhanvien SET TENNV = ?, SDT = ?, LUONG = ?, email = ?, phai = ?, chucvu = ?, ngaysinh = ? WHERE MANV = ?";
+			String sql = "UPDATE nhanvien SET TENNV = ?, SDT = ?, LUONG = ?, email = ?,MK=?, phai = ?, chucvu = ?, ngaysinh = ? WHERE MANV = ?";
 			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
 			pre.setString(1, emp.getName_emp());
 			pre.setString(2, emp.getPhone_emp());
 			pre.setFloat(3, emp.getSalary_emp());
 			pre.setString(4, emp.getEmail_emp());
-			pre.setString(5, emp.getGender_emp());
-			pre.setString(6, emp.getPosition_emp());
-			pre.setString(7, emp.getBirth_date());
-			pre.setString(8, emp.getId_emp());
+			pre.setString(5, emp.getPassword_emp());
+			pre.setString(6, emp.getGender_emp());
+			pre.setString(7, emp.getPosition_emp());
+			pre.setString(8, emp.getBirth_date());
+			pre.setString(9, emp.getId_emp());
 			return pre.executeUpdate() > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -171,6 +175,7 @@ public class EmpDAL {
 				emp.setSalary_emp(res.getFloat("LUONG"));
 				emp.setStatus_emp(res.getInt("STATUS"));
 				emp.setEmail_emp(res.getString("email"));
+				emp.setPassword_emp(res.getString("MK"));
 				emp.setGender_emp(res.getString("phai"));
 				emp.setPosition_emp(res.getString("chucvu"));
 				emp.setBirth_date(res.getString("ngaysinh"));
@@ -204,6 +209,7 @@ public class EmpDAL {
 				emp.setSalary_emp(res.getFloat("LUONG"));
 				emp.setStatus_emp(res.getInt("STATUS"));
 				emp.setEmail_emp(res.getString("email"));
+				emp.setPassword_emp(res.getString("MK"));
 				emp.setGender_emp(res.getString("phai"));
 				emp.setPosition_emp(res.getString("chucvu"));
 				emp.setBirth_date(res.getString("ngaysinh"));
