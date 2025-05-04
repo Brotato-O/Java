@@ -70,6 +70,55 @@ public class QLNCC extends JPanel{
                 }
             }
         });
+        // SỰ KIỆN THÊM
+them.addActionListener(e -> {
+    NCC ncc = new NCC(
+        maNCC.getText(),
+        tenNCC.getText(),
+        diaChi.getText(),
+        email.getText(),
+        sdt.getText()
+    );
+
+    if (bllncc.addNCC(ncc)) {
+        JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
+        refreshTable();
+    } else {
+        JOptionPane.showMessageDialog(this, "Thêm thất bại. Kiểm tra dữ liệu!");
+    }
+});
+
+// SỰ KIỆN SỬA
+sua.addActionListener(e -> {
+    NCC ncc = new NCC(
+        maNCC.getText(),
+        tenNCC.getText(),
+        diaChi.getText(),
+        email.getText(),
+        sdt.getText()
+    );
+
+    if (bllncc.updateNCC(ncc)) {
+        JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+        refreshTable();
+    } else {
+        JOptionPane.showMessageDialog(this, "Cập nhật thất bại!");
+    }
+});
+
+// SỰ KIỆN XÓA
+xoa.addActionListener(e -> {
+    String ma = maNCC.getText();
+    int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa NCC " + ma + "?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+    if (confirm == JOptionPane.YES_OPTION) {
+        if (bllncc.deleteNCC(ma)) {
+            JOptionPane.showMessageDialog(this, "Xóa thành công!");
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Xóa thất bại!");
+        }
+    }
+});
     }
     
     public JPanel inputFieldsQLS(){
@@ -135,6 +184,10 @@ public class QLNCC extends JPanel{
             ncc.getSoDienThoai()
         });
     }
+}
+public void refreshTable() {
+    list = bllncc.getAllNCC();
+    showTable();
 }
 
    

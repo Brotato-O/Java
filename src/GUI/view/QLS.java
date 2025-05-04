@@ -188,10 +188,12 @@ btnLamMoi.addActionListener(event -> {
     txtMaTheLoai.setSelectedIndex(0); 
     txtMaTacGia.setSelectedIndex(0);
 
+    // Làm mới các TextField thống kê
     txtDonGiaCaoNhat.setText("");
     txtDonGiaThapNhat.setText("");
     txtTongSoSach.setText(""); 
 
+    // Làm mới các điều kiện tìm kiếm
     txtMaSach1.setText("");
     txtTenSach1.setText("");
     txtMaTacGia1.setText("");
@@ -201,7 +203,26 @@ btnLamMoi.addActionListener(event -> {
     txtNXBDen.setText("");
     txtKhoangGiaTu.setText("");
     txtKhoangGiaDen.setText("");
-    
+
+    // Đổ lại dữ liệu vào các JComboBox
+    // Cập nhật dữ liệu vào txtMaNXB (Mã Nhà Xuất Bản)
+    txtMaNXB.removeAllItems();
+    for (map item : bllqls.getAllNcc()) {
+        txtMaNXB.addItem(item);
+    }
+
+    // Cập nhật dữ liệu vào txtMaTacGia (Mã Tác Giả)
+    txtMaTacGia.removeAllItems();
+    for (map item : bllqls.getAllTg()) {
+        txtMaTacGia.addItem(item);
+    }
+
+    // Cập nhật dữ liệu vào txtMaTheLoai (Mã Thể Loại)
+    txtMaTheLoai.removeAllItems();
+    for (map item : bllqls.getAllLS()) {
+        txtMaTheLoai.addItem(item);
+    }
+
     list = bllqls.getAllBooks();  
     showTable(); 
 });
