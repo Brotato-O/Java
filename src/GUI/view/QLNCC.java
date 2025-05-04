@@ -119,6 +119,11 @@ xoa.addActionListener(e -> {
         }
     }
 });
+timKiem.addActionListener(e -> {
+    list = timKiemNCC();
+    showTable();  // Hiển thị lại bảng sau khi tìm kiếm
+});
+
     }
     
     public JPanel inputFieldsQLS(){
@@ -189,6 +194,32 @@ public void refreshTable() {
     list = bllncc.getAllNCC();
     showTable();
 }
+public ArrayList<NCC> timKiemNCC() {
+    String maNCC = timMaNCC.getText().trim();
+    String tenNCC = timTenNCC.getText().trim();
+    String diaChi = timDiaChi.getText().trim();
+    String email = timEmail.getText().trim();
+
+    ArrayList<NCC> ketQua = new ArrayList<>();
+    for (NCC ncc : bllncc.getAllNCC()) {
+        // Kiểm tra mã NCC
+        if (!maNCC.isEmpty() && !ncc.getMaNCC().contains(maNCC)) continue;
+
+        // Kiểm tra tên NCC
+        if (!tenNCC.isEmpty() && !ncc.getTenNCC().toLowerCase().contains(tenNCC.toLowerCase())) continue;
+
+        // Kiểm tra địa chỉ
+        if (!diaChi.isEmpty() && !ncc.getDiaChi().toLowerCase().contains(diaChi.toLowerCase())) continue;
+
+        // Kiểm tra email
+        if (!email.isEmpty() && !ncc.getEmail().toLowerCase().contains(email.toLowerCase())) continue;
+
+        // Nếu tất cả điều kiện đều hợp lệ, thêm NCC vào kết quả
+        ketQua.add(ncc);
+    }
+    return ketQua;
+}
+
 
    
 }
