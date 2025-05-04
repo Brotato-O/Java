@@ -33,7 +33,7 @@ public class QLPN extends JPanel {
     public JTextField tongSL= new JTextField();
     public JButton xoa= new JButton("XÓA");
     public JButton sua= new JButton("SỬA");
-    public JButton xuat= new JButton("XUẤT");
+    public JButton xuat= new JButton("THÊM");
     public JButton lamMoi= new JButton("LÀM MỚI");
     
     public JTextField timMaPN= new JTextField();
@@ -324,7 +324,7 @@ public class QLPN extends JPanel {
 //        ctMaNV.addActionListener(controller.ctNV);
 //        ctMaKH.addActionListener(controller.ctSach);
         suaCTPN.addActionListener(controller.editCTPN);
-        xuat.addActionListener(controller.xuatPN);
+        xuat.addActionListener(controller.themPN);
     }
    
     public void setTable(){

@@ -8,6 +8,7 @@
  * @author ADMIN
  */
 package GUI.view;
+import BLL.EmpBLL;
 import main.main;
 
 import java.awt.*;
@@ -101,6 +102,23 @@ public class loginForm extends JPanel{
         p.add(header, BorderLayout.NORTH);
         p.add(mainLogin, BorderLayout.CENTER);
         p.setOpaque(false);
+        
+        
+        login.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EmpBLL empbll= new EmpBLL();
+                String maNV= account.getText();
+                String mk= password.getText();
+                boolean rs= empbll.checkLogin(maNV, maNV);
+                if (rs){
+                    SupermarketUI sm = new SupermarketUI();
+                    sm.createAndShowGUI();
+                    sm.getSuperMarketUI();
+                }
+                else JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu sai");
+            }
+        });
         
         return p;
     }

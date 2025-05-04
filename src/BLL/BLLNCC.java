@@ -10,6 +10,13 @@ public class BLLNCC {
     public ArrayList<NCC> getAllNCC() {
         return dalncc.getAllNCC();
     }
+    public boolean checkNCC(String maNCC) {
+        ArrayList<NCC> ncc= getAllNCC();
+        for (int i=0; i< ncc.size(); i++)
+            if(ncc.get(i).getMaNCC().equalsIgnoreCase(maNCC))
+                return false;
+        return true;
+    }
     public boolean addNCC(NCC ncc) {
         if (isValidNCC(ncc)) {
             return dalncc.insertNCC(ncc);

@@ -19,16 +19,10 @@ public class main extends JFrame {
 	public main() {
 		setSize(width, height);
 		getContentPane().setBackground(Color.decode("#cdffff"));
-		add(new EmployeeManagement());
-		add(new CustomerManagement());
 		add(new QLHD());
 
 
                 add(new loginForm());
-//		add(new EmployeeManagement());
-//		add(new CustomerManagement());
-//		add(new QLHD());
-//                add(new GiamGia());
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		        setResizable(false);
@@ -36,11 +30,9 @@ public class main extends JFrame {
 	}
 
 	public static void main(String[] args) {
-//		        new main();
+		        new main();
 
-		 SupermarketUI sm = new SupermarketUI();
-		 sm.createAndShowGUI();
-		 sm.getSuperMarketUI();
+
 	}
 
 	
