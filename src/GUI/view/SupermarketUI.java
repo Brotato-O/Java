@@ -89,12 +89,13 @@ public class SupermarketUI {
 		// mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
 		// mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
 		mainPanel.add(new QLBH(), "Bán Hàng");
-//		mainPanel.add(new QLS(), "Quản Lý Sách");
+		mainPanel.add(new QLS(), "Quản Lý Sách");
 		mainPanel.add(new QLLS(), "Quản lý loại sách");
 		mainPanel.add(new QLHD(), "Xuất sách");
 		mainPanel.add(new QLPN(), "Nhập sách");
 		mainPanel.add(new GiamGia(), "Giảm Giá");
 		mainPanel.add(new QLNCC(), "Nhà Cung Cấp");
+		mainPanel.add(new TK(), "Thống Kê");
 
 		sidePanel.add(menuPanel);
 

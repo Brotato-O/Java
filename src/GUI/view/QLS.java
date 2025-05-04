@@ -336,7 +336,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
              
     	    //  imgQLS.setBackground(Color.gray);
              ImageIcon icon = new ImageIcon("src/img/book-stack.png");
-            Image img = icon.getImage().getScaledInstance(120, 160, Image.SCALE_SMOOTH);
+            Image img = icon.getImage().getScaledInstance(100, 160, Image.SCALE_SMOOTH);
             icon = new ImageIcon(img);
             JLabel lblImage = new JLabel(icon);
             imgQLS.add(lblImage);

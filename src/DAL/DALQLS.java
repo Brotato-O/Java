@@ -330,4 +330,67 @@ public class DALQLS {
         }
         return 0;
     }    
+    public ArrayList<map> typeBook(){
+        ArrayList<map> list = new ArrayList<>();
+        try {
+            // Gọi getConnection từ class khác
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement("Select tenloai, count(masach) as soluong from SACH join  LOAISACH on SACH.maloai = LOAISACH.maloai WHERE SACH.status = 1 GROUP BY tenloai;");
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                String ma = rs.getString("tenloai");
+                String soLuongStr = String.valueOf(rs.getInt("soluong"));
+                list.add(new map(ma, soLuongStr));
+            }
+            rs.close();
+            ps.close();
+            conn.close(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public ArrayList<map> NXBBook(){
+        ArrayList<map> list = new ArrayList<>();
+        try {
+            // Gọi getConnection từ class khác
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement("Select tenncc, count(masach) as soluong from SACH join NHACUNGCAP ON SACH.mancc = NHACUNGCAP.mancc WHERE SACH.status = 1 GROUP BY tenncc;");
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                String ma = rs.getString("tenncc");
+                String soLuongStr = String.valueOf(rs.getInt("soluong"));
+                list.add(new map(ma, soLuongStr));
+            }
+            rs.close();
+            ps.close();
+            conn.close(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public ArrayList<map> tgBook(){
+        ArrayList<map> list = new ArrayList<>();
+        try {
+            // Gọi getConnection từ class khác
+            Connection conn = new getConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement("Select tentg, count(masach) as soluong from SACH join   TACGIA ON SACH.matg = TACGIA.matg WHERE SACH.status = 1 GROUP BY tentg;");
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                String ma = rs.getString("tentg");
+                String soLuongStr = String.valueOf(rs.getInt("soluong"));
+                list.add(new map(ma, soLuongStr));
+            }
+            rs.close();
+            ps.close();
+            conn.close(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

@@ -7,6 +7,8 @@ package BLL;
 import DAL.CTHDDAL;
 import DAL.DALQLS;
 import DTO.CTHD;
+import DTO.map;
+
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -87,5 +89,10 @@ public class CTHDBLL {
         if (!maHD.equals(maHD1) && cthd.selectById(maHD1, maSach1) != null) return -2;
         CTHD cthd1= new CTHD(maHD, maSach, solg1, donGia1, tongTien1, giamGia1 , thanhTien1);
         return cthd.update(cthd1, maHD1, maSach1);
+    }
+    public ArrayList<map> getSoluongSach(){
+        ArrayList<map> list = cthd.getSoLuongSach();
+        
+        return list;
     }
 }

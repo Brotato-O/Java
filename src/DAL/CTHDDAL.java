@@ -5,6 +5,8 @@
 package DAL;
 
 import DTO.CTHD;
+import DTO.map;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -218,28 +220,23 @@ public class CTHDDAL {
     return rs;
 }
 
+    public ArrayList<map> getSoLuongSach() {
+    String query = "SELECT MASACH, SUM(SOLG) as total FROM CHITIETHOADON WHERE STATUS = 0 GROUP BY MASACH";
+        ArrayList<map> list = new ArrayList<>();
+    try (Connection conn = get.getConnection();
+         PreparedStatement ps = conn.prepareStatement(query);
+         ResultSet rs = ps.executeQuery()) {
 
-    
-    
-    // public int addAll(ArrayList<CTHD> list) {
-    //     String query = "INSERT INTO Chitiethoadon(mahd, masach, solg, dongia, tongtien, giamgia, thanhtien, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    //     int count = 0;
-    //     String updateQuery = "UPDATE SACH SET soluong = soluong - ? WHERE masach = ?";
-    //     try (Connection conn = get.getConnection()) {
-    //         for (CTHD cthd : list) {
-    //             int result = get.prepareUpdate(query, cthd.getMaHD(), cthd.getMaSach(), cthd.getSoLuong(),
-    //                     cthd.getGiaTien(), cthd.getTongTien(), cthd.getGiamGia(), cthd.getThanhTien(), 0);
-    //             if (result > 0){
-    //                 get.prepareUpdate(updateQuery, cthd.getSoLuong(), cthd.getMaSach());
-    //                 count++;
-    //             }
-    //         }
-    //     } catch (Exception e) {
-    //         System.out.println("Lỗi khi thêm danh sách CTHD: " + e);
-    //     }
-    //     return count;
-    // }
-   
-    
+        while (rs.next()) {
+            String ma = rs.getString("masach");
+            String soLuongStr = String.valueOf(rs.getInt("total"));
+            list.add(new map(ma, soLuongStr));
+        }
+        conn.close();
+    } catch (Exception e) {
+        System.out.println("Lỗi khi truy vấn " + e);
+    }
+    return list;
+} 
     
 }
