@@ -180,4 +180,24 @@ public class PNDAL {
         }
         return rs;
     }
+    public int addPN(PN pn){
+        String query = "INSERT INTO PN (maPN, maNV, maNCC, ngayNhap, tongSL, tongTien) VALUES (?, ?, ?, ?, ?, ?)";
+        int rs = 0;
+        try{
+            Connection conn = get.getConnection();
+            rs = get.prepareUpdate(query, 
+                    pn.getMaPN(), 
+                    pn.getMaNV(), 
+                    pn.getMaNCC(), 
+                    pn.getNgayNhap(), 
+                    pn.getTongSL(), 
+                    pn.getTongTien()
+            );
+            conn.close();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
+
 }

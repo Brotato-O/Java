@@ -1,16 +1,17 @@
 package GUI.controller;
-import BLL.BLLQLGG;
+import BLL.BLLNCC;
 import BLL.BLLQLS;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import DTO.CTPN;
 import BLL.CTPNBLL;
+import BLL.EmpBLL;
 import BLL.PNBLL;
 import DTO.Book;
-import DTO.GG;
 import DTO.PN;
 import GUI.dialog.QLPN.QLPNKH;
+import GUI.dialog.QLPN.addPN;
 import GUI.dialog.QLPN.addQLPN;
 import GUI.dialog.QLPN.editQLPN;
 import GUI.view.QLPN;
@@ -22,14 +23,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -40,6 +38,7 @@ import javax.swing.JFileChooser;
 public class QLPNController {
     private QLPN view;
     private addQLPN addDialog;
+    private addPN addPN;
     private editQLPN editDialog;
     private QLPNKH qlhdkh;
     public MouseAdapter cthdAdapter;
@@ -62,7 +61,10 @@ public class QLPNController {
     public ActionListener confirmAdd;
     public ActionListener confirmEdit;
     public ActionListener editCTPN;
-    public ActionListener xuatPN;
+    public ActionListener themPN;
+    public ActionListener ctSachPN;
+    public ActionListener confirmCtSachPN;
+    public ActionListener confirmAddPN;
     JTable tableCTPN ;
     DefaultTableModel modelCTPN ;
     
@@ -530,27 +532,36 @@ public class QLPNController {
                 else JOptionPane.showMessageDialog(view.frame, "Chọn chi tiết hóa đơn muốn sửa");
             }
         };
-        xuatPN= new ActionListener() {
+        themPN= new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JTable table= view.getTablePN();
-                int row= table.getSelectedRow();
-                int column= table.getColumnModel().getColumnIndex("Mã PN");
-                if (row != -1){
-                    String maPN = table.getValueAt(row, column).toString(); // hoặc lấy từ bảng, tùy cách bạn hiển thị
-
-                    // Cho người dùng chọn nơi lưu file
-                    JFileChooser fileChooser = new JFileChooser();
-                    fileChooser.setSelectedFile(new File("hoadon_" + maPN + ".pdf"));
-                    int result = fileChooser.showSaveDialog(null);
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        File file = fileChooser.getSelectedFile();
-
-                        // Gọi hàm xuất PDF
-                        exportHoaDonPDF(maPN, file.getAbsolutePath());
-                    }
+                addPN= new addPN(view.frame, view);
+                addPN.yes.addActionListener(confirmAddPN);
+                addPN.setVisible(true);
+            }
+        };
+        
+        confirmAddPN= new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PNBLL pnbll= new PNBLL();
+                String maPN= addPN.maPN.getText();
+                String maNV= addPN.maNV.getText();
+                String maNCC= addPN.maNCC.getText();
+                String ngayNhap= addPN.ngayNhap.getText();
+                int rs= pnbll.addPN(maPN, maNV, maNCC, ngayNhap, 0, 0);
+                if (rs==0)
+                    JOptionPane.showMessageDialog(view.frame, "Vui lòng không để trống");
+                else if (rs== -1)
+                    JOptionPane.showMessageDialog(view.frame, "Không thấy nhân viên, vui lòng thêm nhân viên");
+                else if (rs== -2)
+                    JOptionPane.showMessageDialog(view.frame, "Không thấy NCC, vui lòng thêm NCC");
+                else if (rs== -3)
+                    JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng yyyy-MM-dd");
+                else{ 
+                    JOptionPane.showMessageDialog(view.frame, "Đã thêm thành công");
+                    addPN.dispose();
                 }
-                else JOptionPane.showMessageDialog(view.frame, "Chọn Phiếu nhập để xuất");
             }
         };
     }

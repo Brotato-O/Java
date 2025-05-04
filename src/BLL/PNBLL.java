@@ -1,5 +1,6 @@
 package BLL;
 
+import DAL.DALNCC;
 import DAL.EmpDAL;
 import DAL.PNDAL;
 import DTO.CTPN;
@@ -12,7 +13,7 @@ import java.util.Locale;
 public class PNBLL {
     PNDAL hd= new PNDAL();
     EmpDAL nv= new EmpDAL();
-//    KPNAL kh= new KPNAL();
+    BLLNCC ncc= new BLLNCC();
     public ArrayList<PN> selectAll(){
         return hd.selectAll();
     }
@@ -95,7 +96,7 @@ public class PNBLL {
     public int editPN(String maPN, String maNV, String maNCC, String ngayLap){
         if(maNV.equals("") || maNCC.equals("") || ngayLap.equals("")) return 0;
         if(nv.getNhanVien(maNV) == null) return -1;
-//        if(kh.getKhachHang(MaNCC) == null) return -2;
+        if(ncc.checkNCC(maNCC) == false) return -2;
         DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ngayLap1;
         try{
@@ -113,5 +114,24 @@ public class PNBLL {
     }
     public int updateAdd(CTPN cthd){
         return  hd.updateTongTienAdd(cthd);
+    }
+    public int addPN(String maPN, String maNV, String maNCC, String ngayLap, float tongTien, int tongSolg ){
+        if(maNV.equals("") || maNCC.equals("") || ngayLap.equals("")) return 0;
+        if(nv.getNhanVien(maNV) == null) return -1;
+        if(ncc.checkNCC(maNCC) == false) return -2;
+        DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ngayLap1;
+        try{
+            ngayLap1= LocalDate.parse(ngayLap, formater);
+        }
+        catch (Exception e){
+            return -3;
+        }
+        maPN= maPN.trim();
+        maNV= maNV.trim();
+        maNCC= maNCC.trim();
+        ngayLap= ngayLap.trim();
+        PN pn = new PN(maPN, maNV, maNCC, ngayLap, 0, 0);
+        return hd.addPN(pn);
     }
 }

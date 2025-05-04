@@ -32,6 +32,9 @@ public class EmpBLL {
 	public boolean checkID(String maNV) {
 		return this.empDAL.checkMaNV(maNV);
 	}
+	public boolean checkLogin(String maNV, String password) {
+		return this.empDAL.checkMaNV(maNV);
+	}
 
 	public boolean updateNV(EmployeeManagementDTO empDTO) {
 		return this.empDAL.updateNV(empDTO);

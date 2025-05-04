@@ -20,17 +20,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ADMIN
  */
-public class addQLPN extends JDialog{
+public class addPN extends JDialog{
     public JButton yes= new JButton("Xác nhận");
     private JButton no= new JButton("Hủy");
     
-    public JTextField ctMaPN= new JTextField();
-    public JTextField ctMaSach= new JTextField();
-    public JButton maSach= new JButton("...");
-    public JTextField ctSolg= new JTextField();
-    public JTextField ctTongtien= new JTextField();
-    public JTextField ctDonGia= new JTextField();
-    public JTextField ctThanhTien= new JTextField();
+    public JTextField maPN= new JTextField();
+    public JTextField maNCC= new JTextField();
+    public JTextField maNV= new JTextField();
+    public JTextField ngayNhap= new JTextField();
+    public JTextField tongTien= new JTextField();
+    public JTextField tongSolg= new JTextField();
     
     public JTable tableSach= new JTable();
     public JButton xacNhan= new JButton("Xác nhận");
@@ -38,8 +37,8 @@ public class addQLPN extends JDialog{
     QLPN view;
     QLPNController controller;
     
-    public addQLPN(JFrame parent, QLPN qlhd){
-        super(parent, "THÊM CHI TIẾT PHIẾU NHẬP");
+    public addPN(JFrame parent, QLPN qlhd){
+        super(parent, "THÊM PHIẾU NHẬP");
         this.view= qlhd;
         controller= new QLPNController(view);
         JPanel top= new JPanel();
@@ -68,7 +67,7 @@ public class addQLPN extends JDialog{
         rightTop.setLayout(new BoxLayout(rightTop, BoxLayout.Y_AXIS));
         
         top.setLayout(new BorderLayout());
-        for (int i=0; i< 5; i++){
+        for (int i=0; i< 6; i++){
             inp[i]= new JPanel();
             inpPanel[i]= new JPanel();
             inpPanel[i].setLayout(new BoxLayout(inpPanel[i], BoxLayout.Y_AXIS));
@@ -76,23 +75,22 @@ public class addQLPN extends JDialog{
             rightTop.add(inpPanel[i]);
         }
         JPanel temp= new JPanel();
-        temp.setLayout(new BoxLayout(temp, BoxLayout.X_AXIS));
-        temp.add(ctMaSach);
-        temp.add(maSach);
-        inpPanel[0].add(ctMaPN);
-        inpPanel[1].add(temp);
-        inpPanel[2].add(ctSolg);
-        inpPanel[3].add(ctDonGia);
-        inpPanel[4].add(ctTongtien);
-        inpPanel[4].add(ctThanhTien);
+        inpPanel[0].add(maPN);
+        inpPanel[1].add(maNV);
+        inpPanel[2].add(maNCC);
+        inpPanel[3].add(ngayNhap);
+        inpPanel[4].add(tongTien);
+        inpPanel[5].add(tongSolg);
         inp[0].add(new JLabel("Mã PN"), BorderLayout.WEST);
-        inp[1].add(new JLabel("Mã sách"), BorderLayout.WEST);
-        inp[2].add(new JLabel("Số lượng"), BorderLayout.WEST);
-        inp[3].add(new JLabel("Đơn giá"), BorderLayout.WEST);
-        inp[4].add(new JLabel("Thành tiền"), BorderLayout.WEST);
+        inp[1].add(new JLabel("Mã NV"), BorderLayout.WEST);
+        inp[2].add(new JLabel("Mã NCC"), BorderLayout.WEST);
+        inp[3].add(new JLabel("Ngày nhập"), BorderLayout.WEST);
+        inp[4].add(new JLabel("Tổng tiền"), BorderLayout.WEST);
+        inp[5].add(new JLabel("Tổng số lượng"), BorderLayout.WEST);
         top.add(leftTop, BorderLayout.WEST);
         top.add(rightTop);
-        ctSolg.setText("0");
+        tongSolg.setText("0");
+        tongTien.setText("0");
         
         yes.setPreferredSize(new Dimension(100, 40));
         no.setPreferredSize(new Dimension(100, 40));
@@ -104,11 +102,9 @@ public class addQLPN extends JDialog{
         });
         
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-        ctMaPN.setEditable(false);
-        ctMaSach.setEditable(false);
-        ctDonGia.setEditable(false);
-        ctTongtien.setEditable(false);
-        ctThanhTien.setEditable(false);
+//        ctMaPN.setEditable(false);
+        tongTien.setEditable(false);
+        tongSolg.setEditable(false);
         return top;
     }
     

@@ -28,7 +28,7 @@ public class editQLPN extends JDialog{
     public JTextField ctMaSach= new JTextField();
     public JButton maSach= new JButton("...");
     public JTextField ctSolg= new JTextField();
-    public JTextField ctTongtien= new JTextField();
+//    public JTextField ctTongtien= new JTextField();
     public JTextField ctDonGia= new JTextField();
     public JTextField ctThanhTien= new JTextField();
     
@@ -39,7 +39,7 @@ public class editQLPN extends JDialog{
     QLPNController controller;
     
     public editQLPN(JFrame parent, QLPN qlhd){
-        super(parent, "SỬA CHI TIẾT HÓA ĐƠN");
+        super(parent, "SỬA CHI TIẾT PHIẾU NHẬP");
         this.view= qlhd;
         controller= new QLPNController(view);
         JPanel top= new JPanel();
@@ -83,7 +83,7 @@ public class editQLPN extends JDialog{
         inpPanel[1].add(temp);
         inpPanel[2].add(ctSolg);
         inpPanel[3].add(ctDonGia);
-        inpPanel[4].add(ctTongtien);
+//        inpPanel[4].add(ctTongtien);
         inpPanel[4].add(ctThanhTien);
         inp[0].add(new JLabel("Mã PN"), BorderLayout.WEST);
         inp[1].add(new JLabel("Mã sách"), BorderLayout.WEST);
@@ -107,7 +107,7 @@ public class editQLPN extends JDialog{
         ctMaPN.setEditable(false);
         ctMaSach.setEditable(false);
         ctDonGia.setEditable(false);
-        ctTongtien.setEditable(false);
+//        ctTongtien.setEditable(false);
         ctThanhTien.setEditable(false);
         return top;
     }
