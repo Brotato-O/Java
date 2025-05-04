@@ -24,7 +24,7 @@ public class EmpBLL {
 	public boolean addNV(EmployeeManagementDTO empDTO) {
 		if (this.empDAL.checkMaNV(empDTO.getId_emp())) {
 			System.out.println("Mã nhân viên đã tồn tại: " + empDTO.getId_emp());
-			return false; // Không thêm nếu mã nhân viên đã tồn tại
+			return false; 
 		}
 		return this.empDAL.addNhanVien(empDTO);
 	}

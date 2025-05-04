@@ -1,4 +1,4 @@
-package  GUI.dialog.QLNV;
+package GUI.dialog.QLKH;
 
 import java.awt.*;
 import javax.swing.JButton;
@@ -8,15 +8,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class ImportQLNVDialog extends JDialog {
+public class ImportQLKHDialog extends JDialog {
 
     private JButton btnThemTatCa = new JButton("Thêm tất cả");
     private JButton btnHuy = new JButton("Hủy");
     public DefaultTableModel model;
 
-    public ImportQLNVDialog(Frame frame, DefaultTableModel modelEx) {
+    public ImportQLKHDialog(Frame frame, DefaultTableModel modelEx) {
         super(frame, "Nhập Excel", true);
-        this.model = modelEx; // Gán model được truyền từ EmpController
+        this.model = modelEx; // Gán model được truyền từ CustomerController
         setSize(700, 400);
         this.setLayout(new BorderLayout());
         add(addMiddle(), BorderLayout.CENTER);
@@ -45,8 +45,8 @@ public class ImportQLNVDialog extends JDialog {
     public JButton getBtnThemTatCa() {
         return this.btnThemTatCa;
     }
+
     public JButton getBtnHuy() {
         return this.btnHuy;
     }
 }
-
