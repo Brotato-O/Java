@@ -9,17 +9,11 @@
  */
 package GUI.view;
 import BLL.EmpBLL;
-import main.main;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.DimensionUIResource;
+import main.main;
 public class loginForm extends JPanel{
     
     int width= main.width;
@@ -110,7 +104,7 @@ public class loginForm extends JPanel{
                 EmpBLL empbll= new EmpBLL();
                 String maNV= account.getText();
                 String mk= password.getText();
-                boolean rs= empbll.checkLogin(maNV, maNV);
+                boolean rs= empbll.checkLogin(maNV, mk);
                 if (rs){
                     SupermarketUI sm = new SupermarketUI();
                     sm.createAndShowGUI();
