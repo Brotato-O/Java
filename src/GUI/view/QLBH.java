@@ -134,10 +134,15 @@ public class QLBH extends JPanel{
     });
     xacNhan.addActionListener(even -> {
         if (cthdbll.addall(listCTHD)){
-            model.setRowCount(0);
-            listCTHD.clear();
+            
             total = 0 ;
             thanhTien.setText(String.valueOf(total));
+            HDBLL hdbll= new HDBLL();
+            for (int i=0; i< listCTHD.size(); i++){
+                hdbll.updateTongTien(listCTHD.get(i));
+            }
+            model.setRowCount(0);
+            listCTHD.clear();
             JOptionPane.showMessageDialog(container, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);

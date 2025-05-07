@@ -86,8 +86,8 @@ public class SupermarketUI {
 
 		// Thêm vào CardLayout
 
-		mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
-		mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
+//		mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
+//		mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
 		mainPanel.add(new QLBH(), "Bán Hàng");
 		mainPanel.add(new QLS(), "Quản Lý Sách");
 		mainPanel.add(new QLLS(), "Quản lý loại sách");
