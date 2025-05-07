@@ -131,4 +131,31 @@ public class HDBLL {
         ArrayList<HD> list =hd.selectAll();
         return list.size();
     }
+    public int add(HD hd){
+        String maHD= hd.getMaHD();
+        String maKH= hd.getMaKH();
+        String maNV= hd.getMaNV();
+        String ngayLap= hd.getNgayLap();
+        String phuongThuc= hd.getPhuongThuc();
+        System.out.println("nv" + maNV);
+        System.out.println("kh" + maKH);
+        System.out.println("nl" + ngayLap);
+        if(maNV.isEmpty() || maKH.isEmpty() || ngayLap.isEmpty()) return 0;
+        if (new HDDAL().selectById(maHD )!= null) return -1;
+        DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ngayLap1;
+        try{
+            ngayLap1= LocalDate.parse(ngayLap, formater);
+        }
+        catch (Exception e){
+            return -2;
+        }
+        maHD= maHD.trim();
+        maNV= maNV.trim();
+        maKH= maKH.trim();
+        HD hd1= new HD(maHD, maNV, maKH, ngayLap, phuongThuc, 0, 0, 0, 0);
+        new HDDAL().addHD(hd);
+        return 1;
+        
+    }
 }
