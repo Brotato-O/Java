@@ -83,7 +83,6 @@ public class addQLPN extends JDialog{
         inpPanel[1].add(temp);
         inpPanel[2].add(ctSolg);
         inpPanel[3].add(ctDonGia);
-        inpPanel[4].add(ctTongtien);
         inpPanel[4].add(ctThanhTien);
         inp[0].add(new JLabel("Mã PN"), BorderLayout.WEST);
         inp[1].add(new JLabel("Mã sách"), BorderLayout.WEST);

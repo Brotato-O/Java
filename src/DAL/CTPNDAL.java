@@ -144,7 +144,7 @@ public class CTPNDAL {
             ps.setDouble(4, ctpn.getDonGia());
             ps.setDouble(5, ctpn.getThanhTien());
             ps.setInt(6, 0); // status mặc định
-    
+            conn.close();
             return ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("Lỗi add CTPN: " + e);
@@ -158,6 +158,7 @@ public class CTPNDAL {
             ps.setString(1, maPN);
             ps.setString(2, maSach);
             ResultSet rs = ps.executeQuery();
+            conn.close();
             return rs.next();
         } catch (Exception e) {
             System.out.println("Lỗi exists: " + e);
@@ -172,6 +173,7 @@ public class CTPNDAL {
             ps.setDouble(2, ctpn.getThanhTien());
             ps.setString(3, ctpn.getMaPN());
             ps.setString(4, ctpn.getMaSach());
+            conn.close();
             return ps.executeUpdate();
         } catch (Exception e) {
             System.out.println("Lỗi updateSoLuong: " + e);
