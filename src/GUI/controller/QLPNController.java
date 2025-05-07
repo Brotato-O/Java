@@ -484,7 +484,7 @@ public class QLPNController {
                         if (rs== -2) JOptionPane.showMessageDialog(view.frame, "Chi tiết phiếu nhập đã tồn tại");
                     
                         else if (rs== -1) JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
-                        else if (rs== 0) JOptionPane.showMessageDialog(view.frame, "Đã tồn tại");
+//                        else if (rs== 0) JOptionPane.showMessageDialog(view.frame, "Đã tồn tại");
                         else {
                             CTPN ctpnOld= new CTPN(maPN, maSach, Integer.parseInt(soLuong), Float.parseFloat(donGia), Float.parseFloat(thanhTien));
                             CTPN ctpnNew= ctpn.selectById(maPN1, maSach1);
