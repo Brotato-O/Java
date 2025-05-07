@@ -389,8 +389,8 @@ public class QLPNController {
             public void actionPerformed(ActionEvent e) {
                 JTable table= qlhdkh.table;
                 int row= table.getSelectedRow();
-                int maSach= table.getColumnModel().getColumnIndex("Mã sách");
-                int donGia= table.getColumnModel().getColumnIndex("Đơn giá");
+                int maSach= table.getColumnModel().getColumnIndex("MÃ SÁCH");
+                int donGia= table.getColumnModel().getColumnIndex("ĐƠN GIÁ");
                 if (row !=-1){
                     String maSach1= table.getValueAt(row, maSach).toString();
                     String donGia1= table.getValueAt(row, donGia).toString();

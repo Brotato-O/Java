@@ -4,24 +4,58 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/main/main.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/CustomerManagement.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/DALGG.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLHD/editQLHD.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLPN/addPN.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/img/customer-review.png</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/EmpDAL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/GG.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/map.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/CTHDBLL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/GiamGia.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/CTPNBLL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/PNBLL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/NCC.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/loginForm.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/Connect.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/CTGG.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/CTPNDAL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLPN/QLPNKH.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/EmpBLL.java</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/CTHDDAL.java</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/img/product.png</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/img/customer-review.png</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/SupermarketUI.java</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/DALQLS.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/EmpDAL.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/HDBLL.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/HDDAL.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/CTHDBLL.java</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/controller/QLHDController.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/GiamGia.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/QLHD.java</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLHD/addQLHD.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/img/book.png</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/controller/EmpController.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/HD.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/PN.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/Book.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/BLLNCC.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/CustomerManagement.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/QLNCC.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/excel/XuLyFileExcel.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/DALNCC.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/CTHD.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/SupermarketUI.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/EmployeeManagementDTO.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLPN/editQLPN.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLPN/test.txt</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/LoaiSach.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLHD/deleteQLHD.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLHD/QLHDKH.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/PNDAL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/dialog/QLPN/addQLPN.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/controller/QLPNController.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/BLL/HDBLL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/QLS.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/HDDAL.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/getConnection.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/QLHD.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/QLPN.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DTO/CTPN.java</file>
+            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/img/book.png</file>
             <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/GUI/view/QLLS.java</file>
-            <file>file:/C:/D/New%20folder%20(7)%20Java/bruh/src/DAL/Connect.java</file>
         </group>
     </open-files>
 </project-private>
