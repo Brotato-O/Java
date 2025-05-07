@@ -356,6 +356,6 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
     @Override
 public void onPhanQuyenAdded() {
     loadDanhSachQuyen();
-    employeeManagement.loadDanhSachQuyen();
+    // employeeManagement.loadDanhSachQuyen();
 }
 }
