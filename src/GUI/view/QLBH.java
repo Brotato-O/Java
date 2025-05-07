@@ -92,8 +92,8 @@ public class QLBH extends JPanel{
     ctMaNV.addActionListener(event -> {
         ctNV();
     });
-    taoHD.addActionListener(even -> {
-
+    ctMaKH.addActionListener(event -> {
+        ctKH();
     });
     them.addActionListener(even -> {
         if (soLg.getText().trim().isEmpty() || donGia.getText().trim().isEmpty()) {
@@ -102,7 +102,7 @@ public class QLBH extends JPanel{
         }
         CTHD cthd = new CTHD();
         cthd.setMaSach(maSach.getText());
-        //hiện tại đang cho thêm cố định vào HD001
+        
         cthd.setMaHD(maHD.getText());
         try{cthd.setSoLuong(Integer.parseInt(soLg.getText()));
             int soluong = Integer.parseInt(soLg.getText());
@@ -147,7 +147,7 @@ public class QLBH extends JPanel{
         String maKH= this.maKH.getText();
         String ngayLap= this.ngayLap.getText();
         String phuongThuc= this.phuongThuc.getSelectedItem().toString();
-        HD hd= new HD(maHD, "NV001", "KH001", "2000-02-02", phuongThuc, 0, 0, 0, 0);
+        HD hd= new HD(maHD, maNV, maKH , "2000-02-02", phuongThuc, 0, 0, 0, 0);
         HDBLL hdbll1= new HDBLL();
         int rs= hdbll1.add(hd);
         if (rs == 0) JOptionPane.showMessageDialog(null, "Không dc để trống");
@@ -558,6 +558,54 @@ public class QLBH extends JPanel{
                 });
                 
             }
+            private void ctKH(){
+                JFrame fr1 = new JFrame();
+                    fr1.dispose();
+                    fr1.setSize(400, 550);
+                    fr1.setLayout(new BorderLayout());
+                   
+                JPanel tbQLS= new JPanel();
+                ArrayList<CustomerDTO> listKH = new CustomerBLL().getDSKH();
+                DefaultTableModel modelHD= new DefaultTableModel();
+                JTable tableHD= new JTable();
+                    tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
+                String[] colums= {"Mã KH", "Tên KH", "SĐT", "Email", "Phái", "Ngày Sinh"};
+                    modelHD.setColumnIdentifiers(colums);
+                    modelHD.setRowCount(0); 
+                    for (CustomerDTO kh : listKH) {
+                        modelHD.addRow(new Object[]{
+                            kh.getMaKH(), 
+                kh.getTenKH(), 
+                kh.getSDT(), 
+                kh.getEmail(), 
+                kh.getGioiTinh(), 
+                kh.getNgaySinh(),
+                            ""                   
+                        });
+                    }
+                    tableHD.setModel(modelHD);
+                JPanel pTable= new JPanel(new BorderLayout());
+                JScrollPane p1= new JScrollPane(tableHD);
+                    pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                    pTable.add(p1);
+                    tbQLS.add(pTable);
+                JButton chon = new JButton("Chọn");
+            
+                    fr1.add(tbQLS,BorderLayout.NORTH);
+                    fr1.add(chon, BorderLayout.CENTER);
+                    fr1.setVisible(true);
+                    chon.addActionListener(even -> {
+                        int selectedRow = tableHD.getSelectedRow();
+                        if (selectedRow >= 0) {
+                       maKH.setText(tableHD.getValueAt(selectedRow, 0).toString());
+            
+                            fr1.dispose(); 
+                        } else {
+                            JOptionPane.showMessageDialog(fr1, "Vui lòng chọn!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                        }
+                    });
+                    
+                }
     public void showTable() {
     model.setRowCount(0); 
     for (CTHD s : listCTHD) {
