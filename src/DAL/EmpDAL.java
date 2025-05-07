@@ -8,6 +8,22 @@ import DTO.EmployeeManagementDTO;
 
 public class EmpDAL {
 
+
+	public ArrayList<String> getListChucVu() {
+		ArrayList<String> listChucVu = new ArrayList<String>();
+		try {
+			String sql = "SELECT Quyen FROM PHANQUYEN";
+			PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+			ResultSet res = pre.executeQuery();
+			while (res.next()) {
+				listChucVu.add(res.getString("Quyen"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listChucVu;
+	}
+
 	public ArrayList<EmployeeManagementDTO> getDanhSachNhanVien() {
 		try {
 			String sql = "SELECT * FROM NHANVIEN where STATUS = 0";

@@ -1,6 +1,7 @@
 package GUI.view;
 
 import BLL.EmpBLL;
+import BLL.PhanQuyenBLL;
 import DTO.EmployeeManagementDTO;
 import GUI.controller.EmpController;
 import java.awt.BorderLayout;
@@ -9,11 +10,13 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -21,23 +24,31 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import GUI.view.PhanQuyen;
+
 
 public class EmployeeManagement extends JPanel {
 
-	private JTextField idEmp, txtEmployeeName, txtChucVu, txtEmail, txtSDT, txtLuong,txtPassword;
+	private JTextField idEmp, txtEmployeeName, txtEmail, txtSDT, txtLuong, txtPassword;
 	private JRadioButton rdiNam, rdiNu;
 	private JTextField txtNgaySinh;
+	private JComboBox<String> jcbChucVu;
 	//Fields Button
-	private JButton jbThem, jbSua, jbXoa, jbTaiDuLieu, jbNhapExcel, jbXuatExcel, jbXuatPDF;
+	private JButton jbThem, jbSua, jbXoa, jbNhapExcel, jbXuatExcel,jblammoi;
 	//Fields Form Search
-	private JComboBox<String> jcbMaNV, jcbLuong;
+	private JComboBox<String> jcbMaNV;
 	private JTextField jtfMaNV, jtfLuong1, jtfLuong2;
 	private JButton jbSearchMaNV, jbSearchLuong, jbAll;
 	//Tabel
 	private JTable table;
 	private JScrollPane scrollPane;
+
+	private PhanQuyenBLL phanQuyenBLL = new PhanQuyenBLL();
+	private PhanQuyen phanQuyen;
 
 	public EmployeeManagement() {
 		setLayout(new BorderLayout(10, 10)); // Add gap between components
@@ -50,12 +61,15 @@ public class EmployeeManagement extends JPanel {
 		jbSua.setEnabled(false);
 		jbXoa.setEnabled(false);
 		// Khởi tạo controller
+		
 		new EmpController(this);
+    	phanQuyen = new PhanQuyen();
+    	phanQuyen.setEmployeeManagement(this);
 		
 		setVisible(true);
 	}
 
-	public JPanel Header() {
+	private JPanel Header() {
 		JPanel res = new JPanel(new BorderLayout(10, 0));
 		res.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -84,7 +98,7 @@ public class EmployeeManagement extends JPanel {
 		return res;
 	}
 
-	public JPanel Middle() {
+	private JPanel Middle() {
 		JPanel res = new JPanel(new GridBagLayout());
 		res.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Tìm Kiếm Nâng Cao",
 				TitledBorder.CENTER, // Căn giữa tiêu đề
@@ -122,7 +136,7 @@ public class EmployeeManagement extends JPanel {
 		return res;
 	}
 
-	public JPanel Footer() {
+	private JPanel Footer() {
 		JPanel res = new JPanel(new BorderLayout());
 		res.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -184,7 +198,15 @@ public class EmployeeManagement extends JPanel {
 	
 		// Dòng 3
 		addLabel(res, "Chức Vụ:", gbc, 0, 2);
-		this.txtChucVu = addTextField(res, gbc, 1, 2);
+
+		this.jcbChucVu = new JComboBox<String>();
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		res.add(jcbChucVu, gbc);
+		
+		// Khởi tạo dữ liệu cho combobox chức vụ
+		loadDanhSachQuyen();
+
 		addLabel(res, "Giới Tính:", gbc, 2, 2);
 		JPanel pnlGender = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		this.rdiNam = new JRadioButton("Nam");
@@ -224,16 +246,18 @@ public class EmployeeManagement extends JPanel {
 
 		//Dòng 1
 		jbThem = addButton(res, gbc, 0, 0, "Thêm", col1Width);
-		jbTaiDuLieu = addButton(res, gbc, 1, 0, "Tải Dữ Liệu", col2Width);
-		jbXuatPDF = addButton(res, gbc, 2, 0, "Xuất Báo Cáo PDF", col3Width);
+		jbNhapExcel = addButton(res, gbc, 1, 0, "Nhập Excel", col2Width);
 
 		//Dòng 2
 		jbSua = addButton(res, gbc, 0, 1, "Sửa", col1Width);
-		jbNhapExcel = addButton(res, gbc, 1, 1, "Nhập Excel", col2Width);
+		jbXuatExcel = addButton(res, gbc, 1, 1, "Xuất Excel", col2Width);
 
 		//Dòng 3
 		jbXoa = addButton(res, gbc, 0, 2, "Xóa", col1Width);
-		jbXuatExcel = addButton(res, gbc, 1, 2, "Xuất Excel", col2Width);
+		jblammoi = addButton(res, gbc, 1, 2, "Làm Mới", col3Width);		
+
+		jbXuatExcel.setPreferredSize(new Dimension(150, 35));
+		
 		return res;
 	}
 
@@ -287,10 +311,6 @@ public class EmployeeManagement extends JPanel {
 		return txtPassword;
 	}
 
-	public JTextField getChucVu() {
-		return txtChucVu;
-	}
-
 	public JTextField getLuong() {
 		return txtLuong;
 	}
@@ -336,6 +356,9 @@ public class EmployeeManagement extends JPanel {
 	public JButton getTimKiemLuong() {
 		return jbSearchLuong;
 	}
+	public JButton getbtnLammoi() {
+		return jblammoi;
+	}
 	public JTextField getTimKiemLuong1() {
 		return jtfLuong1;
 	}	
@@ -354,5 +377,45 @@ public class EmployeeManagement extends JPanel {
 	public JButton getBtnNhapExcel() {
 		return jbNhapExcel;
 	}
+
+	//Thêm mới
+	public JComboBox<String> getJcbChucVu() {
+		return jcbChucVu;
+	}
+
+	public void loadDanhSachQuyen() {
+        // Lưu lại quyền đang chọn
+        String selectedQuyen = jcbChucVu.getItemCount() > 0 ? (String) jcbChucVu.getSelectedItem() : null;
+        
+        // Đọc lại danh sách quyền từ database
+        ArrayList<String> dsQuyen = phanQuyenBLL.getDSQuyen();
+        
+        // Xóa tất cả item trong combo box
+        jcbChucVu.removeAllItems();
+        
+        // Thêm lựa chọn mặc định
+        jcbChucVu.addItem("Chọn quyền");
+        
+        // Load dữ liệu vào combo box
+        if (dsQuyen != null && !dsQuyen.isEmpty()) {
+            for (String quyen : dsQuyen) {
+                jcbChucVu.addItem(quyen);
+            }
+        }
+        
+        // Nếu có quyền đã chọn trước đó, chọn lại
+        if (selectedQuyen != null) {
+            for (int i = 0; i < jcbChucVu.getItemCount(); i++) {
+                if (selectedQuyen.equals(jcbChucVu.getItemAt(i))) {
+                    jcbChucVu.setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
+        
+        // Mặc định chọn item đầu tiên
+        jcbChucVu.setSelectedIndex(0);
+
+    }
 
 }

@@ -27,7 +27,7 @@ public class EmpController {
 
 	private EmployeeManagement view = null;
 	JTable table;
-	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll,btnXuatExcel,btnNhapExcel;
+	JButton btnThem,btnSua,btnXoa,btnSeachCbb,btnSearchSalary,btnSearchAll,btnXuatExcel,btnNhapExcel,btnlammoi;
 	DefaultTableModel model;
 	private EmpBLL empBLL = new EmpBLL();
 	private boolean isLoadingData = false;//flag load dữ liệu
@@ -38,6 +38,7 @@ public class EmpController {
 		this.model = (DefaultTableModel) table.getModel();
 		
 		this.btnThem = view.getBtnThem();
+		this.btnlammoi= view.getbtnLammoi();
 		this.btnSua = view.getBtnSua();
 		this.btnXoa = view.getBtnXoa();
 		this.btnSeachCbb = view.getTimKiemComboBox();
@@ -49,6 +50,8 @@ public class EmpController {
 		// Thêm sự kiện MouseListener vào JTable
 		addTableMouseListener();
 
+
+		btnClickLamMoi();
 		btnClickShowDialogAdd();
 		btnClickUpdateEmp();
 		btnClickDeleteEmp();
@@ -61,6 +64,15 @@ public class EmpController {
 		searchAllEmp();
 	}
 	
+	private void btnClickLamMoi() {
+		this.btnlammoi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				view.loadDanhSachQuyen();
+			}
+		});
+	}
+
 	private void btnClickShowDialogAdd() {
     this.btnThem.addMouseListener(new MouseAdapter() {
         @Override
@@ -124,7 +136,8 @@ public class EmpController {
     	view.getSdt().setText(emp.getPhone_emp());
     	view.getEmail().setText(emp.getEmail_emp());
 		view.getPassword().setText(emp.getPassword_emp());
-    	view.getChucVu().setText(emp.getPosition_emp());
+    	// Set selected position in JComboBox instead of setting text for txtChucVu
+    	view.getJcbChucVu().setSelectedItem(emp.getPosition_emp());
     	view.getLuong().setText(String.valueOf(emp.getSalary_emp()));
     	view.getNgaySinh().setText(emp.getBirth_date());
 		if ("Nam".equals(emp.getGender_emp())) {
@@ -166,18 +179,36 @@ public class EmpController {
 	}
 
 	private void btnClickUpdateEmp() {
-
-		 // Thêm DocumentListener vào các JTextField
-		 addFieldChangeListener(view.getMaNV());
-		 addFieldChangeListener(view.getTenNV());
-		 addFieldChangeListener(view.getSdt());
-		 addFieldChangeListener(view.getEmail());
-		 addFieldChangeListener(view.getChucVu());
-		 addFieldChangeListener(view.getLuong());
-		 addFieldChangeListener(view.getNgaySinh());
+		// Thêm DocumentListener vào các JTextField
+		addFieldChangeListener(view.getMaNV());
+		addFieldChangeListener(view.getTenNV());
+		addFieldChangeListener(view.getSdt());
+		addFieldChangeListener(view.getEmail());
+		addFieldChangeListener(view.getPassword());
+		addFieldChangeListener(view.getLuong());
+		addFieldChangeListener(view.getNgaySinh());
+		
+		// Add ItemListener to JComboBox for position
+		view.getJcbChucVu().addItemListener(e -> {
+			if (!isLoadingData) {
+				btnSua.setEnabled(true);
+			}
+		});
+		
+		// Add ItemListener to radio buttons
+		view.getRdiNam().addItemListener(e -> {
+			if (!isLoadingData) {
+				btnSua.setEnabled(true);
+			}
+		});
+		
+		view.getRdiNu().addItemListener(e -> {
+			if (!isLoadingData) {
+				btnSua.setEnabled(true);
+			}
+		});
 
 		btnSua.addActionListener(e -> {
-
 			int confirm = JOptionPane.showConfirmDialog(
             	view,
             	"Bạn có chắc chắn muốn cập nhật thông tin nhân viên này không?",
@@ -194,7 +225,8 @@ public class EmpController {
 			String tenNV = view.getTenNV().getText();
 			String sdt = view.getSdt().getText();
 			String email = view.getEmail().getText();
-			String chucVu = view.getChucVu().getText();
+			// Get selected position from JComboBox
+			String chucVu = view.getJcbChucVu().getSelectedItem().toString();
 			float luong = Float.parseFloat(view.getLuong().getText());
 			String ngaySinh = view.getNgaySinh().getText();
 			boolean gioiTinh = view.getRdiNam().isSelected();
@@ -205,7 +237,7 @@ public class EmpController {
 			}
 
 			// Tạo đối tượng EmployeeManagementDTO với thông tin đã lấy
-			EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email,password , chucVu, luong, ngaySinh, gioiTinh);
+			EmployeeManagementDTO emp = new EmployeeManagementDTO(maNV, tenNV, sdt, email, password, chucVu, luong, ngaySinh, gioiTinh);
 
 			// Gọi phương thức updateEmployee để cập nhật thông tin nhân viên
 			updateEmployee(emp);
@@ -216,32 +248,33 @@ public class EmpController {
 
 	//DocumentListener lắng nghe sự kiện thay đổi nội dung của các JTextField 
 	private void addFieldChangeListener(JTextField textField) {
-		textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
-				if (!isLoadingData) {
-					btnSua.setEnabled(true); // Kích hoạt nút btnSua khi có thay đổi
+		if (textField != null) {
+			textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+				@Override
+				public void insertUpdate(javax.swing.event.DocumentEvent e) {
+					if (!isLoadingData) {
+						btnSua.setEnabled(true); // Kích hoạt nút btnSua khi có thay đổi
+					}
 				}
-			}
-	
-			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
-				if (!isLoadingData) {
-					btnSua.setEnabled(true); // Kích hoạt nút btnSua khi có thay đổi
+		
+				@Override
+				public void removeUpdate(javax.swing.event.DocumentEvent e) {
+					if (!isLoadingData) {
+						btnSua.setEnabled(true); // Kích hoạt nút btnSua khi có thay đổi
+					}
 				}
-			}
-	
-			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
-				if (!isLoadingData) {
-					btnSua.setEnabled(true); // Kích hoạt nút btnSua khi có thay đổi
+		
+				@Override
+				public void changedUpdate(javax.swing.event.DocumentEvent e) {
+					if (!isLoadingData) {
+						btnSua.setEnabled(true); // Kích hoạt nút btnSua khi có thay đổi
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private boolean checkBirthDay(String birthDate) {
-
         // Kiểm tra tính hợp lệ của ngày
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false); // Không cho phép ngày không hợp lệ (ví dụ: 30/02)
@@ -333,7 +366,6 @@ public class EmpController {
 	}
 
 	private void loadDataModel(ArrayList<EmployeeManagementDTO> list) {
-
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setRowCount(0); // Xóa toàn bộ dữ liệu cũ trong bảng
 			for (EmployeeManagementDTO emp : list) {

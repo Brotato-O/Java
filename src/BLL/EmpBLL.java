@@ -13,6 +13,10 @@ public class EmpBLL {
 		this.listEmpDTO = getDS();
 	}
 
+	public ArrayList<String> getListChucVu() {
+		return this.empDAL.getListChucVu();
+	}
+
 	public ArrayList<EmployeeManagementDTO> getDS() {
 		return this.empDAL.getDanhSachNhanVien();
 	}

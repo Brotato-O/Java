@@ -1,14 +1,15 @@
 package GUI.dialog.PhanQuyen;
 
 import BLL.PhanQuyenBLL;
+import GUI.view.EmployeeManagement;
 import java.awt.*;
 import javax.swing.*;
-
 public class AddPhanQuyenDialog extends javax.swing.JDialog {
     
     private JButton btnXacNhan, btnHuy;
     private JTextField txtQuyen = new JTextField();
     private PhanQuyenBLL phanQuyenBLL = new PhanQuyenBLL();
+    private EmployeeManagement employeeManagement;
     
     // Thêm một interface để gọi lại khi thêm thành công
     public interface AddPhanQuyenListener {
