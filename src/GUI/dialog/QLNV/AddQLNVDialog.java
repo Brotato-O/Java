@@ -16,6 +16,7 @@ public class AddQLNVDialog extends JDialog {
     public JRadioButton rdiNu = new JRadioButton("Nữ");
     public ButtonGroup genderGroup = new ButtonGroup();
     public JTextField txtChucVu = new JTextField();
+    public JComboBox<String> cbChucVu = new JComboBox<>();
     public JTextField txtLuong = new JTextField();
     public JTextField txtNgaySinh = new JTextField();
 

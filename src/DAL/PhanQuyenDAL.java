@@ -1,17 +1,21 @@
 package DAL;
 
 import DTO.PhanQuyenDTO;
+
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PhanQuyenDAL {
-    
+    getConnection get= new getConnection();
+
     public ArrayList<PhanQuyenDTO> getListQuyen() {
         try {
+            Connection conn= get.getConnection();
             String sql = "SELECT * FROM phanquyen";
-            Statement st = Connect.getConnection().createStatement();
+            Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             ArrayList<PhanQuyenDTO> dspq = new ArrayList<PhanQuyenDTO>();
             while (rs.next()) {
@@ -34,8 +38,9 @@ public class PhanQuyenDAL {
     // Lấy theo tên Quyen -> để load dữ liệu lên bảng
     public PhanQuyenDTO getQuyen(String quyen) {
         try {
+            Connection conn= get.getConnection();
             String sql = "SELECT * FROM phanquyen WHERE quyen='" + quyen + "'";
-            Statement st = Connect.getConnection().createStatement();
+            Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 PhanQuyenDTO phanQuyenDTO = new PhanQuyenDTO();
@@ -56,8 +61,9 @@ public class PhanQuyenDAL {
     // Thêm quyền mới
     public boolean themQuyen(PhanQuyenDTO pq) {
         try {
+            Connection conn= get.getConnection();
             String sql = "INSERT INTO phanquyen(QUYEN, NhapHang, QLSanPham, QLNhanVien, QLKhachHang, ThongKe) VALUES(?, 0, 0, 0, 0, 0)";
-            PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+            PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, pq.getQuyen());
             
             return pre.executeUpdate() > 0;
@@ -70,8 +76,9 @@ public class PhanQuyenDAL {
     // Cập nhật quyền
     public boolean suaQuyen(PhanQuyenDTO pq) {
         try {
+            Connection conn= get.getConnection();
             String sql = "UPDATE phanquyen SET NhapHang=?, QLSanPham=?, QLNhanVien=?, QLKhachHang=?, ThongKe=? WHERE QUYEN=?";
-            PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+            PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, pq.getNhapHang());
             pre.setInt(2, pq.getQlSanPham());
             pre.setInt(3, pq.getQlNhanVien());
@@ -89,8 +96,9 @@ public class PhanQuyenDAL {
     // Xóa quyền
     public boolean xoaQuyen(String quyen) {
         try {
+            Connection conn= get.getConnection();
             String sql = "DELETE FROM phanquyen WHERE QUYEN=?";
-            PreparedStatement pre = Connect.getConnection().prepareStatement(sql);
+            PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, quyen);
             
             return pre.executeUpdate() > 0;
