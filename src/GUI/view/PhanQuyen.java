@@ -253,14 +253,6 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
             resetCheckboxes();
         }
 
-    System.out.println("Đang load quyền: " + quyen);
-    System.out.println("Quyền nhập hàng: " + pq.getNhapHang());
-    System.out.println("Quyền QL sản phẩm: " + pq.getQlSanPham());
-    System.out.println("Quyền QL nhân viên: " + pq.getQlNhanVien());
-    System.out.println("Quyền QL khách hàng: " + pq.getQlKhachHang());
-    System.out.println("Quyền thống kê: " + pq.getThongKe());
-
-
         revalidate();
         repaint();
     }
