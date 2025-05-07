@@ -189,4 +189,17 @@ public class HDDAL {
         }
         return rs;
     }
+    public int addHD(HD hd){
+        String query= "Insert into HOADON values (?, ?, ?, ? ,?, ?, ?, ?, ?, 0)";
+        int rs= 0;
+        try{
+            Connection conn= get.getConnection();
+            rs= get.prepareUpdate(query, hd.getMaHD(), hd.getMaNV(), hd.getMaKH(), hd.getNgayLap(), hd.getTongTien(), hd.getTongSL(), hd.getPhuongThuc(), hd.getThanhTien(), hd.getTongGG());
+            conn.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return rs;
+    }
 }

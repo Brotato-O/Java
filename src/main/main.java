@@ -30,7 +30,10 @@ public class main extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		        new main();
+//		        new main();
+SupermarketUI sm = new SupermarketUI();
+                    sm.createAndShowGUI();
+                    sm.getSuperMarketUI();
 
 
 	}

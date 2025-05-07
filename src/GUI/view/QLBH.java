@@ -49,6 +49,7 @@ public class QLBH extends JPanel{
     public JTextField thanhTien= new JTextField();
     public JTextField giamGia= new JTextField();
     public JTextField tongTien= new JTextField();
+    public JComboBox phuongThuc= new JComboBox();
     public JButton sua= new JButton("Sửa");
     public JButton xoa= new JButton("Xóa");
     public ArrayList<CTHD> listCTHD = new ArrayList<>();
@@ -102,11 +103,11 @@ public class QLBH extends JPanel{
         CTHD cthd = new CTHD();
         cthd.setMaSach(maSach.getText());
         //hiện tại đang cho thêm cố định vào HD001
-        cthd.setMaHD("HD001");
-        cthd.setSoLuong(Integer.parseInt(soLg.getText()));
-        int soluong = Integer.parseInt(soLg.getText());
-        float dongia = Float.parseFloat(donGia.getText());
-        float a;
+        cthd.setMaHD(maHD.getText());
+        try{cthd.setSoLuong(Integer.parseInt(soLg.getText()));
+            int soluong = Integer.parseInt(soLg.getText());
+            float dongia = Float.parseFloat(donGia.getText());
+            float a;
         if (maGG.getText().trim().isEmpty()) {
             cthd.setGiamGia(0);
             a=0;
@@ -130,16 +131,34 @@ public class QLBH extends JPanel{
             cthd.getGiamGia(),
             cthd.getThanhTien()
         });
-
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Sai rồi");
+        }
+        
     });
     xacNhan.addActionListener(even -> {
+        if (listCTHD.size() ==0){
+            JOptionPane.showMessageDialog(null, "NHập chitiethoadon");
+            return;
+        }
+        HDBLL hdbll= new HDBLL();
+        String maHD= this.maHD.getText();
+        String maNV= this.maNV.getText();
+        String maKH= this.maKH.getText();
+        String ngayLap= this.ngayLap.getText();
+        String phuongThuc= this.phuongThuc.getSelectedItem().toString();
+        HD hd= new HD(maHD, "NV001", "KH001", "2000-02-02", phuongThuc, 0, 0, 0, 0);
+        HDBLL hdbll1= new HDBLL();
+        int rs= hdbll1.add(hd);
+        if (rs == 0) JOptionPane.showMessageDialog(null, "Không dc để trống");
+        else if (rs == -1) JOptionPane.showMessageDialog(null, "HD dã tồn tại");
+        else if (rs == -2) JOptionPane.showMessageDialog(null, "Nhập đúng định dạng yyyy-MM-dd");
+        else{
         if (cthdbll.addall(listCTHD)){
-            
             total = 0 ;
             thanhTien.setText(String.valueOf(total));
-            HDBLL hdbll= new HDBLL();
-            for (int i=0; i< listCTHD.size(); i++){
-                hdbll.updateTongTien(listCTHD.get(i));
+            for (int i=0; i<listCTHD.size(); i++){
+                new HDBLL().updateAdd(listCTHD.get(i));
             }
             model.setRowCount(0);
             listCTHD.clear();
@@ -148,6 +167,7 @@ public class QLBH extends JPanel{
             JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 
 
+        }
         }
     });
     xoa.addActionListener(even -> {
@@ -238,8 +258,8 @@ public class QLBH extends JPanel{
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         JPanel top= new JPanel();
         top.setLayout(new GridLayout(1, 3));
-        JPanel[] left= new JPanel[4];
-        for (int i=0; i< 4; i++){
+        JPanel[] left= new JPanel[5];
+        for (int i=0; i< 5; i++){
             left[i]= new JPanel();
             left[i].setLayout(new FlowLayout(FlowLayout.RIGHT));
         }
@@ -247,9 +267,14 @@ public class QLBH extends JPanel{
         left[1].add(new JLabel("Mã KH"));
         left[2].add(new JLabel("Mã NV"));
         left[3].add(new JLabel("Ngày lập"));
+        left[4].add(new JLabel("Phương thức"));
+        DefaultComboBoxModel model= (DefaultComboBoxModel) phuongThuc.getModel();
+        model.addElement("Tien mat");
+        model.addElement("Chuyen khoan");
+        model.addElement("Quet the");
         
-        JPanel[] container= new JPanel[4];
-        for (int i=0; i< 4; i++){
+        JPanel[] container= new JPanel[5];
+        for (int i=0; i< 5; i++){
             container[i]= new JPanel();
             container[i].setLayout(new GridLayout(1, 2));
         }
@@ -275,11 +300,14 @@ public class QLBH extends JPanel{
         
         container[3].add(left[3]);
         container[3].add(ngayLap);
+        container[4].add(left[4]);
+        container[4].add(phuongThuc);
         
         JPanel bottom= new JPanel();
-        bottom.setLayout(new GridLayout(1, 2));
+//        bottom.setLayout(new GridLayout(1, 2));
         bottom.add(container[3]);
-        bottom.add(taoHD);
+        bottom.add(container[4]);
+//        bottom.add(taoHD);
         
         JPanel temp= new JPanel();
         temp.add(new JLabel("----------------------------------------------------------------------------------------------------------------------------------------------------------"));
@@ -288,7 +316,8 @@ public class QLBH extends JPanel{
         p.add(top);
         p.add(bottom);
         p.add(temp);
-        
+        maNV.setEditable(false);
+        maKH.setEditable(false);
         return p;
     }
     
