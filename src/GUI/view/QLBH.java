@@ -415,20 +415,18 @@ public class QLBH extends JPanel{
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-    String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+    String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ"};
         modelHD.setColumnIdentifiers(colums);
         modelHD.setRowCount(0); 
         for (Book s : list1) {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),
-                s.getTenSach(),
-                s.getMaNCC(),        
+                s.getTenSach(),        
                 s.getMaLoai(),
                 s.getMaTacGia(),
                 s.getNamXB(),                
                 s.getSoLuong(),
                 s.getDonGia(),
-                s.getHA(),
                 ""                   
             });
         }
@@ -449,7 +447,7 @@ public class QLBH extends JPanel{
                 String maSach1 = tableHD.getValueAt(selectedRow, 0).toString(); 
                 maSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
                 tenSach.setText(tableHD.getValueAt(selectedRow,1).toString());
-                donGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+                donGia.setText(tableHD.getValueAt(selectedRow, 6).toString());
                 list = bllqlgg.getOneGG(maSach1);
 
                 fr1.dispose(); 

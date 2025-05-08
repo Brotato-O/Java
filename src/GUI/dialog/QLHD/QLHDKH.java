@@ -25,7 +25,7 @@ public class QLHDKH extends JDialog{
     
     public QLHDKH(JFrame frame, QLHD view){
         super(frame, "Chọn khách hàng");
-        String[] column= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] column= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ"};
         controller= new QLHDController(view);
         DefaultTableModel model= (DefaultTableModel) table.getModel();
         model.setColumnIdentifiers(column);

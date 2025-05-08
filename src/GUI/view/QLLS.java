@@ -184,7 +184,7 @@ public class QLLS extends JPanel{
         JPanel tbQLS= new JPanel();
        // tbQLS.setPreferredSize(new Dimension(0, (int)(0.3*height)));
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-        String[] colums= {"MÃ SÁCH", "MÃ NXB", "MÃ THỂ LOẠI", "MÃ TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] colums= {"MÃ SÁCH", "TÊN SÁCH", "MÃ LOẠI", "MÃ TÁC GIẢ", "NĂM XB", "SỐ LƯỢNG","ĐƠN GIÁ"};
         modelHD.setColumnIdentifiers(colums);
         modelHD.setNumRows(20);
         tableHD.setModel(modelHD);
@@ -217,14 +217,12 @@ public class QLLS extends JPanel{
         for (Book s : listBook) {
                 modelHD.addRow(new Object[]{
                     s.getMaSach(),
-                    s.getTenSach(),
-                    s.getMaNCC(),        
+                    s.getTenSach(),       
                     s.getMaLoai(),
                     s.getMaTacGia(),
                     s.getNamXB(),                
                     s.getSoLuong(),
                     s.getDonGia(),
-                    s.getHA(),
                     ""                   
                 });
             }

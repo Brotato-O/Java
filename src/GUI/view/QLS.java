@@ -41,7 +41,7 @@ public class QLS extends JPanel{
 
     
     JTextField txtMaSach1 = new JTextField();
-    private  JTextField txtMaNXB1 = new  JTextField();;
+    //private  JTextField txtMaNXB1 = new  JTextField();;
     private  JTextField txtMaTheLoai1 = new  JTextField();;
     private  JTextField txtMaTacGia1 = new  JTextField();;
     JTextField txtTenSach1 = new JTextField();
@@ -199,7 +199,7 @@ btnLamMoi.addActionListener(event -> {
     txtMaSach1.setText("");
     txtTenSach1.setText("");
     txtMaTacGia1.setText("");
-    txtMaNXB1.setText("");
+    // txtMaNXB1.setText("");
     txtMaTheLoai1.setText("");
     txtNXBTu.setText("");
     txtNXBDen.setText("");
@@ -276,11 +276,11 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             txtTenSach.setText(tableHD.getValueAt(selectedRow, 1).toString());
                 //setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
                // txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
-                setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
-                setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 4).toString());
-            txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
-            txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
-            txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+                setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 2).toString());
+                setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 3).toString());
+            txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 4).toString());
+            txtSoLuong.setText(tableHD.getValueAt(selectedRow, 5).toString());
+            txtDonGia.setText(tableHD.getValueAt(selectedRow, 6).toString());
            
            
         }
@@ -429,7 +429,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-        String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ"};
         modelHD.setColumnIdentifiers(colums);
         showTable();
         tableHD.setModel(modelHD);
@@ -445,14 +445,12 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         for (Book s : list) {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),
-                s.getTenSach(),
-                //s.getMaNCC(),        
+                s.getTenSach(),        
                 s.getMaLoai(),
                 s.getMaTacGia(),
                 s.getNamXB(),                
                 s.getSoLuong(),
                 s.getDonGia(),
-                s.getHA(),
                 ""                   
             });
         }
@@ -523,7 +521,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
     String maSach = txtMaSach1.getText().trim();
     String tenSach = txtTenSach1.getText().trim();
     String maTacGia = txtMaTacGia1.getText().trim();
-    String maNXB = txtMaNXB1.getText().trim();
+    // String maNXB = txtMaNXB1.getText().trim();
     String maTheLoai = txtMaTheLoai1.getText().trim();
     String namTu = txtNXBTu.getText().trim();
     String namDen = txtNXBDen.getText().trim();
@@ -535,7 +533,7 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
         if (!maSach.isEmpty() && !s.getMaSach().contains(maSach)) continue;
         if (!tenSach.isEmpty() && !s.getTenSach().toLowerCase().contains(tenSach.toLowerCase())) continue;
         if (!maTacGia.isEmpty() && !s.getMaTacGia().contains(maTacGia)) continue;
-        if (!maNXB.isEmpty() && !s.getMaNCC().contains(maNXB)) continue;
+        // if (!maNXB.isEmpty() && !s.getMaNCC().contains(maNXB)) continue;
         if (!maTheLoai.isEmpty() && !s.getMaLoai().contains(maTheLoai)) continue;
         if (!namTu.isEmpty() && s.getNamXB() < Integer.parseInt(namTu)) continue;
         if (!namDen.isEmpty() && s.getNamXB() > Integer.parseInt(namDen)) continue;
