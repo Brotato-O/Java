@@ -26,7 +26,9 @@ public class CTPNBLL {
     public CTPN selectById(String id, String maSach){
         return ctpn.selectById(id, maSach);
     }
-    public int delete(String maPN, String maSach){
+    public int delete(String maPN, String maSach, String solg){
+        int solg1 = Integer.parseInt(solg);
+        new DALQLS().truSoLuong(maSach, solg1);
         return ctpn.delete(maPN, maSach);
     }
     public int delete(String maPN){
@@ -50,26 +52,6 @@ public class CTPNBLL {
         new DALQLS().congSoLuong(maSach, solg1);
         return ctpn.add(ctpn1);
     }
-    // public Boolean addall(ArrayList<CTPN> list){
-    //     boolean allSuccess = true;
-    //     for (CTPN ctpn1 : list) {
-    //         int currentStock = dalqls.getSoLuong(ctpn1.getMaSach());
-    //         if (currentStock < ctpn1.getSoLg()) {
-    //             System.out.println("Không đủ sách cho mã sách: " + ctpn1.getMaSach());
-    //             allSuccess = false;
-    //             continue;
-    //         }
-    
-    //         int result = ctpn.saveCTPN(ctpn1);
-    //         if (result > 0) {
-    //             dalqls.truSoLuong(ctpn1.getMaSach(), ctpn1.getSoLg());
-    //         } else {
-    //             System.out.println("Lỗi khi thêm CTPN: " + ctpn1.getMaPN());
-    //             allSuccess = false;
-    //         }
-    //     }
-    //     return allSuccess;
-    // }
     public int update(String maPN, String maSach, String soLuong, String donGia, String thanhTien, String maPN1, String maSach1, String soLuong1){
         int solg1, soLgCu;
         float donGia1, giamGia1, tongTien1, thanhTien1;

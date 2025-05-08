@@ -184,7 +184,7 @@ public class QLLS extends JPanel{
         JPanel tbQLS= new JPanel();
        // tbQLS.setPreferredSize(new Dimension(0, (int)(0.3*height)));
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-        String[] colums= {"MÃ SÁCH", "MÃ NXB", "MÃ THỂ LOẠI", "MÃ TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+        String[] colums= {"MÃ SÁCH", "MÃ THỂ LOẠI", "MÃ TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ"};
         modelHD.setColumnIdentifiers(colums);
         modelHD.setNumRows(20);
         tableHD.setModel(modelHD);
