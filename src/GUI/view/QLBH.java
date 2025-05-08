@@ -447,7 +447,7 @@ public class QLBH extends JPanel{
                 String maSach1 = tableHD.getValueAt(selectedRow, 0).toString(); 
                 maSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
                 tenSach.setText(tableHD.getValueAt(selectedRow,1).toString());
-                donGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+                donGia.setText(tableHD.getValueAt(selectedRow, 6).toString());
                 list = bllqlgg.getOneGG(maSach1);
 
                 fr1.dispose(); 
