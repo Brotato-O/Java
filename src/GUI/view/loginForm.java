@@ -9,6 +9,8 @@
  */
 package GUI.view;
 import BLL.EmpBLL;
+import BLL.PhanQuyenBLL;
+import DTO.PhanQuyenDTO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -104,11 +106,37 @@ public class loginForm extends JPanel{
                 EmpBLL empbll= new EmpBLL();
                 String maNV= account.getText();
                 String mk= password.getText();
+                
+                // Kiểm tra đăng nhập
                 boolean rs= empbll.checkLogin(maNV, mk);
-                if (rs){
-                    SupermarketUI sm = new SupermarketUI();
-                    sm.createAndShowGUI();
-                    sm.getSuperMarketUI();
+                if (rs) {
+                    // Lấy thông tin chức vụ của nhân viên
+                    String chucVu = empbll.getChucVu(maNV);
+                    if (chucVu != null) {
+                        // Lấy quyền tương ứng với chức vụ
+                        PhanQuyenBLL phanQuyenBLL = new PhanQuyenBLL();
+                        phanQuyenBLL.kiemTraQuyen(chucVu);
+                        PhanQuyenDTO permissions = PhanQuyenBLL.quyenTK;
+                        
+                        if (permissions != null) {
+                            // Tạo và hiển thị SupermarketUI
+                            SupermarketUI sm = new SupermarketUI();
+                            sm.createAndShowGUI();
+                            
+                            // Áp dụng quyền vào SupermarketUI
+                            SupermarketUI.setCurrentPermissions(permissions);
+                            
+                            // Đóng form đăng nhập
+                            Window window = SwingUtilities.getWindowAncestor(loginForm.this);
+                            if (window != null) {
+                                window.dispose();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Không tìm thấy quyền cho chức vụ này");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin chức vụ");
+                    }
                 }
                 else JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu sai");
             }

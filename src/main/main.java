@@ -20,20 +20,19 @@ public class main extends JFrame {
 		setSize(width, height);
 		getContentPane().setBackground(Color.decode("#cdffff"));
 		add(new QLHD());
-
-
-                add(new loginForm());
+        add(new loginForm());
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		        setResizable(false);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
-//		        new main();
-SupermarketUI sm = new SupermarketUI();
-                    sm.createAndShowGUI();
-                    sm.getSuperMarketUI();
+		        new main();
+// SupermarketUI sm = new SupermarketUI();
+//                     sm.createAndShowGUI();
+//                     sm.getSuperMarketUI();
 
 
 	}
