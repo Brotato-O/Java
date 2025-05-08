@@ -330,6 +330,18 @@ public class DALQLS {
         }
         return 0;
     }    
+    public int congSoLuong(String maSach, int soLuong) {
+        String query = "UPDATE SACH SET solg = solg + ? WHERE masach = ?";
+        try (Connection conn = new getConnection().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, soLuong);
+            ps.setString(2, maSach);
+            return ps.executeUpdate(); 
+        } catch (Exception e) {
+            System.out.println("Lỗi congSoLuong: " + e);
+        }
+        return 0;
+    }    
     public ArrayList<map> typeBook(){
         ArrayList<map> list = new ArrayList<>();
         try {

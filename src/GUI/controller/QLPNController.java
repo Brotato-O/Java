@@ -480,7 +480,7 @@ public class QLPNController {
                         String donGia1= editDialog.ctDonGia.getText();
                         String thanhTien1= editDialog.ctThanhTien.getText();
                         CTPNBLL ctpn= new CTPNBLL();
-                        int rs= ctpn.update(maPN1, maSach1, soLuong1, donGia1, thanhTien1, maPN, maSach);
+                        int rs= ctpn.update(maPN1, maSach1, soLuong1, donGia1, thanhTien1, maPN, maSach, soLuong);
                         if (rs== -2) JOptionPane.showMessageDialog(view.frame, "Chi tiết phiếu nhập đã tồn tại");
                     
                         else if (rs== -1) JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");

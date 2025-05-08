@@ -276,11 +276,11 @@ tableHD.getSelectionModel().addListSelectionListener(e -> {
             txtTenSach.setText(tableHD.getValueAt(selectedRow, 1).toString());
                 //setSelectedComboItem(txtMaNXB, tableHD.getValueAt(selectedRow, 2).toString());
                // txtMaTheLoai.setSelectedItem(tableHD.getValueAt(selectedRow, 3).toString());
-                setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 3).toString());
-                setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 4).toString());
-            txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 5).toString());
-            txtSoLuong.setText(tableHD.getValueAt(selectedRow, 6).toString());
-            txtDonGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+                setSelectedComboItem(txtMaTheLoai, tableHD.getValueAt(selectedRow, 2).toString());
+                setSelectedComboItem(txtMaTacGia, tableHD.getValueAt(selectedRow, 3).toString());
+            txtNamXuatBan.setText(tableHD.getValueAt(selectedRow, 4).toString());
+            txtSoLuong.setText(tableHD.getValueAt(selectedRow, 5).toString());
+            txtDonGia.setText(tableHD.getValueAt(selectedRow, 6).toString());
            
            
         }
