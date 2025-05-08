@@ -12,7 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
+import java.util.Map;
+import DTO.PhanQuyenDTO;
 
 public class SupermarketUI {
 	private static DefaultTableModel cartModel;
@@ -20,6 +24,78 @@ public class SupermarketUI {
 	private static JPanel mainPanel;
 	private static JButton activeButton = null;
 	private static JFrame frame = new JFrame("QUẢN LÝ CỬA HÀNG SÁCH");
+	private static Map<String, JButton> menuButtons = new HashMap<>();
+	
+	// Lưu trữ quyền hiện tại
+	private static PhanQuyenDTO currentPermissions;
+	
+	// Map menu items to permission keys
+	private static final Map<String, String> menuToPermissionMap = new HashMap<>();
+	static {
+		// NhapHang: Nhập xuất sách, nhà cung cấp
+		menuToPermissionMap.put("Nhập & Xuất Sách", "NhapHang");
+		menuToPermissionMap.put("Nhập sách", "NhapHang");
+		menuToPermissionMap.put("Xuất sách", "NhapHang");
+		menuToPermissionMap.put("Nhà Cung Cấp", "NhapHang");
+		
+		// QLSanPham: QL loại sách, sách, giảm giá, bán hàng
+		menuToPermissionMap.put("Bán Hàng", "QLSanPham");
+		menuToPermissionMap.put("Quản Lý Sách", "QLSanPham");
+		menuToPermissionMap.put("Quản lý loại sách", "QLSanPham");
+		menuToPermissionMap.put("Giảm Giá", "QLSanPham");
+		
+		// QLNhanVien: Nhân viên, phân quyền
+		menuToPermissionMap.put("Quản Lý Nhân Viên", "QLNhanVien");
+		menuToPermissionMap.put("Phân Quyền", "QLNhanVien");
+		
+		// QLKhachHang: Khách hàng
+		menuToPermissionMap.put("Quản Lý Khách Hàng", "QLKhachHang");
+		
+		// ThongKe: Thống kê
+		menuToPermissionMap.put("Thống Kê", "ThongKe");
+	}
+
+	// Phương thức kiểm tra quyền truy cập menu
+	private static boolean hasPermission(String menuItem) {
+		if (currentPermissions == null) {
+			return false; // Không có quyền nếu chưa đăng nhập
+		}
+		
+		String permissionKey = menuToPermissionMap.get(menuItem);
+		if (permissionKey == null) {
+			return true; // Menu item không yêu cầu quyền
+		}
+		
+		switch (permissionKey) {
+			case "NhapHang":
+				return currentPermissions.getNhapHang() == 1;
+			case "QLSanPham":
+				return currentPermissions.getQlSanPham() == 1;
+			case "QLNhanVien":
+				return currentPermissions.getQlNhanVien() == 1;
+			case "QLKhachHang":
+				return currentPermissions.getQlKhachHang() == 1;
+			case "ThongKe":
+				return currentPermissions.getThongKe() == 1;
+			default:
+				return false;
+		}
+	}
+
+	// Phương thức set quyền hiện tại
+	public static void setCurrentPermissions(PhanQuyenDTO permissions) {
+		currentPermissions = permissions;
+		updateMenuVisibility();
+	}
+
+	// Phương thức cập nhật hiển thị menu dựa trên quyền
+	private static void updateMenuVisibility() {
+		for (Map.Entry<String, JButton> entry : menuButtons.entrySet()) {
+			String menuItem = entry.getKey();
+			JButton button = entry.getValue();
+			button.setVisible(hasPermission(menuItem));
+		}
+	}
 
 	public static void createAndShowGUI() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,16 +112,20 @@ public class SupermarketUI {
 		ImageIcon icon = new ImageIcon("C:/Users/VIET/eclipse-workspace/btjavaswing/src/btjavaswing/logo.png");
 		Image img1 = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		JLabel imgLabel = new JLabel(new ImageIcon(img1));
-		sidePanel.setLayout(new BorderLayout());
-		sidePanel.add(imgLabel, BorderLayout.NORTH);
+		JPanel logoPanel = new JPanel(new BorderLayout());
+		logoPanel.setBackground(Color.DARK_GRAY);
+		logoPanel.add(imgLabel, BorderLayout.CENTER);
+		sidePanel.add(logoPanel);
 
 		// Menu Items
 		String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên",
 				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê",
 				"Nhà Cung Cấp","Phân Quyền" };
 
+		// Menu Panel with BoxLayout	
 		JPanel menuPanel = new JPanel();
-		menuPanel.setLayout(new GridLayout(menuItems.length, 1, 0, 0));
+		menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+		menuPanel.setBackground(Color.DARK_GRAY);
 
 		cardLayout = new CardLayout();
 		mainPanel = new JPanel(cardLayout);
@@ -58,10 +138,12 @@ public class SupermarketUI {
 			button.setFocusPainted(false);
 			button.setBackground(Color.DARK_GRAY);
 			button.setForeground(Color.WHITE);
-
-			// Tạo panel tương ứng
-			JPanel panel = new JPanel();
-			panel.add(new JLabel(menuItem));
+			button.setMaximumSize(new Dimension(220, 50));
+			button.setPreferredSize(new Dimension(220, 50));
+			button.setAlignmentX(JButton.CENTER_ALIGNMENT);
+			
+			// Lưu button vào map để quản lý quyền
+			menuButtons.put(menuItem, button);
 
 			button.addActionListener(e -> {
 				cardLayout.show(mainPanel, menuItem);
@@ -80,12 +162,10 @@ public class SupermarketUI {
 			}
 
 			menuPanel.add(button);
-			mainPanel.add(panel, menuItem);
+			mainPanel.add(new JPanel(), menuItem);
 		}
 
-
 		// Thêm vào CardLayout
-
 		mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
 		mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
 		mainPanel.add(new QLBH(), "Bán Hàng");
@@ -98,12 +178,19 @@ public class SupermarketUI {
 		mainPanel.add(new TK(), "Thống Kê");
 		mainPanel.add(new PhanQuyen(), "Phân Quyền");
 
-		sidePanel.add(menuPanel);
+		// Wrap menuPanel in a scroll pane
+		JScrollPane scrollPane = new JScrollPane(menuPanel);
+		scrollPane.setPreferredSize(new Dimension(220, 500));
+		scrollPane.setBorder(null);
+		scrollPane.setBackground(Color.DARK_GRAY);
+		scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+		
+		sidePanel.add(scrollPane);
 
-		// **Hiển thị trang "Bán Hàng" khi khởi động**
+		// Hiển thị trang "Bán Hàng" khi khởi động
 		cardLayout.show(mainPanel, "Bán Hàng");
 
-		// **Làm nổi bật nút "Bán Hàng" khi khởi động**
+		// Làm nổi bật nút "Bán Hàng" khi khởi động
 		if (firstButton != null) {
 			firstButton.setBackground(Color.LIGHT_GRAY);
 			firstButton.setForeground(Color.BLACK);
@@ -113,6 +200,9 @@ public class SupermarketUI {
 		frame.add(sidePanel, BorderLayout.WEST);
 		frame.add(mainPanel, BorderLayout.CENTER);
 		frame.setVisible(true);
+		
+		// Cập nhật hiển thị menu dựa trên quyền
+		updateMenuVisibility();
 	}
 
 	public JFrame getSuperMarketUI() {

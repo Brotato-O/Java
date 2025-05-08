@@ -121,17 +121,18 @@ public class QLPNController {
                     int row= tableCTPN.getSelectedRow();
                     int columnMaPN= tableCTPN.getColumnModel().getColumnIndex("Mã PN");
                     int columnMaSach= tableCTPN.getColumnModel().getColumnIndex("Mã sách");
-
+                   
                     if (row != -1){
                         int choice= JOptionPane.showConfirmDialog(view.frame, "Bạn chắc chắn muốn xóa?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                         if (choice==0){
                             String maPN=  modelCTPN.getValueAt(row, columnMaPN).toString();
                             String maSach=  modelCTPN.getValueAt(row, columnMaSach).toString();
-
+                            String soLuong= tableCTPN.getValueAt(row, tableCTPN.getColumnModel().getColumnIndex("Số lượng")).toString();
+        
                             CTPNBLL ctpnbll= new CTPNBLL();
                             CTPN ctpn= ctpnbll.selectById(maPN, maSach);
 
-                            int rowCTPN= ctpnbll.delete(maPN, maSach);
+                            int rowCTPN= ctpnbll.delete(maPN, maSach,soLuong);
 
                             if (rowCTPN > 0){
                                 updateCTPN(ctpnbll, maPN);
@@ -290,14 +291,12 @@ public class QLPNController {
                     Book s = rs.get(i);
                     Object[] row1 = new Object[]{
                         s.getMaSach(),
-                        s.getTenSach(),
-                        s.getMaNCC(),        
+                        s.getTenSach(),      
                         s.getMaLoai(),
                         s.getMaTacGia(),
                         s.getNamXB(),                
                         s.getSoLuong(),
                         s.getDonGia(),
-                        s.getHA(),
                     };
                     model.addRow(row1);
                 }
@@ -373,13 +372,13 @@ public class QLPNController {
                     Object[] row1 = new Object[]{
                         s.getMaSach(),
                         s.getTenSach(),
-                        s.getMaNCC(),        
+      
                         s.getMaLoai(),
                         s.getMaTacGia(),
                         s.getNamXB(),                
                         s.getSoLuong(),
                         s.getDonGia(),
-                        s.getHA(),
+                       
                     };
                     model.addRow(row1);
                 }
@@ -481,7 +480,7 @@ public class QLPNController {
                         String donGia1= editDialog.ctDonGia.getText();
                         String thanhTien1= editDialog.ctThanhTien.getText();
                         CTPNBLL ctpn= new CTPNBLL();
-                        int rs= ctpn.update(maPN1, maSach1, soLuong1, donGia1, thanhTien1, maPN, maSach);
+                        int rs= ctpn.update(maPN1, maSach1, soLuong1, donGia1, thanhTien1, maPN, maSach, soLuong);
                         if (rs== -2) JOptionPane.showMessageDialog(view.frame, "Chi tiết phiếu nhập đã tồn tại");
                     
                         else if (rs== -1) JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");

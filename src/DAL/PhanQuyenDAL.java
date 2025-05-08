@@ -36,27 +36,29 @@ public class PhanQuyenDAL {
     }
     
     // Lấy theo tên Quyen -> để load dữ liệu lên bảng
-    public PhanQuyenDTO getQuyen(String quyen) {
-        try {
-            Connection conn= get.getConnection();
-            String sql = "SELECT * FROM phanquyen WHERE quyen='" + quyen + "'";
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            if (rs.next()) {
-                PhanQuyenDTO phanQuyenDTO = new PhanQuyenDTO();
-                phanQuyenDTO.setQuyen(quyen);
-                phanQuyenDTO.setNhapHang(rs.getInt("NhapHang"));
-                phanQuyenDTO.setQlSanPham(rs.getInt("QLSanPham"));
-                phanQuyenDTO.setQlNhanVien(rs.getInt("QLNhanVien"));
-                phanQuyenDTO.setQlKhachHang(rs.getInt("QLKhachHang"));
-                phanQuyenDTO.setThongKe(rs.getInt("ThongKe"));
-                return phanQuyenDTO;
+        public PhanQuyenDTO getQuyen(String quyen) {
+            try {
+                Connection conn= get.getConnection();
+                String sql = "SELECT * FROM phanquyen WHERE quyen = ?";
+                PreparedStatement pst = conn.prepareStatement(sql);
+                pst.setString(1, quyen);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    PhanQuyenDTO phanQuyenDTO = new PhanQuyenDTO();
+                    phanQuyenDTO.setQuyen(quyen);
+                    phanQuyenDTO.setNhapHang(rs.getInt("NhapHang"));
+                    phanQuyenDTO.setQlSanPham(rs.getInt("QLSanPham"));
+                    phanQuyenDTO.setQlNhanVien(rs.getInt("QLNhanVien"));
+                    phanQuyenDTO.setQlKhachHang(rs.getInt("QLKhachHang"));
+                    phanQuyenDTO.setThongKe(rs.getInt("ThongKe"));
+                    return phanQuyenDTO;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
-    }
     
     // Thêm quyền mới
     public boolean themQuyen(PhanQuyenDTO pq) {

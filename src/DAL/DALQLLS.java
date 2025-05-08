@@ -93,11 +93,9 @@ public class DALQLLS {
                     b.setTenSach(rs.getString("tenSach"));
                     b.setMaLoai(rs.getString("maLoai"));
                     b.setMaTacGia(rs.getString("matg"));
-                    b.setMaNCC(rs.getString("mancc"));
                     b.setSoLuong(rs.getInt("soLg"));
                     b.setNamXB(rs.getInt("namXB"));
                     b.setDonGia(rs.getFloat("donGia"));
-                    b.setHA(rs.getString("hinhanh"));
                     list.add(b);
                 }
             }

@@ -313,14 +313,12 @@ public class QLHDController {
                     Book s = rs.get(i);
                     Object[] row1 = new Object[]{
                         s.getMaSach(),
-                        s.getTenSach(),
-                        s.getMaNCC(),        
+                        s.getTenSach(),       
                         s.getMaLoai(),
                         s.getMaTacGia(),
                         s.getNamXB(),                
                         s.getSoLuong(),
                         s.getDonGia(),
-                        s.getHA(),
                     };
                     model.addRow(row1);
                 }
@@ -420,13 +418,13 @@ public class QLHDController {
                     Object[] row1 = new Object[]{
                         s.getMaSach(),
                         s.getTenSach(),
-                        s.getMaNCC(),        
+                              
                         s.getMaLoai(),
                         s.getMaTacGia(),
                         s.getNamXB(),                
                         s.getSoLuong(),
                         s.getDonGia(),
-                        s.getHA(),
+                       
                     };
                     model.addRow(row1);
                 }

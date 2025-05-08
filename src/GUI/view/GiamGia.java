@@ -491,20 +491,18 @@ public class GiamGia extends JPanel{
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-    String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+    String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ"};
         modelHD.setColumnIdentifiers(colums);
         modelHD.setRowCount(0); 
         for (Book s : list1) {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),
-                s.getTenSach(),
-                s.getMaNCC(),        
+                s.getTenSach(),      
                 s.getMaLoai(),
                 s.getMaTacGia(),
                 s.getNamXB(),                
                 s.getSoLuong(),
                 s.getDonGia(),
-                s.getHA(),
                 ""                   
             });
         }

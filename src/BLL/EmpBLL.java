@@ -36,8 +36,21 @@ public class EmpBLL {
 	public boolean checkID(String maNV) {
 		return this.empDAL.checkMaNV(maNV);
 	}
+
 	public boolean checkLogin(String maNV, String password) {
-		return true;
+		EmployeeManagementDTO emp = this.empDAL.getNhanVien(maNV);
+		if (emp != null && emp.getPassword_emp().equals(password)) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getChucVu(String maNV) {
+		EmployeeManagementDTO emp = this.empDAL.getNhanVien(maNV);
+		if (emp != null) {
+			return emp.getPosition_emp();
+		}
+		return null;
 	}
 
 	public boolean updateNV(EmployeeManagementDTO empDTO) {

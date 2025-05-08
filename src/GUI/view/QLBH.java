@@ -94,8 +94,8 @@ public class QLBH extends JPanel{
     ctMaNV.addActionListener(event -> {
         ctNV();
     });
-    taoHD.addActionListener(even -> {
-
+    ctMaKH.addActionListener(event -> {
+        ctKH();
     });
     soLg.addFocusListener(new FocusAdapter(){
         @Override
@@ -123,7 +123,7 @@ public class QLBH extends JPanel{
         }
         CTHD cthd = new CTHD();
         cthd.setMaSach(maSach.getText());
-        //hiện tại đang cho thêm cố định vào HD001
+        
         cthd.setMaHD(maHD.getText());
         try{
             cthd.setSoLuong(Integer.parseInt(soLg.getText()));
@@ -178,7 +178,7 @@ public class QLBH extends JPanel{
         String maKH= this.maKH.getText();
         String ngayLap= this.ngayLap.getText();
         String phuongThuc= this.phuongThuc.getSelectedItem().toString();
-        HD hd= new HD(maHD, "NV001", "KH001", "2000-02-02", phuongThuc, 0, 0, 0, 0);
+        HD hd= new HD(maHD, maNV, maKH , "2000-02-02", phuongThuc, 0, 0, 0, 0);
         HDBLL hdbll1= new HDBLL();
         int rs= hdbll1.add(hd);
         if (rs == 0) JOptionPane.showMessageDialog(null, "Không dc để trống");
@@ -444,20 +444,18 @@ public class QLBH extends JPanel{
 
        
         tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
-    String[] colums= {"MÃ SÁCH","TÊN SÁCH", "TÊN NXB","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ","HÌNH ẢNH"};
+    String[] colums= {"MÃ SÁCH","TÊN SÁCH","MÃ THỂ LOẠI", "TÊN TÁC GIẢ", "NĂM XUẤT BẢN", "SỐ LƯỢNG", "ĐƠN GIÁ"};
         modelHD.setColumnIdentifiers(colums);
         modelHD.setRowCount(0); 
         for (Book s : list1) {
             modelHD.addRow(new Object[]{
                 s.getMaSach(),
-                s.getTenSach(),
-                s.getMaNCC(),        
+                s.getTenSach(),        
                 s.getMaLoai(),
                 s.getMaTacGia(),
                 s.getNamXB(),                
                 s.getSoLuong(),
                 s.getDonGia(),
-                s.getHA(),
                 ""                   
             });
         }
@@ -478,7 +476,7 @@ public class QLBH extends JPanel{
                 String maSach1 = tableHD.getValueAt(selectedRow, 0).toString(); 
                 maSach.setText(tableHD.getValueAt(selectedRow, 0).toString());
                 tenSach.setText(tableHD.getValueAt(selectedRow,1).toString());
-                donGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
+                donGia.setText(tableHD.getValueAt(selectedRow, 6).toString());
                 list = bllqlgg.getOneGG(maSach1);
                 BLLQLGG bllqlgg= new BLLQLGG();
                 ArrayList<GG> gg= bllqlgg.getAllGGByBook(maSach.getText());
@@ -600,6 +598,54 @@ public class QLBH extends JPanel{
                 });
                 
             }
+            private void ctKH(){
+                JFrame fr1 = new JFrame();
+                    fr1.dispose();
+                    fr1.setSize(400, 550);
+                    fr1.setLayout(new BorderLayout());
+                   
+                JPanel tbQLS= new JPanel();
+                ArrayList<CustomerDTO> listKH = new CustomerBLL().getDSKH();
+                DefaultTableModel modelHD= new DefaultTableModel();
+                JTable tableHD= new JTable();
+                    tbQLS.setLayout(new BoxLayout(tbQLS, BoxLayout.Y_AXIS));
+                String[] colums= {"Mã KH", "Tên KH", "SĐT", "Email", "Phái", "Ngày Sinh"};
+                    modelHD.setColumnIdentifiers(colums);
+                    modelHD.setRowCount(0); 
+                    for (CustomerDTO kh : listKH) {
+                        modelHD.addRow(new Object[]{
+                            kh.getMaKH(), 
+                kh.getTenKH(), 
+                kh.getSDT(), 
+                kh.getEmail(), 
+                kh.getGioiTinh(), 
+                kh.getNgaySinh(),
+                            ""                   
+                        });
+                    }
+                    tableHD.setModel(modelHD);
+                JPanel pTable= new JPanel(new BorderLayout());
+                JScrollPane p1= new JScrollPane(tableHD);
+                    pTable.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                    pTable.add(p1);
+                    tbQLS.add(pTable);
+                JButton chon = new JButton("Chọn");
+            
+                    fr1.add(tbQLS,BorderLayout.NORTH);
+                    fr1.add(chon, BorderLayout.CENTER);
+                    fr1.setVisible(true);
+                    chon.addActionListener(even -> {
+                        int selectedRow = tableHD.getSelectedRow();
+                        if (selectedRow >= 0) {
+                       maKH.setText(tableHD.getValueAt(selectedRow, 0).toString());
+            
+                            fr1.dispose(); 
+                        } else {
+                            JOptionPane.showMessageDialog(fr1, "Vui lòng chọn!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                        }
+                    });
+                    
+                }
     public void showTable() {
     model.setRowCount(0); 
     for (CTHD s : listCTHD) {
