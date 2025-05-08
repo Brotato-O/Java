@@ -188,7 +188,7 @@ public class CTPNDAL {
         }
     }
     public int update(CTPN ctpn, String oldMaPN, String oldMaSach) {
-    String query = "UPDATE Chitietphieunhap SET mapn = ?, masach = ?, solg = ?, dongia = ?,  thanhtien = ?, status = ? WHERE mahd = ? AND masach = ?";
+    String query = "UPDATE Chitietphieunhap SET mapn = ?, masach = ?, solg = ?, dongia = ?,  thanhtien = ?, status = ? WHERE mapn = ? AND masach = ?";
     int rs = 0;
     try {
         Connection conn = get.getConnection();

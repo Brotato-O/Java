@@ -177,11 +177,11 @@ public class HDDAL {
     }
     
     public int editHD(String maHD, String maKH, String maNV, LocalDate ngayLap, String phuongThuc){
-        String query= "Update HOadon set maNV=?, maKH=? ngaylap=?, phuongthuc=? where maHD=?";
+        String query= "Update HOadon set maNV=?, maKH=?, ngaylap=?, hinhthuc=? where maHD=?";
         int rs= 0;
         try{
             Connection conn= get.getConnection();
-            rs= get.prepareUpdate(query, maNV, maKH, ngayLap, phuongThuc);
+            rs= get.prepareUpdate(query, maNV, maKH, ngayLap, phuongThuc, maHD);
             conn.close();
         }
         catch (Exception e){

@@ -236,7 +236,7 @@ public class QLPNController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String maPN= view.maPN.getText();
-                String maNCC= view.maPN.getText();
+                String maNCC= view.maNCC.getText();
                 String maNV= view.maNV.getText();
                 String ngayLap= view.ngayLap.getText();
                 PNBLL hd= new PNBLL();
@@ -249,19 +249,20 @@ public class QLPNController {
                 switch (rs){
                     case 0:
                         JOptionPane.showMessageDialog(view.frame, "Vui lòng không để trống");
-                        return;
+                        break;
                     case -1:
                         JOptionPane.showMessageDialog(view.frame, "Nhân viên chưa tồn tại, vui lòng thêm vào trước");
-                        return;
+                        break;
                     case -2:
-                        JOptionPane.showMessageDialog(view.frame, "Khách hàng chưa tồn tại, vui lòng thêm vào trước");
-                        return;
+                        JOptionPane.showMessageDialog(view.frame, "Nhà cung cấp chưa tồn tại, vui lòng thêm vào trước");
+                        break;
                     case -3:
                         JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng định dạng yyyy-MM-dd");
-                        return;
+                        break;
                     case 1:
                         JOptionPane.showMessageDialog(view.frame, "Đã sửa thành công");
-                        return;
+                        updatePN(hd.selectAll());
+                        break;
                 }
             }
         };
@@ -490,8 +491,7 @@ public class QLPNController {
                             CTPN ctpnNew= ctpn.selectById(maPN1, maSach1);
 
                             PNBLL hd= new PNBLL();
-                            hd.updateTongTien(ctpnOld);
-                            hd.updateAdd(ctpnNew);
+                            hd.editCTPN(ctpnOld, ctpnNew);
 
                             ArrayList<PN> tablePN= hd.selectAll();
                             updatePN(tablePN);
@@ -558,8 +558,11 @@ public class QLPNController {
                     JOptionPane.showMessageDialog(view.frame, "Không thấy NCC, vui lòng thêm NCC");
                 else if (rs== -3)
                     JOptionPane.showMessageDialog(view.frame, "Nhập ngày tháng đúng yyyy-MM-dd");
+                else if (rs== -4)
+                    JOptionPane.showMessageDialog(view.frame, "Phiếu nhập đã tồn tại");
                 else{ 
                     JOptionPane.showMessageDialog(view.frame, "Đã thêm thành công");
+                    updatePN(pnbll.selectAll());
                     addPN.dispose();
                 }
             }
@@ -577,8 +580,8 @@ public class QLPNController {
             PN item= listPN.get(i);
             Object[] row1= new Object[] {
                 item.getMaPN(), 
-                item.getMaNCC(), 
                 item.getMaNV(), 
+                item.getMaNCC(), 
                 item.getNgayNhap(), 
                 item.getTongTien(), 
                 item.getTongSL()

@@ -3,6 +3,7 @@ package BLL;
 import DAL.DALNCC;
 import DAL.EmpDAL;
 import DAL.PNDAL;
+import DTO.CTHD;
 import DTO.CTPN;
 import DTO.PN;
 import java.time.LocalDate;
@@ -109,8 +110,17 @@ public class PNBLL {
         maNV= maNV.trim();
         maNCC= maNCC.trim();
         ngayLap= ngayLap.trim();
-        hd.editPN(maPN, maNCC, maNV, ngayLap1);
-        return 1;
+        int rs =hd.editPN(maPN, maNCC, maNV, ngayLap1);
+        return rs;
+    }
+    public int editCTPN(CTPN cthdOld, CTPN cthdNew){
+        int soLg= cthdNew.getSoLg()- cthdOld.getSoLg();
+        float thanhTien= cthdNew.getThanhTien()- cthdOld.getThanhTien();
+        
+        cthdNew.setSoLg(soLg);
+        cthdNew.setThanhTien(thanhTien);
+        
+        return  hd.updateTongTienAdd(cthdNew);
     }
     public int updateAdd(CTPN cthd){
         return  hd.updateTongTienAdd(cthd);
@@ -119,6 +129,7 @@ public class PNBLL {
         if(maNV.equals("") || maNCC.equals("") || ngayLap.equals("")) return 0;
         if(nv.getNhanVien(maNV) == null) return -1;
         if(ncc.checkNCC(maNCC) == false) return -2;
+        if(hd.selectById(maPN) != null) return -4;
         DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ngayLap1;
         try{

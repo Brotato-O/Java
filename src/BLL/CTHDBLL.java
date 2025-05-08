@@ -37,6 +37,7 @@ public class CTHDBLL {
     public int add(String maHD, String maSach, String soLuong, String donGia, String tongTien, String giamGia, String thanhTien){
         int solg1;
         float donGia1, giamGia1, tongTien1, thanhTien1;
+        if (maSach.equals("")) return -3;
         try{
             solg1= Integer.parseInt(soLuong);
             donGia1= Float.parseFloat(donGia);
@@ -47,6 +48,7 @@ public class CTHDBLL {
         catch(Exception er){
             return -1;
         }
+        
         if (solg1==0) return -1;
         if (cthd.selectById(maHD, maSach) != null) return -2;
         CTHD cthd1= new CTHD(maHD, maSach, solg1, donGia1, tongTien1, giamGia1, thanhTien1);
@@ -62,7 +64,7 @@ public class CTHDBLL {
                 continue;
             }
     
-            int result = cthd.saveCTHD(cthd1);
+            int result = cthd.add(cthd1);
             if (result > 0) {
                 dalqls.truSoLuong(cthd1.getMaSach(), cthd1.getSoLuong());
             } else {

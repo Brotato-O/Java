@@ -1,5 +1,6 @@
 package BLL;
 
+import DAL.CustomerDAL;
 import DAL.EmpDAL;
 import DAL.HDDAL;
 import DTO.CTHD;
@@ -7,12 +8,11 @@ import DTO.HD;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class HDBLL {
     HDDAL hd= new HDDAL();
     EmpDAL nv= new EmpDAL();
-//    KHDAL kh= new KHDAL();
+    CustomerDAL kh= new  CustomerDAL();
     public ArrayList<HD> selectAll(){
         return hd.selectAll();
     }
@@ -108,7 +108,7 @@ public class HDBLL {
     public int editHD(String maHD, String maNV, String maKH, String phuongThuc, String ngayLap){
         if(maNV.equals("") || maKH.equals("") || ngayLap.equals("")) return 0;
         if(nv.getNhanVien(maNV) == null) return -1;
-//        if(kh.getKhachHang(MaKH) == null) return -2;
+        if(kh.getKH(maKH) == null) return -2;
         DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ngayLap1;
         try{
@@ -121,11 +121,24 @@ public class HDBLL {
         maNV= maNV.trim();
         maKH= maKH.trim();
         ngayLap= ngayLap.trim();
-        hd.editHD(maHD, maKH, maNV, ngayLap1, phuongThuc);
+        int rs= hd.editHD(maHD, maKH, maNV, ngayLap1, phuongThuc);
         return 1;
     }
-    public int updateAdd(CTHD cthd){
+    public int updateTongTienAdd(CTHD cthd){
         return  hd.updateTongTienAdd(cthd);
+    }
+    public int editCTHD(CTHD cthdOld, CTHD cthdNew){
+        int soLg= cthdNew.getSoLuong()- cthdOld.getSoLuong();
+        float tongTien= cthdNew.getTongTien()- cthdOld.getTongTien();
+        float thanhTien= cthdNew.getThanhTien()- cthdOld.getThanhTien();
+        float giamGia= cthdNew.getGiamGia()- cthdOld.getGiamGia();
+        
+        cthdNew.setSoLuong(soLg);
+        cthdNew.setTongTien(tongTien);
+        cthdNew.setGiamGia(giamGia);
+        cthdNew.setThanhTien(thanhTien);
+        
+        return  hd.updateTongTienAdd(cthdNew);
     }
     public int conutAll(){
         ArrayList<HD> list =hd.selectAll();
@@ -137,10 +150,7 @@ public class HDBLL {
         String maNV= hd.getMaNV();
         String ngayLap= hd.getNgayLap();
         String phuongThuc= hd.getPhuongThuc();
-        System.out.println("nv" + maNV);
-        System.out.println("kh" + maKH);
-        System.out.println("nl" + ngayLap);
-        if(maNV.isEmpty() || maKH.isEmpty() || ngayLap.isEmpty()) return 0;
+        if(maNV.isEmpty() || maKH.isEmpty() || ngayLap.isEmpty() || maHD.isEmpty()) return 0;
         if (new HDDAL().selectById(maHD )!= null) return -1;
         DateTimeFormatter formater= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ngayLap1;

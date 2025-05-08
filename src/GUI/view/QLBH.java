@@ -19,6 +19,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import BLL.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
  *
@@ -95,6 +97,25 @@ public class QLBH extends JPanel{
     taoHD.addActionListener(even -> {
 
     });
+    soLg.addFocusListener(new FocusAdapter(){
+        @Override
+            public void focusLost(FocusEvent e){
+                BLLQLGG bllqlgg= new BLLQLGG();
+                ArrayList<GG> gg= bllqlgg.getAllGGByBook(maSach.getText());
+                float s= 0;
+                System.out.println(gg.size());
+                for (int i=0; i< gg.size(); i++){
+                    s+= gg.get(i).getLuongGiam();
+                }
+                try{
+                    s= s* Float.parseFloat(soLg.getText());
+                }
+                catch(Exception e1){
+                    return;
+                }
+                maGG.setText(String.valueOf(s));
+            }
+        });
     them.addActionListener(even -> {
         if (soLg.getText().trim().isEmpty() || donGia.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ số lượng, đơn giá và mã giảm giá.");
@@ -104,35 +125,45 @@ public class QLBH extends JPanel{
         cthd.setMaSach(maSach.getText());
         //hiện tại đang cho thêm cố định vào HD001
         cthd.setMaHD(maHD.getText());
-        try{cthd.setSoLuong(Integer.parseInt(soLg.getText()));
+        try{
+            cthd.setSoLuong(Integer.parseInt(soLg.getText()));
             int soluong = Integer.parseInt(soLg.getText());
             float dongia = Float.parseFloat(donGia.getText());
-            float a;
-        if (maGG.getText().trim().isEmpty()) {
-            cthd.setGiamGia(0);
-            a=0;
-        }else {
-            cthd.setGiamGia(Float.parseFloat(maGG.getText()));
-            a= Float.parseFloat(maGG.getText());
-        }
-        cthd.setGiaTien(Float.parseFloat(donGia.getText()));
-        cthd.setTongTien((float)soluong*dongia);
-        float tt = (float)soluong * dongia;
-        cthd.setThanhTien(tt-a);
-        float tt1= tt-a;
-        total = total + tt1;
-        thanhTien.setText(String.valueOf(total));
-        listCTHD.add(cthd);
-        model.addRow(new Object[]{
-            cthd.getMaSach(),
-            cthd.getSoLuong(),
-            cthd.getGiaTien(),
-            cthd.getTongTien(),
-            cthd.getGiamGia(),
-            cthd.getThanhTien()
-        });
+            float a= Float.parseFloat(maGG.getText());
+            
+            cthd.setGiamGia(a);
+            cthd.setGiaTien(Float.parseFloat(donGia.getText()));
+            cthd.setTongTien((float)soluong*dongia);
+            float tt = (float)soluong * dongia;
+            cthd.setThanhTien(tt-a);
+            float tt1= tt-a;
+            total = total + tt1;
+            thanhTien.setText(String.valueOf(total));
+            int check= 0;
+            for (int i=0; i< listCTHD.size(); i++){
+                if (listCTHD.get(i).getMaSach().equalsIgnoreCase(maSach.getText())){
+                    listCTHD.get(i).setSoLuong(listCTHD.get(i).getSoLuong()+ soluong) ;
+                    listCTHD.get(i).setTongTien(listCTHD.get(i).getTongTien()+ tt) ;
+                    listCTHD.get(i).setGiamGia(listCTHD.get(i).getGiamGia()+ a) ;
+                    listCTHD.get(i).setThanhTien(listCTHD.get(i).getThanhTien()+ tt1) ;
+                    check= 1;
+                    break;
+                }
+            }
+            if (check==0) listCTHD.add(cthd);
+            model.setRowCount(0);
+            for (int i=0; i< listCTHD.size(); i++){
+                model.addRow(new Object[]{
+                listCTHD.get(i).getMaSach(),
+                listCTHD.get(i).getSoLuong(),
+                listCTHD.get(i).getGiaTien(),
+                listCTHD.get(i).getTongTien(),
+                listCTHD.get(i).getGiamGia(),
+                listCTHD.get(i).getThanhTien()
+                });
+            }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Sai rồi");
+            System.out.println(e);
         }
         
     });
@@ -154,20 +185,18 @@ public class QLBH extends JPanel{
         else if (rs == -1) JOptionPane.showMessageDialog(null, "HD dã tồn tại");
         else if (rs == -2) JOptionPane.showMessageDialog(null, "Nhập đúng định dạng yyyy-MM-dd");
         else{
-        if (cthdbll.addall(listCTHD)){
-            total = 0 ;
-            thanhTien.setText(String.valueOf(total));
-            for (int i=0; i<listCTHD.size(); i++){
-                new HDBLL().updateAdd(listCTHD.get(i));
+            if (cthdbll.addall(listCTHD)){
+                total = 0 ;
+                thanhTien.setText(String.valueOf(total));
+                for (int i=0; i<listCTHD.size(); i++){
+                    new HDBLL().updateTongTienAdd(listCTHD.get(i));
+                }
+                model.setRowCount(0);
+                listCTHD.clear();
+                JOptionPane.showMessageDialog(container, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-            model.setRowCount(0);
-            listCTHD.clear();
-            JOptionPane.showMessageDialog(container, "Thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        }else{
-            JOptionPane.showMessageDialog(container, "Đã xảy ra lỗi khi thêm dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-
-
-        }
         }
     });
     xoa.addActionListener(even -> {
@@ -451,7 +480,20 @@ public class QLBH extends JPanel{
                 tenSach.setText(tableHD.getValueAt(selectedRow,1).toString());
                 donGia.setText(tableHD.getValueAt(selectedRow, 7).toString());
                 list = bllqlgg.getOneGG(maSach1);
-
+                BLLQLGG bllqlgg= new BLLQLGG();
+                ArrayList<GG> gg= bllqlgg.getAllGGByBook(maSach.getText());
+                float s= 0;
+                System.out.println(gg.size());
+                for (int i=0; i< gg.size(); i++){
+                    s+= gg.get(i).getLuongGiam();
+                }
+                try{
+                    s= s* Float.parseFloat(soLg.getText());
+                }
+                catch(Exception e){
+                    return;
+                }
+                maGG.setText(String.valueOf(s));
                 fr1.dispose(); 
             } else {
                 JOptionPane.showMessageDialog(fr1, "Vui lòng chọn một dòng sách!", "Thông báo", JOptionPane.WARNING_MESSAGE);

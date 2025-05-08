@@ -255,7 +255,7 @@ public class QLHDController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String maHD= view.maHD.getText();
-                String maKH= view.maHD.getText();
+                String maKH= view.maKH.getText();
                 String maNV= view.maNV.getText();
                 String ngayLap= view.ngayLap.getText();
                 JComboBox cbb= view.phuongThuc;
@@ -283,6 +283,8 @@ public class QLHDController {
                         return;
                     case 1:
                         JOptionPane.showMessageDialog(view.frame, "Đã sửa thành công");
+                        ArrayList<HD> arr= hd.selectAll();
+                        updateHD(arr);
                         return;
                 }
             }
@@ -513,13 +515,14 @@ public class QLHDController {
                     CTHDBLL cthdbll= new CTHDBLL();
                     int rs= cthdbll.add(maHD, maSach, soLuong, donGia, tongTien, giamGia, thanhTien);
                     if (rs== -2) JOptionPane.showMessageDialog(view.frame, "Chi tiết hóa đơn đã tồn tại");
+                    if (rs== -3) JOptionPane.showMessageDialog(view.frame, "Không được để trống");
                     
                     else if (rs== -1) JOptionPane.showMessageDialog(view.frame, "Nhập số lượng hợp lệ");
                     else if (rs== 0) JOptionPane.showMessageDialog(view.frame, "Đã tồn tại");
                     else {
                         CTHD cthd= cthdbll.selectById(maHD, maSach);
                         HDBLL hd= new HDBLL();
-                        hd.updateAdd(cthd);
+                        hd.updateTongTienAdd(cthd);
                         ArrayList<HD> tableHD= hd.selectAll();
                         updateHD(tableHD);
 
@@ -564,8 +567,7 @@ public class QLHDController {
                             CTHD cthdNew= cthd.selectById(maHD1, maSach1);
 
                             HDBLL hd= new HDBLL();
-                            hd.updateTongTien(cthdOld);
-                            hd.updateAdd(cthdNew);
+                            hd.editCTHD(cthdOld, cthdNew);
 
                             ArrayList<HD> tableHD= hd.selectAll();
                             updateHD(tableHD);

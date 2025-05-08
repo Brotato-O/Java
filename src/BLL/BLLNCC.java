@@ -14,8 +14,8 @@ public class BLLNCC {
         ArrayList<NCC> ncc= getAllNCC();
         for (int i=0; i< ncc.size(); i++)
             if(ncc.get(i).getMaNCC().equalsIgnoreCase(maNCC))
-                return false;
-        return true;
+                return true;
+        return false;
     }
     public boolean addNCC(NCC ncc) {
         if (isValidNCC(ncc)) {

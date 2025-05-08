@@ -168,11 +168,11 @@ public class PNDAL {
     }
     
     public int editPN(String maPN, String maNCC, String maNV, LocalDate ngayLap){
-        String query= "Update HOadon set maNV=?, maNCC=? ngaylap=? where maPN=?";
+        String query= "Update PHIeunhap set maNV=?, maNCC=?, ngaynhap=? where maPN=?";
         int rs= 0;
         try{
             Connection conn= get.getConnection();
-            rs= get.prepareUpdate(query, maNV, maNCC, ngayLap);
+            rs= get.prepareUpdate(query, maNV, maNCC, ngayLap, maPN);
             conn.close();
         }
         catch (Exception e){
@@ -181,7 +181,7 @@ public class PNDAL {
         return rs;
     }
     public int addPN(PN pn){
-        String query = "INSERT INTO PN (maPN, maNV, maNCC, ngayNhap, tongSL, tongTien) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO PHIeunhap (maPN, maNV, maNCC, ngayNhap, tongSoLg, tongTien, status) VALUES (?, ?, ?, ?, ?, ?, 0)";
         int rs = 0;
         try{
             Connection conn = get.getConnection();
