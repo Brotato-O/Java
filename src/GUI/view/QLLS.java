@@ -217,14 +217,12 @@ public class QLLS extends JPanel{
         for (Book s : listBook) {
                 modelHD.addRow(new Object[]{
                     s.getMaSach(),
-                    s.getTenSach(),
-                    s.getMaNCC(),        
+                    s.getTenSach(),       
                     s.getMaLoai(),
                     s.getMaTacGia(),
                     s.getNamXB(),                
                     s.getSoLuong(),
                     s.getDonGia(),
-                    s.getHA(),
                     ""                   
                 });
             }

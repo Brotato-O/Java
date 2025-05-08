@@ -17,10 +17,6 @@ public class BLLQLS {
         ArrayList<map> listBook = dal.getAllTG();
         return listBook;
     }
-    public ArrayList<map> getAllNcc(){
-        ArrayList<map> listBook = dal.getAllNCC();
-        return listBook;
-    }
     public ArrayList<map> getAllLS(){
         ArrayList<map> listBook = dal.getAllLS();
         return listBook;
@@ -80,10 +76,6 @@ public class BLLQLS {
     }
     public ArrayList<map> getoneType(){
         ArrayList<map> listBook = dal.typeBook();
-        return listBook;
-    }
-    public ArrayList<map> getonencc(){
-        ArrayList<map> listBook = dal.NXBBook();
         return listBook;
     }
     public ArrayList<map> getonetg(){

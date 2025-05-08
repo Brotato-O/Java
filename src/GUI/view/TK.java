@@ -50,7 +50,7 @@ public class TK extends JPanel {
 
     // Lấy dữ liệu
     ArrayList<map> list = bllqls.getoneType();
-    ArrayList<map> list1 = bllqls.getonencc();
+
     ArrayList<map> list2 = bllqls.getonetg();
 
     // Panel trái: thể loại + NXB
@@ -67,15 +67,15 @@ public class TK extends JPanel {
         listPanel.add(new JLabel(line));
     }
 
-    // NXB
-    JPanel listPanel1 = new JPanel();
-    listPanel1.setLayout(new BoxLayout(listPanel1, BoxLayout.Y_AXIS));
-    listPanel1.setBorder(BorderFactory.createTitledBorder("Theo NXB"));
+    // // NXB
+    // JPanel listPanel1 = new JPanel();
+    // listPanel1.setLayout(new BoxLayout(listPanel1, BoxLayout.Y_AXIS));
+    // listPanel1.setBorder(BorderFactory.createTitledBorder("Theo NXB"));
 
-    for (map bts : list1) {
-        String line = "NXB: " + bts.getMa() + " - Số lượng: " + bts.getTen();
-        listPanel1.add(new JLabel(line));
-    }
+    // for (map bts : list1) {
+    //     String line = "NXB: " + bts.getMa() + " - Số lượng: " + bts.getTen();
+    //     listPanel1.add(new JLabel(line));
+    // }
 
     // Panel phải: tác giả
     JPanel rightPanel = new JPanel();
@@ -92,7 +92,7 @@ public class TK extends JPanel {
     leftPanel.add(Box.createVerticalStrut(10));
     leftPanel.add(new JSeparator());
     leftPanel.add(Box.createVerticalStrut(10));
-    leftPanel.add(listPanel1);
+   // leftPanel.add(listPanel1);
 
     // Gộp 2 bên vào 1 container chia đôi
     JPanel mainContent = new JPanel(new GridLayout(1, 2, 10, 0)); // 2 cột, khoảng cách ngang
