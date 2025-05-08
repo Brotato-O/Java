@@ -90,6 +90,7 @@ public class CTPNBLL {
             int kq = solg1 -soLgCu;
             new DALQLS().congSoLuong(maSach, kq);
         }else {
+            new DALQLS().truSoLuong(maSach1, soLgCu);
             new DALQLS().congSoLuong(maSach, solg1);
         }       
         return ctpn.update(ctpn1, maPN1, maSach1);
