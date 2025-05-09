@@ -13,6 +13,14 @@ public class EmpBLL {
 		this.listEmpDTO = getDS();
 	}
 
+	public boolean checkTaiKhoanKhoa(String maNV) {
+		return this.empDAL.checkTaiKhoanKhoa(maNV);
+	}
+
+	public boolean checkTaiKhoanXoa(String maNV) {
+		return this.empDAL.checkTaiKhoanXoa(maNV);
+	}
+
 	public boolean xoaVinhVien(String maNV) {
 		return this.empDAL.xoaVinhVien(maNV);
 	}

@@ -10,6 +10,35 @@ import DTO.EmployeeManagementDTO;
 public class EmpDAL {
 	getConnection get= new getConnection();
 
+
+	public boolean checkTaiKhoanKhoa(String maNV) {
+		try {
+			Connection conn = get.getConnection();
+			String sql = "SELECT * FROM NHANVIEN WHERE MANV = ? AND STATUS = 1";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1, maNV);
+			ResultSet res = pre.executeQuery();
+			return res.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean checkTaiKhoanXoa(String maNV) {
+		try {
+			Connection conn = get.getConnection();
+			String sql = "SELECT * FROM NHANVIEN WHERE MANV = ? AND STATUS = 2";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1, maNV);
+			ResultSet res = pre.executeQuery();
+			return res.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public boolean xoaVinhVien(String maNV) {
 		try {
 			Connection conn = get.getConnection();

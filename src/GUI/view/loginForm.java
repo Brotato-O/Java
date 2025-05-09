@@ -82,6 +82,18 @@ public class loginForm extends JPanel {
             return;
         }
 
+        // Xóa trước
+        if (empbll.checkTaiKhoanXoa(maNV)) {
+            JOptionPane.showMessageDialog(this, "Tài khoản đã bị xóa", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Khóa sau
+        if (empbll.checkTaiKhoanKhoa(maNV)) {
+            JOptionPane.showMessageDialog(this, "Tài khoản đã bị khóa", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
         String chucVu = empbll.getChucVu(maNV);
         if (chucVu == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin chức vụ", "Lỗi", JOptionPane.ERROR_MESSAGE);
