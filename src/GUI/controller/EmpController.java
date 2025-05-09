@@ -69,6 +69,7 @@ public class EmpController {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				view.loadDanhSachQuyen();
+				refreshTable();
 			}
 		});
 	}

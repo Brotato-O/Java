@@ -13,6 +13,18 @@ public class EmpBLL {
 		this.listEmpDTO = getDS();
 	}
 
+	public boolean xoaVinhVien(String maNV) {
+		return this.empDAL.xoaVinhVien(maNV);
+	}
+
+	public boolean khoiPhucTaiKhoan(String maNV) {
+		return this.empDAL.khoiPhucTaiKhoan(maNV);
+	}
+
+	public ArrayList<EmployeeManagementDTO> getListNhanVienBiKhoa() {
+		return this.empDAL.getListNhanVienBiKhoa();
+	}
+
 	public ArrayList<String> getListChucVu() {
 		return this.empDAL.getListChucVu();
 	}
@@ -27,7 +39,7 @@ public class EmpBLL {
 
 	public boolean addNV(EmployeeManagementDTO empDTO) {
 		if (this.empDAL.checkMaNV(empDTO.getId_emp())) {
-			System.out.println("Mã nhân viên đã tồn tại: " + empDTO.getId_emp());
+			// System.out.println("Mã nhân viên đã tồn tại: " + empDTO.getId_emp());
 			return false; 
 		}
 		return this.empDAL.addNhanVien(empDTO);

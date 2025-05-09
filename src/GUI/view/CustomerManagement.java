@@ -35,7 +35,7 @@ public class CustomerManagement extends JPanel {
     // Fields
     private JPanel headerContent, jlabelRight;
     private JTable tableCus;
-    private JButton xuatExcelBtn,nhapExcelBtn,btnThem,btnSua,btnXoa;
+    private JButton xuatExcelBtn,nhapExcelBtn,btnThem,btnSua,btnXoa,btnLamMoi;
     private JTextField txtMaKH, txtTen, txtEmail, txtSDT, txtNgaySinh;
     private JRadioButton rdoNam, rdoNu;
     private JTable table;
@@ -166,9 +166,11 @@ public class CustomerManagement extends JPanel {
         btnThem = new JButton("THÊM");
         btnXoa = new JButton("XÓA");
         btnSua = new JButton("SỬA");
+        btnLamMoi = new JButton("LÀM MỚI");
         jplEven.add(btnThem);
         jplEven.add(btnXoa);
         jplEven.add(btnSua);
+        jplEven.add(btnLamMoi);
 
         // Phần bên phải footer
         JPanel footerRight = new JPanel();
@@ -259,6 +261,10 @@ public class CustomerManagement extends JPanel {
 
     public JButton getBtnSua() {
         return btnSua;
+    }
+
+    public JButton getBtnLamMoi() {
+        return btnLamMoi;
     }
 
     public JButton getXuatExcelBtn() {
