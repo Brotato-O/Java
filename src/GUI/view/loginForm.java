@@ -1,147 +1,108 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author ADMIN
- */
 package GUI.view;
+
 import BLL.EmpBLL;
 import BLL.PhanQuyenBLL;
 import DTO.PhanQuyenDTO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 import main.main;
-public class loginForm extends JPanel{
-    
-    int width= main.width;
-    int height= main.height;
-    JTextField account= new JTextField();
-    JTextField password= new JTextField();
-    JButton login= new JButton("Đăng nhập");
-    JButton exit= new JButton("Thoát");
 
-    public loginForm (){
-        setLayout(new BorderLayout());
-        
-        JPanel leftPadding = new JPanel();
-        leftPadding.setPreferredSize(new Dimension((int)((5.0/100) * width), 0));
-        leftPadding.setOpaque(false);
+public class loginForm extends JPanel {
+    private int width = main.width;
+    private int height = main.height;
+    private JTextField account = new JTextField();
+    private JPasswordField password = new JPasswordField();
 
-        JPanel rightPadding = new JPanel();
-        rightPadding.setPreferredSize(new Dimension((int)((5.0/100) * width), 0));
-        rightPadding.setOpaque(false);
+    private JButton loginButton = new JButton("Đăng nhập");
+    private JButton exitButton = new JButton("Thoát");
 
-        add(leftPadding, BorderLayout.WEST);
-        add(rightPadding, BorderLayout.EAST);
-        
-        add(mainLogin(), BorderLayout.CENTER);
+    public loginForm() {
+        setLayout(new GridBagLayout());
         setBackground(Color.decode("#cdffff"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Title
+        JLabel titleLabel = new JLabel("ĐĂNG NHẬP", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 26));
+        titleLabel.setForeground(Color.decode("#333333"));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        add(titleLabel, gbc);
+
+        // Account label and field
+        gbc.gridwidth = 1;
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        add(new JLabel("Tên đăng nhập:"), gbc);
+        account.setPreferredSize(new Dimension(200, 30));
+        gbc.gridx = 1;
+        add(account, gbc);
+
+        // Password label and field
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        add(new JLabel("Mật khẩu:"), gbc);
+        password.setPreferredSize(new Dimension(200, 30));
+        gbc.gridx = 1;
+        add(password, gbc);
+
+        // Buttons panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        buttonPanel.setOpaque(false);
+        loginButton.setPreferredSize(new Dimension(120, 35));
+        loginButton.setBackground(Color.decode("#009900"));
+        loginButton.setForeground(Color.WHITE);
+        exitButton.setPreferredSize(new Dimension(120, 35));
+        exitButton.setBackground(Color.decode("#ff0100"));
+        exitButton.setForeground(Color.WHITE);
+        buttonPanel.add(loginButton);
+        buttonPanel.add(exitButton);
+
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        add(buttonPanel, gbc);
+
+        // Action listeners
+        loginButton.addActionListener(this::onLogin);
+        exitButton.addActionListener(e -> System.exit(0));
     }
 
-    public JPanel mainLogin(){
-        
-        account.setMaximumSize(new Dimension((int)(0.9* width), 0));
-        account.setPreferredSize(new Dimension(0, 35)); 
-        account.setFont(new Font("Arial", Font.PLAIN, 20));
-        password.setMaximumSize(new Dimension((int)(0.9* width), 20));
-        password.setPreferredSize(new Dimension(0, 35)); 
-        password.setFont(new Font("Arial", Font.PLAIN, 20));
-        
-        JPanel p= new JPanel();
-        p.setLayout(new BorderLayout());
+    private void onLogin(ActionEvent e) {
+        String maNV = account.getText().trim();
+        String mk = new String(password.getPassword());
 
-        JPanel header= new JPanel(new FlowLayout(FlowLayout.CENTER));
-        header.setOpaque(false);
-        header.setBorder(BorderFactory.createEmptyBorder(20, 0, 50, 0));
-        header.add(new JLabel("ĐĂNG NHẬP") {{ setFont(new Font("Arial", Font.BOLD, 18)); }});
+        EmpBLL empbll = new EmpBLL();
+        if (!empbll.checkLogin(maNV, mk)) {
+            JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu sai", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        JPanel mainLogin= new JPanel();
-        mainLogin.setLayout(new BoxLayout(mainLogin, BoxLayout.Y_AXIS));
-        
-        JPanel pAccount= new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pAccount.add(new JLabel("Tên đăng nhập") {{setFont(new Font("Arial", Font.PLAIN, 14));}});
-        pAccount.setMaximumSize(new Dimension((int)(0.9* width), 0));
-        mainLogin.add(pAccount);
-        mainLogin.add(account);
-        pAccount.setOpaque(false);
-        
-        mainLogin.add(Box.createRigidArea(new Dimension(0, 20)));
-        
-        JPanel pPassword = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pPassword.add(new JLabel("Mật khẩu") {{setFont(new Font("Arial", Font.PLAIN, 14));}});
-        pPassword.setMaximumSize(new Dimension((int)(0.9* width), 0));
-        mainLogin.add(pPassword);
-        mainLogin.add(password);
-        pPassword.setOpaque(false);
-        
-        mainLogin.add(Box.createRigidArea(new Dimension(0, 10)));
+        String chucVu = empbll.getChucVu(maNV);
+        if (chucVu == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin chức vụ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        JPanel buttons= new JPanel();
-        
-        login.setBackground(Color.decode("#009900"));
-        login.setPreferredSize(new Dimension(100, 40));
-        buttons.add(login);
-        
-        exit.setBackground(Color.decode("#ff0100"));
-        exit.setPreferredSize(new Dimension(100, 40));
-        buttons.add(exit);
-        buttons.setOpaque(false);
+        PhanQuyenBLL pqbll = new PhanQuyenBLL();
+        pqbll.kiemTraQuyen(chucVu);
+        PhanQuyenDTO permissions = PhanQuyenBLL.quyenTK;
+        if (permissions == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy quyền cho chức vụ này", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        mainLogin.add(buttons);
-        mainLogin.setOpaque(false);
-        
-        p.add(header, BorderLayout.NORTH);
-        p.add(mainLogin, BorderLayout.CENTER);
-        p.setOpaque(false);
-        
-        
-        login.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                EmpBLL empbll= new EmpBLL();
-                String maNV= account.getText();
-                String mk= password.getText();
-                
-                // Kiểm tra đăng nhập
-                boolean rs= empbll.checkLogin(maNV, mk);
-                if (rs) {
-                    // Lấy thông tin chức vụ của nhân viên
-                    String chucVu = empbll.getChucVu(maNV);
-                    if (chucVu != null) {
-                        // Lấy quyền tương ứng với chức vụ
-                        PhanQuyenBLL phanQuyenBLL = new PhanQuyenBLL();
-                        phanQuyenBLL.kiemTraQuyen(chucVu);
-                        PhanQuyenDTO permissions = PhanQuyenBLL.quyenTK;
-                        
-                        if (permissions != null) {
-                            // Tạo và hiển thị SupermarketUI
-                            SupermarketUI sm = new SupermarketUI();
-                            sm.createAndShowGUI();
-                            
-                            // Áp dụng quyền vào SupermarketUI
-                            SupermarketUI.setCurrentPermissions(permissions);
-                            
-                            // Đóng form đăng nhập
-                            Window window = SwingUtilities.getWindowAncestor(loginForm.this);
-                            if (window != null) {
-                                window.dispose();
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Không tìm thấy quyền cho chức vụ này");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Không tìm thấy thông tin chức vụ");
-                    }
-                }
-                else JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu sai");
-            }
-        });
-        
-        return p;
+        // Launch main UI
+        SupermarketUI sm = new SupermarketUI();
+        sm.createAndShowGUI();
+        SupermarketUI.setCurrentPermissions(permissions);
+
+        // Close login window
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) window.dispose();
     }
 }
