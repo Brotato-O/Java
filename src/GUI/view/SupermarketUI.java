@@ -109,7 +109,7 @@ public class SupermarketUI {
 		sidePanel.setBackground(Color.DARK_GRAY);
 
 		// Top Logo
-		ImageIcon icon = new ImageIcon("C:/Users/VIET/eclipse-workspace/btjavaswing/src/btjavaswing/logo.png");
+		ImageIcon icon = new ImageIcon(SupermarketUI.class.getResource("../../img/logo.png"));
 		Image img1 = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		JLabel imgLabel = new JLabel(new ImageIcon(img1));
 		JPanel logoPanel = new JPanel(new BorderLayout());
@@ -119,8 +119,8 @@ public class SupermarketUI {
 
 		// Menu Items
 		String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên",
-				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê", "Thống kê bán sách",
-				"Nhà Cung Cấp","Tải Khoản Bị Khóa","Phân Quyền" };
+				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", 
+				"Nhà Cung Cấp","Tải Khoản Bị Khóa","Phân Quyền","Thống Kê"};
 
 		// Menu Panel with BoxLayout	
 		JPanel menuPanel = new JPanel();
@@ -132,8 +132,48 @@ public class SupermarketUI {
 		mainPanel.setBackground(Color.WHITE);
 
 		JButton firstButton = null; // Nút đầu tiên (Bán Hàng)
+		JPanel thongKeSubPanel = new JPanel();
+		thongKeSubPanel.setLayout(new BoxLayout(thongKeSubPanel, BoxLayout.Y_AXIS));
+		thongKeSubPanel.setBackground(Color.DARK_GRAY);
+		thongKeSubPanel.setVisible(false); // ẩn mặc định
+
+		JButton btnThongKeBanSach = new JButton("Thống kê bán sách");
+		btnThongKeBanSach.setFocusPainted(false);
+		btnThongKeBanSach.setBackground(Color.GRAY);
+		btnThongKeBanSach.setForeground(Color.WHITE);
+		btnThongKeBanSach.setMaximumSize(new Dimension(220, 40));
+		btnThongKeBanSach.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		btnThongKeBanSach.addActionListener(e -> {
+			cardLayout.show(mainPanel, "Thống kê bán sách");
+			if (activeButton != null) {
+				activeButton.setBackground(Color.DARK_GRAY);
+				activeButton.setForeground(Color.WHITE);
+			}
+			btnThongKeBanSach.setBackground(Color.LIGHT_GRAY);
+			btnThongKeBanSach.setForeground(Color.BLACK);
+			activeButton = btnThongKeBanSach;
+		});
+		thongKeSubPanel.add(btnThongKeBanSach);
 
 		for (String menuItem : menuItems) {
+			if (menuItem.equals("Thống Kê")) {
+        JButton button = new JButton(menuItem);
+        button.setFocusPainted(false);
+        button.setBackground(Color.DARK_GRAY);
+        button.setForeground(Color.WHITE);
+        button.setMaximumSize(new Dimension(220, 50));
+        button.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        
+        button.addActionListener(e -> {
+            
+            thongKeSubPanel.setVisible(!thongKeSubPanel.isVisible());
+        });
+
+        menuPanel.add(button);
+        //menuButtons.put(menuItem, button);
+		menuPanel.add(thongKeSubPanel);
+        continue;
+    	}
 			JButton button = new JButton(menuItem);
 			button.setFocusPainted(false);
 			button.setBackground(Color.DARK_GRAY);
@@ -163,6 +203,7 @@ public class SupermarketUI {
 
 			menuPanel.add(button);
 			mainPanel.add(new JPanel(), menuItem);
+			
 		}
 
 		// Thêm vào CardLayout
@@ -176,7 +217,7 @@ public class SupermarketUI {
 		mainPanel.add(new QLPN(), "Nhập sách");
 		mainPanel.add(new GiamGia(), "Giảm Giá");
 		mainPanel.add(new QLNCC(), "Nhà Cung Cấp");
-		mainPanel.add(new ThongKe(), "Thống Kê");
+		//mainPanel.add(new ThongKe(), "Thống Kê");
 		mainPanel.add(new PhanQuyen(), "Phân Quyền");
 		mainPanel.add(new ThongKeBanSach(), "Thống kê bán sách");
 

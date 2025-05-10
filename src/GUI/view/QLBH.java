@@ -598,7 +598,7 @@ public class QLBH extends JPanel{
                 });
                 
             }
-            private void ctKH(){
+    private void ctKH(){
                 JFrame fr1 = new JFrame();
                     fr1.dispose();
                     fr1.setSize(400, 550);
