@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -175,7 +174,7 @@ public class SupermarketUI {
 		mainPanel.add(new QLPN(), "Nhập sách");
 		mainPanel.add(new GiamGia(), "Giảm Giá");
 		mainPanel.add(new QLNCC(), "Nhà Cung Cấp");
-		mainPanel.add(new TK(), "Thống Kê");
+		mainPanel.add(new ThongKe(), "Thống Kê");
 		mainPanel.add(new PhanQuyen(), "Phân Quyền");
 
 		// Wrap menuPanel in a scroll pane
