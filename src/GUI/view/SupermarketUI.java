@@ -186,7 +186,7 @@ public class SupermarketUI {
 		scrollPane.setBackground(Color.DARK_GRAY);
 		scrollPane.getViewport().setBackground(Color.DARK_GRAY);
 		
-		sidePanel.add(scrollPane);
+		sidePanel.add(menuPanel);
 
 		// Hiển thị trang "Bán Hàng" khi khởi động
 		cardLayout.show(mainPanel, "Bán Hàng");

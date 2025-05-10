@@ -1,35 +1,94 @@
 package GUI.view;
+
+import BLL.PNBLL;
+import DTO.PN;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
+import java.awt.event.*;
+import java.util.*;
 
 public class ThongKe extends JPanel {
+    JComboBox<String> cbbNam = new JComboBox<>();
 
     public ThongKe() {
-        // Dữ liệu biểu đồ
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        String[] tenSach = {"Lập trình Java", "Cơ sở dữ liệu", "HTML & CSS", "Python cơ bản"};
-        int[] soLuongBan = {120, 90, 150, 110};
+        // Lấy model để thêm dữ liệu năm
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cbbNam.getModel();
+        Set<String> set = new HashSet<>();  //ko biết là gì nhưng sẽ ôn sau =)))))
 
-        for (int i = 0; i < tenSach.length; i++) {
-            dataset.addValue(soLuongBan[i], "Số lượng bán", tenSach[i]);
+        PNBLL pnbll = new PNBLL();
+        ArrayList<PN> pnList = pnbll.selectAll();
+
+        // Lấy các năm duy nhất từ danh sách phiếu nhập
+        for (int i=0; i< pnList.size(); i++) {
+            String ngayNhap = pnList.get(i).getNgayNhap(); 
+            String nam = ngayNhap.substring(0, 4);
+            set.add(nam);
         }
 
-        // Tạo biểu đồ
+        ArrayList<String> listNam = new ArrayList<>(set);
+        Collections.sort(listNam); // =VVVVVVVv
+        for (String nam : listNam) {
+            model.addElement(nam);
+        }
+
+        add(cbbNam);
+
+        // Gọi biểu đồ ngay khi khởi tạo nếu có năm
+        if (!listNam.isEmpty()) {
+            thongKeTheoQuy(listNam.get(0));
+        }
+
+        // Khi chọn năm khác
+        cbbNam.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nam = (String) cbbNam.getSelectedItem();
+                thongKeTheoQuy(nam);
+            }
+        });
+    }
+
+    // Phương thức thống kê số lượng phiếu nhập theo quý
+    public void thongKeTheoQuy(String namDuocChon) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        int[] soLuong = new int[4];
+
+        ArrayList<PN> danhSach = new PNBLL().selectAll();
+        for (int i=0; i< danhSach.size(); i++){
+            String ngayNhap= danhSach.get(i).getNgayNhap();
+            String nam = ngayNhap.substring(0, 4);
+            if (namDuocChon.equals(nam)){
+                String thang= ngayNhap.substring(5, 7);
+                int index= Integer.parseInt(thang)/3;
+                soLuong[index]++;
+            }
+        }
+
+        String[] quy = {"Quý 1", "Quý 2", "Quý 3", "Quý 4"};
+        for (int i = 0; i < 4; i++) {
+            dataset.addValue(soLuong[i], "Số phiếu nhập", quy[i]);
+        }
+
         JFreeChart barChart = ChartFactory.createBarChart(
-                "Thống kê số lượng sách đã bán",
-                "Tên sách",
-                "Số lượng",
-                dataset
+            "Thống kê phiếu nhập theo quý năm " + namDuocChon,
+            "Quý",
+            "Số lượng",
+            dataset
         );
 
-        // Gắn biểu đồ vào JPanel
         ChartPanel chartPanel = new ChartPanel(barChart);
-        this.setLayout(new java.awt.BorderLayout());
-        this.add(chartPanel, java.awt.BorderLayout.CENTER);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 400));
+
+        removeAll();
+        add(cbbNam);
+        add(chartPanel);
+        revalidate();
+        repaint();
     }
 }
