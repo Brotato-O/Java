@@ -10,6 +10,87 @@ import DTO.EmployeeManagementDTO;
 public class EmpDAL {
 	getConnection get= new getConnection();
 
+
+	public boolean checkTaiKhoanKhoa(String maNV) {
+		try {
+			Connection conn = get.getConnection();
+			String sql = "SELECT * FROM NHANVIEN WHERE MANV = ? AND STATUS = 1";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1, maNV);
+			ResultSet res = pre.executeQuery();
+			return res.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean checkTaiKhoanXoa(String maNV) {
+		try {
+			Connection conn = get.getConnection();
+			String sql = "SELECT * FROM NHANVIEN WHERE MANV = ? AND STATUS = 2";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1, maNV);
+			ResultSet res = pre.executeQuery();
+			return res.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean xoaVinhVien(String maNV) {
+		try {
+			Connection conn = get.getConnection();
+			String sql = "UPDATE NHANVIEN SET STATUS = 2 WHERE MANV = ?";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1, maNV);
+			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean khoiPhucTaiKhoan(String maNV) {
+		try {
+			Connection conn = get.getConnection();
+			String sql = "UPDATE NHANVIEN SET STATUS = 0 WHERE MANV = ?";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1,	maNV);
+			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public ArrayList<EmployeeManagementDTO> getListNhanVienBiKhoa() {
+		ArrayList<EmployeeManagementDTO> listEmp = new ArrayList<EmployeeManagementDTO>();
+		try {
+			Connection conn= get.getConnection();
+			String sql = "SELECT * FROM NHANVIEN WHERE STATUS = 1";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			ResultSet res = pre.executeQuery();
+			while (res.next()) {
+				EmployeeManagementDTO emp = new EmployeeManagementDTO();
+				emp.setId_emp(res.getString("MANV"));
+				emp.setName_emp(res.getString("TENNV"));
+				emp.setPhone_emp(res.getString("SDT"));
+				emp.setSalary_emp(res.getFloat("LUONG"));
+				emp.setStatus_emp(res.getInt("STATUS"));
+				emp.setEmail_emp(res.getString("email"));
+				emp.setPassword_emp(res.getString("MK"));
+				emp.setGender_emp(res.getString("phai"));
+				emp.setPosition_emp(res.getString("chucvu"));
+				listEmp.add(emp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listEmp;
+	}
+
 	public ArrayList<String> getListChucVu() {
 		ArrayList<String> listChucVu = new ArrayList<String>();
 		try {

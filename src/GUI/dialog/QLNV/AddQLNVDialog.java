@@ -2,6 +2,8 @@ package GUI.dialog.QLNV;
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.ArrayList;
+import BLL.PhanQuyenBLL;
 
 public class AddQLNVDialog extends JDialog {
     // UI components
@@ -15,10 +17,12 @@ public class AddQLNVDialog extends JDialog {
     public JRadioButton rdiNam = new JRadioButton("Nam");
     public JRadioButton rdiNu = new JRadioButton("Nữ");
     public ButtonGroup genderGroup = new ButtonGroup();
-    public JTextField txtChucVu = new JTextField();
-    public JComboBox<String> cbChucVu = new JComboBox<>();
+    // public JTextField txtChucVu = new JTextField();
+    public JComboBox<String> jcbChucVu = new JComboBox<>();
     public JTextField txtLuong = new JTextField();
     public JTextField txtNgaySinh = new JTextField();
+
+    private PhanQuyenBLL phanQuyenBLL = new PhanQuyenBLL();
 
     public AddQLNVDialog(JFrame frame) {    
         super(frame, "Thêm nhân viên", true);
@@ -67,7 +71,8 @@ public class AddQLNVDialog extends JDialog {
 
         JLabel lbChucVu = new JLabel("Chức vụ: ");
         panel.add(lbChucVu);
-        panel.add(txtChucVu);
+        panel.add(jcbChucVu);
+        loadDanhSachQuyen();
 
         JLabel lbLuong = new JLabel("Lương: ");
         panel.add(lbLuong);
@@ -113,10 +118,6 @@ public class AddQLNVDialog extends JDialog {
         return password;
     }
 
-    public JTextField getTxtChucVu() {
-        return txtChucVu;
-    }
-
     public JTextField getTxtLuong() {
         return txtLuong;
     }
@@ -138,5 +139,25 @@ public class AddQLNVDialog extends JDialog {
         return btnHuy;
     }
 
+    public void loadDanhSachQuyen() {
+        String selectedQuyen = jcbChucVu.getItemCount() > 0 ? (String) jcbChucVu.getSelectedItem() : null;
+        ArrayList<String> dsQuyen = phanQuyenBLL.getDSQuyen();
+        jcbChucVu.removeAllItems();
+        jcbChucVu.addItem("Chọn quyền");
+        if (dsQuyen != null && !dsQuyen.isEmpty()) {
+            for (String quyen : dsQuyen) {
+                jcbChucVu.addItem(quyen);
+            }
+        }
+        if (selectedQuyen != null) {
+            for (int i = 0; i < jcbChucVu.getItemCount(); i++) {
+                if (selectedQuyen.equals(jcbChucVu.getItemAt(i))) {
+                    jcbChucVu.setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
+        jcbChucVu.setSelectedIndex(0);
+    }
 
 }

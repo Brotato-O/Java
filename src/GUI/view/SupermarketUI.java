@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.HashMap;
 import java.util.Map;
 import DTO.PhanQuyenDTO;
+import main.main;
 
 public class SupermarketUI {
 	private static DefaultTableModel cartModel;
@@ -119,7 +120,7 @@ public class SupermarketUI {
 		// Menu Items
 		String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên",
 				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê",
-				"Nhà Cung Cấp","Phân Quyền" };
+				"Nhà Cung Cấp","Tải Khoản Bị Khóa","Phân Quyền" };
 
 		// Menu Panel with BoxLayout	
 		JPanel menuPanel = new JPanel();
@@ -165,6 +166,7 @@ public class SupermarketUI {
 		}
 
 		// Thêm vào CardLayout
+		mainPanel.add(new TaiKhoanBiKhoa(), "Tải Khoản Bị Khóa");
 		mainPanel.add(new EmployeeManagement(), "Quản Lý Nhân Viên");
 		mainPanel.add(new CustomerManagement(), "Quản Lý Khách Hàng");
 		mainPanel.add(new QLBH(), "Bán Hàng");

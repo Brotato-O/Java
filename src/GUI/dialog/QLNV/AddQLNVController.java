@@ -54,7 +54,7 @@ public class AddQLNVController {
             String sdt = addQLNVDialog.getTxtSDT().getText();
             String email = addQLNVDialog.getTxtEmail().getText();
             String mk = addQLNVDialog.getPassword().getText();
-            String chucVu = addQLNVDialog.getTxtChucVu().getText();
+            String chucVu = addQLNVDialog.jcbChucVu.getSelectedItem().toString();
             String luongStr = addQLNVDialog.getTxtLuong().getText();
             String ngaySinh = addQLNVDialog.getTxtNgaySinh().getText();
             boolean gioiTinh = addQLNVDialog.getRdiNam().isSelected();

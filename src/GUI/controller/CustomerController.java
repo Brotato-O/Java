@@ -23,7 +23,7 @@ public class CustomerController {
 
     private CustomerManagement view = null;
     private JTable table = null;
-    private JButton btnThem,btnXoa,btnSua,btnSearch,btnNhapExcel,btnXuatExcel;
+    private JButton btnThem,btnXoa,btnSua,btnLamMoi,btnSearch,btnNhapExcel,btnXuatExcel;
     private CustomerBLL customerBLL = new CustomerBLL();
 
     public CustomerController(CustomerManagement view) {
@@ -33,6 +33,7 @@ public class CustomerController {
         this.btnThem = this.view.getBtnThem();
         this.btnXoa = this.view.getBtnXoa();
         this.btnSua = this.view.getBtnSua();
+        this.btnLamMoi = this.view.getBtnLamMoi();
         this.btnSearch = this.view.getBtnSearch();
         this.btnNhapExcel = this.view.getNhapExcelBtn();
         this.btnXuatExcel = this.view.getXuatExcelBtn();
@@ -41,10 +42,11 @@ public class CustomerController {
         clickBtnThem();
         clickBtnXoa();
         clickBtnSua();
+        clickBtnLamMoi();
         clickBtnSearch();
         btnClickExportExcel();
         btnClickImportExcel();
-
+        
     }
 
     private void clickRowTable() {
@@ -85,6 +87,12 @@ public class CustomerController {
             AddQLKHDialog addQLKHDialog = new AddQLKHDialog(frame);
             AddQLKHController addQLKHController = new AddQLKHController(addQLKHDialog,CustomerController.this);
             addQLKHDialog.setVisible(true);
+        });
+    }
+
+    private void clickBtnLamMoi() {
+        btnLamMoi.addActionListener(e-> {
+            refreshTable();
         });
     }
 

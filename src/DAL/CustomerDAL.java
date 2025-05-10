@@ -10,6 +10,57 @@ import java.util.ArrayList;
 public class CustomerDAL {
     getConnection get= new getConnection();
 
+    public ArrayList<CustomerDTO> getListKBbiKHoa() {
+        ArrayList<CustomerDTO> listKH = new ArrayList<CustomerDTO>();
+        try {
+            Connection conn= get.getConnection();     
+            String sql = "SELECT * FROM KHACHHANG WHERE STATUS = 1";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            while(res.next()) {
+                CustomerDTO kh = new CustomerDTO();
+                kh.setMaKH(res.getString("MAKH"));
+                kh.setTenKH(res.getString("TENKH"));
+                kh.setSDT(res.getString("SDT"));
+                kh.setEmail(res.getString("EMAIL"));
+                kh.setGioiTinh(res.getString("PHAI"));
+                kh.setNgaySinh(res.getString("NGAYSINH"));
+                listKH.add(kh);
+            }
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }  
+        return listKH;
+    }
+
+    public boolean khoiPhucTaiKhoan(String maKH) {
+        try {
+            Connection conn= get.getConnection();
+            String sql = "UPDATE KHACHHANG SET STATUS = 0 WHERE MAKH = ?";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, maKH);
+            return pre.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean xoaVinhVien(String maKH) {
+        try {
+            Connection conn= get.getConnection();
+            String sql = "UPDATE KHACHHANG SET STATUS = 2 WHERE MAKH = ?";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, maKH);
+            return pre.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public ArrayList<CustomerDTO> getDSKH() {
         try {
             Connection conn= get.getConnection();

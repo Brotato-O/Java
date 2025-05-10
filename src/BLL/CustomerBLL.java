@@ -13,6 +13,18 @@ public class CustomerBLL {
         this.listKH = getDSKH();
     }
 
+    public ArrayList<CustomerDTO> getListDSKhoa() {
+        return this.customerDAL.getListKBbiKHoa();
+    }
+
+    public boolean khoiPhucTaiKhoan(String maKH) {
+        return this.customerDAL.khoiPhucTaiKhoan(maKH);
+    }
+
+    public boolean xoaVinhVien(String maKH) {
+        return this.customerDAL.xoaVinhVien(maKH);
+    }
+
     public ArrayList<CustomerDTO> getDSKH() {
         return this.customerDAL.getDSKH();
     }   
