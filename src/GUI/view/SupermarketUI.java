@@ -119,7 +119,7 @@ public class SupermarketUI {
 
 		// Menu Items
 		String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên",
-				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê",
+				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", "Thống Kê", "Thống kê bán sách",
 				"Nhà Cung Cấp","Tải Khoản Bị Khóa","Phân Quyền" };
 
 		// Menu Panel with BoxLayout	
@@ -178,6 +178,7 @@ public class SupermarketUI {
 		mainPanel.add(new QLNCC(), "Nhà Cung Cấp");
 		mainPanel.add(new ThongKe(), "Thống Kê");
 		mainPanel.add(new PhanQuyen(), "Phân Quyền");
+		mainPanel.add(new ThongKeBanSach(), "Thống kê bán sách");
 
 		// Wrap menuPanel in a scroll pane
 		JScrollPane scrollPane = new JScrollPane(menuPanel);
