@@ -24,7 +24,7 @@ public class EmployeeManagementDTO {
 		this.name_emp = tenNV;
 		this.phone_emp = sdt;
 		this.salary_emp = luong;
-		this.status_emp = 1; // Mặc định là 1 (có mặt)
+		this.status_emp = 0; 
 		this.email_emp = email;
 		this.password_emp = mk; // Mật khẩu
 		this.birth_date = ngaySinh;

@@ -126,6 +126,10 @@ public class AddQLNVDialog extends JDialog {
         return txtNgaySinh;
     }
 
+    public JComboBox<String> getjcbChucVu() {
+        return jcbChucVu;
+    }
+
     //True là nam , false là nữ
     public JRadioButton getRdiNam() {
         return rdiNam;
