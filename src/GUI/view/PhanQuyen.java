@@ -21,22 +21,26 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
     private JCheckBox ckbNhapHang, ckbQLSanPham, ckbQLNhanVien, ckbQLKhachHang, ckbThongKe;
     
     public PhanQuyen() {
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(10, 10));
+        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         
         // Header: Tiêu đề "QUẢN LÝ PHÂN QUYỀN"
         JLabel lblTitle = new JLabel("QUẢN LÝ PHÂN QUYỀN", JLabel.CENTER);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        lblTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         add(lblTitle, BorderLayout.NORTH);
         
         // Middle: Form chọn quyền và bảng danh sách quyền
-        JPanel pnlMiddle = new JPanel(new BorderLayout());
+        JPanel pnlMiddle = new JPanel(new BorderLayout(10, 10));
+        pnlMiddle.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         pnlMiddle.add(addForm(), BorderLayout.NORTH);
         pnlMiddle.add(addCheckboxes(), BorderLayout.CENTER);
         add(pnlMiddle, BorderLayout.CENTER);
         
         // Footer: Các nút thêm, sửa, xóa quyền
-        add(addFooter(), BorderLayout.SOUTH);
+        JPanel footerPanel = addFooter();
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        add(footerPanel, BorderLayout.SOUTH);
         
         // Load dữ liệu ban đầu
         loadDanhSachQuyen();
@@ -46,11 +50,20 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
     }
     
     private JPanel addForm() {
-        JPanel pnlForm = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        JPanel pnlForm = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        pnlForm.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(),
+            "Chọn Quyền",
+            TitledBorder.CENTER,
+            TitledBorder.TOP
+        ));
         
         JLabel lblQuyen = new JLabel("Chọn quyền:");
+        lblQuyen.setFont(new Font("Arial", Font.PLAIN, 14));
+        
         jcbQuyen = new JComboBox<>();
-        jcbQuyen.setPreferredSize(new Dimension(200, 30));
+        jcbQuyen.setPreferredSize(new Dimension(250, 35));
+        jcbQuyen.setFont(new Font("Arial", Font.PLAIN, 14));
         
         pnlForm.add(lblQuyen);
         pnlForm.add(jcbQuyen);
@@ -59,108 +72,93 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
     }
     
     private JPanel addCheckboxes() {
-        // Tạo panel chính với BorderLayout để có thể căn giữa nội dung
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         
-        // Tạo panel chứa các checkbox
         JPanel pnlCheckboxes = new JPanel();
         pnlCheckboxes.setLayout(new BoxLayout(pnlCheckboxes, BoxLayout.Y_AXIS));
-        TitledBorder border = BorderFactory.createTitledBorder("Phân quyền chi tiết");
-        border.setTitleJustification(TitledBorder.CENTER);
-        pnlCheckboxes.setBorder(border);
-
-
+        pnlCheckboxes.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(),
+            "Phân Quyền Chi Tiết",
+            TitledBorder.CENTER,
+            TitledBorder.TOP
+        ));
         
-        // Tạo các checkbox cho từng quyền
         Font font = new Font("Arial", Font.PLAIN, 14);
+        Dimension ckbSize = new Dimension(350, 35);
         
-        // Panel cho từng hàng checkbox có label
-        JPanel pnCheckNhapHang = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        ckbNhapHang = new JCheckBox();
-        JLabel lblNhapHang = new JLabel("Quản lý nhập hàng");
-        lblNhapHang.setFont(font);
-        ckbNhapHang.setFont(font);
-        pnCheckNhapHang.add(ckbNhapHang);
-        pnCheckNhapHang.add(lblNhapHang);
+        // Tạo panel chứa tất cả các checkbox
+        JPanel checkboxContainer = new JPanel();
+        checkboxContainer.setLayout(new BoxLayout(checkboxContainer, BoxLayout.Y_AXIS));
+        checkboxContainer.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JPanel pnCheckQLSanPham = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        ckbQLSanPham = new JCheckBox();
-        JLabel lblQLSanPham = new JLabel("Quản lý sản phẩm");
-        lblQLSanPham.setFont(font);
-        ckbQLSanPham.setFont(font);
-        pnCheckQLSanPham.add(ckbQLSanPham);
-        pnCheckQLSanPham.add(lblQLSanPham);
+        // Tạo các checkbox với style mới và căn giữa
+        checkboxContainer.add(Box.createVerticalStrut(15));
+        checkboxContainer.add(createUniformCheckboxPanel("Quản lý nhập hàng", ckbNhapHang = new JCheckBox(), font, ckbSize));
+        checkboxContainer.add(Box.createVerticalStrut(15));
+        checkboxContainer.add(createUniformCheckboxPanel("Quản lý sản phẩm", ckbQLSanPham = new JCheckBox(), font, ckbSize));
+        checkboxContainer.add(Box.createVerticalStrut(15));
+        checkboxContainer.add(createUniformCheckboxPanel("Quản lý nhân viên", ckbQLNhanVien = new JCheckBox(), font, ckbSize));
+        checkboxContainer.add(Box.createVerticalStrut(15));
+        checkboxContainer.add(createUniformCheckboxPanel("Quản lý khách hàng", ckbQLKhachHang = new JCheckBox(), font, ckbSize));
+        checkboxContainer.add(Box.createVerticalStrut(15));
+        checkboxContainer.add(createUniformCheckboxPanel("Quản lý thống kê", ckbThongKe = new JCheckBox(), font, ckbSize));
+        checkboxContainer.add(Box.createVerticalStrut(15));
         
-        JPanel pnCheckQLNhanVien = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        ckbQLNhanVien = new JCheckBox();
-        JLabel lblQLNhanVien = new JLabel("Quản lý nhân viên");
-        lblQLNhanVien.setFont(font);
-        ckbQLNhanVien.setFont(font);
-        pnCheckQLNhanVien.add(ckbQLNhanVien);
-        pnCheckQLNhanVien.add(lblQLNhanVien);
-        
-        JPanel pnCheckQLKhachHang = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        ckbQLKhachHang = new JCheckBox();
-        JLabel lblQLKhachHang = new JLabel("Quản lý khách hàng");
-        lblQLKhachHang.setFont(font);
-        ckbQLKhachHang.setFont(font);
-        pnCheckQLKhachHang.add(ckbQLKhachHang);
-        pnCheckQLKhachHang.add(lblQLKhachHang);
-        
-        JPanel pnCheckQLThongKe = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        ckbThongKe = new JCheckBox();
-        JLabel lblThongKe = new JLabel("Quản lý thống kê");
-        lblThongKe.setFont(font);
-        ckbThongKe.setFont(font);
-        pnCheckQLThongKe.add(ckbThongKe);
-        pnCheckQLThongKe.add(lblThongKe);
-        
-        // Thêm tất cả các panel vào panel chính
-        pnlCheckboxes.add(pnCheckNhapHang);
-        pnlCheckboxes.add(pnCheckQLSanPham);
-        pnlCheckboxes.add(pnCheckQLNhanVien);
-        pnlCheckboxes.add(pnCheckQLKhachHang);
-        pnlCheckboxes.add(pnCheckQLThongKe);
-        
-        // Đặt kích thước đồng nhất
-        Dimension ckbSize = new Dimension(300, 30);
-        pnCheckNhapHang.setPreferredSize(ckbSize);
-        pnCheckQLSanPham.setPreferredSize(ckbSize);
-        pnCheckQLNhanVien.setPreferredSize(ckbSize);
-        pnCheckQLKhachHang.setPreferredSize(ckbSize);
-        pnCheckQLThongKe.setPreferredSize(ckbSize);
-        
-        // Thêm panel chính vào CENTER của mainPanel để căn giữa
+        pnlCheckboxes.add(checkboxContainer);
         mainPanel.add(pnlCheckboxes, BorderLayout.CENTER);
         
-        // Thêm các panel trống ở trái và phải để căn giữa
-        mainPanel.add(Box.createHorizontalStrut(350), BorderLayout.WEST);
-        mainPanel.add(Box.createHorizontalStrut(350), BorderLayout.EAST);
-        
         return mainPanel;
+    }
+    
+    private JPanel createUniformCheckboxPanel(String label, JCheckBox checkbox, Font font, Dimension size) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setPreferredSize(size);
+        panel.setMaximumSize(size);
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Tạo panel cho checkbox
+        JPanel checkboxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        checkboxPanel.setPreferredSize(new Dimension(30, 30));
+        checkbox.setFont(font);
+        checkboxPanel.add(checkbox);
+        
+        // Tạo panel cho label
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JLabel lbl = new JLabel(label);
+        lbl.setFont(font);
+        labelPanel.add(lbl);
+        
+        // Thêm các panel vào panel chính
+        panel.add(checkboxPanel);
+        panel.add(Box.createHorizontalStrut(10));
+        panel.add(labelPanel);
+        
+        return panel;
     }
     
     private JPanel addFooter() {
         JPanel pnlFooter = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         
-        btnThemQuyen = new JButton("Thêm quyền");
-        btnSuaQuyen = new JButton("Sửa quyền");
-        btnXoaQuyen = new JButton("Xóa quyền");
-        
-        // Tăng kích thước các JButton
-        Dimension buttonSize = new Dimension(150, 40);
-        btnThemQuyen.setPreferredSize(buttonSize);
-        btnSuaQuyen.setPreferredSize(buttonSize);
-        btnXoaQuyen.setPreferredSize(buttonSize);
+        btnThemQuyen = createStyledButton("Thêm quyền");
+        btnSuaQuyen = createStyledButton("Sửa quyền");
+        btnXoaQuyen = createStyledButton("Xóa quyền");
         
         pnlFooter.add(btnThemQuyen);
         pnlFooter.add(btnSuaQuyen);
         pnlFooter.add(btnXoaQuyen);
         
-        // Thêm event cho các button
         addButtonListeners();
         
         return pnlFooter;
+    }
+    
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(150, 40));
+        button.setFont(new Font("Arial", Font.PLAIN, 14));
+        return button;
     }
     
     // Phương thức load danh sách quyền từ database
@@ -354,8 +352,8 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
 
     // Interface implementation cho AddPhanQuyenListener
     @Override
-public void onPhanQuyenAdded() {
-    loadDanhSachQuyen();
-    // employeeManagement.loadDanhSachQuyen();
-}
+    public void onPhanQuyenAdded() {
+        loadDanhSachQuyen();
+        // employeeManagement.loadDanhSachQuyen();
+    }
 }
