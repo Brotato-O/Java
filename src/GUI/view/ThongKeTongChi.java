@@ -19,14 +19,14 @@ import java.awt.Font;
 import java.awt.event.*;
 import java.util.*;
 
-public class ThongKeBanSach extends JPanel {
+public class ThongKeTongChi extends JPanel {
     JComboBox<String> cbbNam = new JComboBox<>();
 
-    public ThongKeBanSach() {
+    public ThongKeTongChi() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel header= new JPanel();
         header.setPreferredSize(new Dimension(100, 50));
-        header.add(new JLabel("THỐNG KÊ SÁCH BÁN ĐƯỢC"){{setFont(new Font("Arial", Font.BOLD, 26));}});
+        header.add(new JLabel("THỐNG KÊ TỔNG CHI THEO KHÁCH"){{setFont(new Font("Arial", Font.BOLD, 26));}});
         add(header);
 
         // Lấy model để thêm dữ liệu năm
@@ -73,62 +73,56 @@ public class ThongKeBanSach extends JPanel {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         ArrayList<HD> danhSachHD = new HDBLL().selectAll();
-        ArrayList<CTHD> danhSachCTHD = new CTHDBLL().selectAll();
-        ArrayList<SachThongKe> thongKe = new ArrayList<>();
-
-        // Lọc hóa đơn đúng năm
-        ArrayList<String> maHDTrongNam = new ArrayList<>();
-        for (int i = 0; i < danhSachHD.size(); i++) {
-            String ngayLap = danhSachHD.get(i).getNgayLap();
+        ArrayList<HD> maSach = new ArrayList<>();
+        ArrayList<KHThongKe> khachHang = new ArrayList<>();
+        
+        for(int i=0; i< danhSachHD.size();i++){
+            HD hd = danhSachHD.get(i);
+            String ngayLap = hd.getNgayLap();
             String nam = ngayLap.substring(0, 4);
-            if (nam.equals(namDuocChon)) {
-                maHDTrongNam.add(danhSachHD.get(i).getMaHD());
+            if(nam.equals(namDuocChon)){
+                maSach.add(hd);
             }
         }
 
-        // Gộp số lượng theo mã sách
-        for (int i = 0; i < danhSachCTHD.size(); i++) {
-            CTHD ct = danhSachCTHD.get(i);
-            if (maHDTrongNam.contains(ct.getMaHD())) {
-                String maSach = ct.getMaSach();
-                int soLuong = ct.getSoLuong();
-
-                boolean daTonTai = false;
-                for (int j = 0; j < thongKe.size(); j++) {
-                    if (thongKe.get(j).maSach.equals(maSach)) {
-                        thongKe.get(j).tongSoLuong += soLuong;
-                        daTonTai = true;
-                        break;
-                    }
-                }
-                if (!daTonTai) {
-                    thongKe.add(new SachThongKe(maSach, soLuong));
+        for(int i=0; i< maSach.size(); i++){
+            HD hd= maSach.get(i);
+            String maKH = hd.getMaKH();
+            float tongTien= hd.getTongTien();
+            boolean tonTai = false;
+            for(int j=0; j< khachHang.size();j++){
+                KHThongKe kh= khachHang.get(j);
+                if(kh.maKH.equals(maKH)){
+                    kh.tongTien += tongTien;
+                    tonTai = true;
+                    break;
                 }
             }
+            if(!tonTai){
+                khachHang.add(new KHThongKe(maKH, tongTien));
+            }
+
         }
 
-        // Sắp xếp giảm dần theo tổng số lượng
-        for (int i = 0; i < thongKe.size() - 1; i++) {
-            for (int j = i + 1; j < thongKe.size(); j++) {
-                if (thongKe.get(i).tongSoLuong < thongKe.get(j).tongSoLuong) {
-                    SachThongKe temp = thongKe.get(i);
-                    thongKe.set(i, thongKe.get(j));
-                    thongKe.set(j, temp);
+        for (int i=0; i< khachHang.size()-1; i++)
+            for (int j=i+1; j< khachHang.size(); j++){
+                if(khachHang.get(i).tongTien < khachHang.get(j).tongTien){
+                    KHThongKe temp = khachHang.get(i);
+                    khachHang.set(i, khachHang.get(j));
+                    khachHang.set(j, temp);
                 }
             }
-        }
 
-        // Lấy top 5 (hoặc ít hơn nếu không đủ)
-        int soLuongHienThi = Math.min(5, thongKe.size());
+        int soLuongHienThi = Math.min(5, khachHang.size());
         for (int i = 0; i < soLuongHienThi; i++) {
-            dataset.addValue(thongKe.get(i).tongSoLuong, "Số lượng bán", thongKe.get(i).maSach);
+            dataset.addValue(khachHang.get(i).tongTien, "Số lượng bán", khachHang.get(i).maKH);
         }
 
         // Hiển thị biểu đồ
         JFreeChart barChart = ChartFactory.createBarChart(
-            "Top 5 sách bán chạy năm " + namDuocChon,
-            "Mã sách",
-            "Số lượng",
+            "Top 5 Khách hàng vjp " + namDuocChon,
+            "Mã KH",
+            "Tổng tiền",
             dataset
         );
 
@@ -138,7 +132,7 @@ public class ThongKeBanSach extends JPanel {
         removeAll();
         JPanel header= new JPanel();
         header.setPreferredSize(new Dimension(100, 50));
-        header.add(new JLabel("THỐNG KÊ SÁCH BÁN ĐƯỢC"){{setFont(new Font("Arial", Font.BOLD, 26));}});
+        header.add(new JLabel("THỐNG KÊ TỔNG CHI THEO KHÁCH"){{setFont(new Font("Arial", Font.BOLD, 26));}});
         add(header);
         JPanel temp= new JPanel();
         temp.add(new JLabel("Năm:"));
@@ -150,13 +144,13 @@ public class ThongKeBanSach extends JPanel {
     }
 
     // Lớp phụ để lưu thống kê sách
-    class SachThongKe {
-        String maSach;
-        int tongSoLuong;
+    class KHThongKe {
+        String maKH;
+        float tongTien;
 
-        public SachThongKe(String maSach, int tongSoLuong) {
-            this.maSach = maSach;
-            this.tongSoLuong = tongSoLuong;
+        public KHThongKe(String maKH, float tongTien) {
+            this.maKH = maKH;
+            this.tongTien = tongTien;
         }
     }
 

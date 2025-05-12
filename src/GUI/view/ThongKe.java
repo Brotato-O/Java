@@ -8,7 +8,11 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+
 import javax.swing.*;
+
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.*;
 import java.util.*;
 
@@ -16,7 +20,12 @@ public class ThongKe extends JPanel {
     JComboBox<String> cbbNam = new JComboBox<>();
 
     public ThongKe() {
+        
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JPanel header= new JPanel();
+        header.setPreferredSize(new Dimension(100, 50));
+        header.add(new JLabel("THỐNG KÊ NHẬP HÀNG"){{setFont(new Font("Arial", Font.BOLD, 26));}});
+        add(header);
 
         // Lấy model để thêm dữ liệu năm
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cbbNam.getModel();
@@ -38,7 +47,10 @@ public class ThongKe extends JPanel {
             model.addElement(nam);
         }
 
-        add(cbbNam);
+        JPanel temp= new JPanel();
+        temp.add(new JLabel("Năm:"));
+        temp.add(cbbNam);
+        add(temp);
 
         // Gọi biểu đồ ngay khi khởi tạo nếu có năm
         if (!listNam.isEmpty()) {
@@ -86,7 +98,14 @@ public class ThongKe extends JPanel {
         chartPanel.setPreferredSize(new java.awt.Dimension(800, 400));
 
         removeAll();
-        add(cbbNam);
+        JPanel header= new JPanel();
+        header.setPreferredSize(new Dimension(100, 50));
+        header.add(new JLabel("THỐNG KÊ NHẬP HÀNG"){{setFont(new Font("Arial", Font.BOLD, 26));}});
+        add(header);
+        JPanel temp= new JPanel();
+        temp.add(new JLabel("Năm:"));
+        temp.add(cbbNam);
+        add(temp);
         add(chartPanel);
         revalidate();
         repaint();

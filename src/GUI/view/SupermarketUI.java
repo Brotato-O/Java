@@ -108,8 +108,10 @@ public class SupermarketUI {
 		sidePanel.setPreferredSize(new Dimension(220, 600));
 		sidePanel.setBackground(Color.DARK_GRAY);
 
+		// System.out.println(SupermarketUI.class.getResource("../../img/logo.png"));
+
 		// Top Logo
-		ImageIcon icon = new ImageIcon(SupermarketUI.class.getResource("../../img/logo.png"));
+		ImageIcon icon = new ImageIcon("src\\img\\logo.png");
 		Image img1 = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		JLabel imgLabel = new JLabel(new ImageIcon(img1));
 		JPanel logoPanel = new JPanel(new BorderLayout());
@@ -119,7 +121,7 @@ public class SupermarketUI {
 
 		// Menu Items
 		String[] menuItems = { "Bán Hàng", "Quản Lý Sách", "Quản lý loại sách", "Quản Lý Nhân Viên",
-				"Quản Lý Khách Hàng", "Nhập & Xuất Sách", "Nhập sách", "Xuất sách", "Giảm Giá", 
+				"Quản Lý Khách Hàng", "Nhập sách", "Xuất sách", "Giảm Giá", 
 				"Nhà Cung Cấp","Tải Khoản Bị Khóa","Phân Quyền","Thống Kê"};
 
 		// Menu Panel with BoxLayout	
@@ -154,6 +156,42 @@ public class SupermarketUI {
 			activeButton = btnThongKeBanSach;
 		});
 		thongKeSubPanel.add(btnThongKeBanSach);
+
+		JButton btnThongKeNhapSach = new JButton("Thống kê nhập sách");
+		btnThongKeNhapSach.setFocusPainted(false);
+		btnThongKeNhapSach.setBackground(Color.GRAY);
+		btnThongKeNhapSach.setForeground(Color.WHITE);
+		btnThongKeNhapSach.setMaximumSize(new Dimension(220, 40));
+		btnThongKeNhapSach.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		btnThongKeNhapSach.addActionListener(e -> {
+			cardLayout.show(mainPanel, "Thống kê nhập sách");
+			if (activeButton != null) {
+				activeButton.setBackground(Color.DARK_GRAY);
+				activeButton.setForeground(Color.WHITE);
+			}
+			btnThongKeNhapSach.setBackground(Color.LIGHT_GRAY);
+			btnThongKeNhapSach.setForeground(Color.BLACK);
+			activeButton = btnThongKeNhapSach;
+		});
+		thongKeSubPanel.add(btnThongKeNhapSach);
+
+		JButton btnThongKeKH = new JButton("Thống kê KH");
+		btnThongKeKH.setFocusPainted(false);
+		btnThongKeKH.setBackground(Color.GRAY);
+		btnThongKeKH.setForeground(Color.WHITE);
+		btnThongKeKH.setMaximumSize(new Dimension(220, 40));
+		btnThongKeKH.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		btnThongKeKH.addActionListener(e -> {
+			cardLayout.show(mainPanel, "Thống kê KH");
+			if (activeButton != null) {
+				activeButton.setBackground(Color.DARK_GRAY);
+				activeButton.setForeground(Color.WHITE);
+			}
+			btnThongKeKH.setBackground(Color.LIGHT_GRAY);
+			btnThongKeKH.setForeground(Color.BLACK);
+			activeButton = btnThongKeKH;
+		});
+		thongKeSubPanel.add(btnThongKeKH);
 
 		for (String menuItem : menuItems) {
 			if (menuItem.equals("Thống Kê")) {
@@ -220,6 +258,8 @@ public class SupermarketUI {
 		//mainPanel.add(new ThongKe(), "Thống Kê");
 		mainPanel.add(new PhanQuyen(), "Phân Quyền");
 		mainPanel.add(new ThongKeBanSach(), "Thống kê bán sách");
+		mainPanel.add(new ThongKe(), "Thống kê nhập sách");
+		mainPanel.add(new ThongKeTongChi(), "Thống kê KH");
 
 		// Wrap menuPanel in a scroll pane
 		JScrollPane scrollPane = new JScrollPane(menuPanel);
