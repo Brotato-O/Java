@@ -149,6 +149,13 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
         pnlFooter.add(btnSuaQuyen);
         pnlFooter.add(btnXoaQuyen);
         
+        btnThemQuyen.setBackground(new Color(0, 153, 0));
+        btnThemQuyen.setForeground(Color.WHITE);
+        btnSuaQuyen.setBackground(new Color(0, 102, 204));
+        btnSuaQuyen.setForeground(Color.WHITE);
+        btnXoaQuyen.setBackground(new Color(204, 0, 0));
+        btnXoaQuyen.setForeground(Color.WHITE);
+
         addButtonListeners();
         
         return pnlFooter;

@@ -4,10 +4,7 @@
  */
 package main;
 
-import GUI.view.CustomerManagement;
-import GUI.view.EmployeeManagement;
 import GUI.view.QLHD;
-import GUI.view.SupermarketUI;
 import GUI.view.loginForm;
 import java.awt.Color;
 import javax.swing.JFrame;

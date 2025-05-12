@@ -105,6 +105,12 @@ public class CustomerManagement extends JPanel {
         xuatExcelBtn.setPreferredSize(new Dimension(120, 30));
         nhapExcelBtn.setPreferredSize(new Dimension(120, 30));
 
+        xuatExcelBtn.setBackground(new java.awt.Color(0, 153, 255)); // Xanh dương
+        xuatExcelBtn.setForeground(new java.awt.Color(255, 255, 255)); // Chữ trắng
+        nhapExcelBtn.setBackground(new java.awt.Color(0, 204, 102)); // Xanh lá cây
+        nhapExcelBtn.setForeground(new java.awt.Color(255, 255, 255)); // Chữ trắng
+
+
         jlabelRight.add(xuatExcelBtn);
         jlabelRight.add(nhapExcelBtn);
 
@@ -172,6 +178,19 @@ public class CustomerManagement extends JPanel {
         jplEven.add(btnSua);
         jplEven.add(btnLamMoi);
 
+btnThem.setBackground(new java.awt.Color(0, 153, 255));     // Xanh dương
+btnThem.setForeground(new java.awt.Color(255, 255, 255));   // Trắng
+
+btnXoa.setBackground(new java.awt.Color(255, 51, 51));       // Đỏ
+btnXoa.setForeground(new java.awt.Color(255, 255, 255));     // Trắng
+
+btnSua.setBackground(new java.awt.Color(255, 153, 0));       // Cam
+btnSua.setForeground(new java.awt.Color(255, 255, 255));     // Trắng
+
+btnLamMoi.setBackground(new java.awt.Color(0, 204, 102));    // Xanh lá
+btnLamMoi.setForeground(new java.awt.Color(255, 255, 255));  // Trắng
+
+
         // Phần bên phải footer
         JPanel footerRight = new JPanel();
         TitledBorder searchBorder = BorderFactory.createTitledBorder("TÌM KIẾM");
@@ -195,6 +214,10 @@ public class CustomerManagement extends JPanel {
         JPanel pnlSearchRow4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
         btnTimKiem = new JButton("Tìm kiếm");
         pnlSearchRow4.add(btnTimKiem);
+
+btnTimKiem.setBackground(new java.awt.Color(51, 102, 255));  // Xanh tím nhạt
+btnTimKiem.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
 
         footerRight.add(pnlSearchRow1);
         footerRight.add(pnlSearchRow3);

@@ -133,6 +133,15 @@ public class EmployeeManagement extends JPanel {
 		res.add(jtfLuong2, gbc);
 		jbSearchLuong = addButton(res, gbc, 3, 1, "Tìm Kiếm", 100);
 
+		jbSearchMaNV.setBackground(new java.awt.Color(0, 102, 204)); // Xanh dương (#0066CC)
+		jbSearchMaNV.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
+		jbAll.setBackground(new java.awt.Color(0, 153, 0)); // Xanh lá (#009900)
+		jbAll.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
+		jbSearchLuong.setBackground(new java.awt.Color(0, 102, 204)); // Xanh dương (#0066CC)
+		jbSearchLuong.setForeground(new java.awt.Color(255, 255, 255)); // Trắng-
+
 		return res;
 	}
 
@@ -258,6 +267,30 @@ public class EmployeeManagement extends JPanel {
 
 		jbXuatExcel.setPreferredSize(new Dimension(150, 35));
 		
+		// Nút Thêm - màu xanh lá cây
+jbThem.setBackground(new java.awt.Color(0, 153, 0));     // Xanh lá (#009900)
+jbThem.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
+// Nút Sửa - màu xanh dương
+jbSua.setBackground(new java.awt.Color(0, 102, 204));    // Xanh dương (#0066CC)
+jbSua.setForeground(new java.awt.Color(255, 255, 255));  // Trắng
+
+// Nút Xóa - màu đỏ (giữ nguyên)
+jbXoa.setBackground(new java.awt.Color(255, 0, 0));      // Đỏ (#FF0000)
+jbXoa.setForeground(new java.awt.Color(255, 255, 255));  // Trắng
+
+// Nút Nhập Excel - màu tím
+jbNhapExcel.setBackground(new java.awt.Color(102, 0, 153)); // Tím (#660099)
+jbNhapExcel.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
+// Nút Xuất Excel - màu cam
+jbXuatExcel.setBackground(new java.awt.Color(255, 153, 0)); // Cam (#FF9900)
+jbXuatExcel.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
+// Nút Làm mới - màu xanh ngọc
+jblammoi.setBackground(new java.awt.Color(0, 153, 153)); // Xanh ngọc (#009999)
+jblammoi.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
+
 		return res;
 	}
 
