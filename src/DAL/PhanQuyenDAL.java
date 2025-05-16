@@ -102,7 +102,6 @@ public class PhanQuyenDAL {
             String sql = "DELETE FROM phanquyen WHERE QUYEN=?";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, quyen);
-            
             int result = pre.executeUpdate();
             return result > 0;
         } catch (Exception e) {
