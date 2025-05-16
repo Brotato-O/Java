@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 
 import DTO.EmployeeManagementDTO;
 
@@ -166,7 +167,7 @@ public class EmpDAL {
 	public boolean addNhanVien(EmployeeManagementDTO emp) {
 		try {
 			Connection conn= get.getConnection();
-			String sql = "INSERT INTO NHANVIEN (MANV, TENNV, SDT, LUONG, STATUS, email,mk,  phai, chucvu, ngaysinh) VALUES (?, ?, ?, ?, ?, ?,?, ?, ?, ?)";
+			String sql = "INSERT INTO NHANVIEN (MANV, TENNV, SDT, LUONG, STATUS, email, mk, phai, chucvu, ngaysinh) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement pre = conn.prepareStatement(sql);
 			pre.setString(1, emp.getId_emp());
 			pre.setString(2, emp.getName_emp());
@@ -177,7 +178,22 @@ public class EmpDAL {
 			pre.setString(7, emp.getPassword_emp());
 			pre.setString(8, emp.getGender_emp());
 			pre.setString(9, emp.getPosition_emp());
-			pre.setString(10, emp.getBirth_date());
+			
+			// Xử lý đặc biệt cho trường ngày sinh
+			try {
+				// Chuyển chuỗi ngày thành đối tượng Date
+				SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+				java.util.Date utilDate = inputFormat.parse(emp.getBirth_date());
+				// Chuyển thành java.sql.Date để lưu vào database
+				java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+				pre.setDate(10, sqlDate);
+			} catch (Exception e) {
+				// Nếu chuyển đổi thất bại, sử dụng ngày hiện tại
+				System.out.println("Lỗi chuyển đổi ngày sinh: " + e.getMessage());
+				pre.setDate(10, new java.sql.Date(System.currentTimeMillis()));
+				return false;
+			}
+			
 			return pre.executeUpdate() > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -202,7 +218,7 @@ public class EmpDAL {
 	public boolean updateNV(EmployeeManagementDTO emp) {
 		try {
 			Connection conn= get.getConnection();
-			String sql = "UPDATE nhanvien SET TENNV = ?, SDT = ?, LUONG = ?, email = ?,MK=?, phai = ?, chucvu = ?, ngaysinh = ? WHERE MANV = ?";
+			String sql = "UPDATE nhanvien SET TENNV = ?, SDT = ?, LUONG = ?, email = ?, MK = ?, phai = ?, chucvu = ?, ngaysinh = ? WHERE MANV = ?";
 			PreparedStatement pre = conn.prepareStatement(sql);
 			pre.setString(1, emp.getName_emp());
 			pre.setString(2, emp.getPhone_emp());
@@ -211,7 +227,22 @@ public class EmpDAL {
 			pre.setString(5, emp.getPassword_emp());
 			pre.setString(6, emp.getGender_emp());
 			pre.setString(7, emp.getPosition_emp());
-			pre.setString(8, emp.getBirth_date());
+			
+			// Xử lý đặc biệt cho trường ngày sinh
+			try {
+				// Chuyển chuỗi ngày thành đối tượng Date
+				SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+				java.util.Date utilDate = inputFormat.parse(emp.getBirth_date());
+				// Chuyển thành java.sql.Date để lưu vào database
+				java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+				pre.setDate(8, sqlDate);
+			} catch (Exception e) {
+				// Nếu chuyển đổi thất bại, sử dụng ngày hiện tại
+				System.out.println("Lỗi chuyển đổi ngày sinh: " + e.getMessage());
+				pre.setDate(8, new java.sql.Date(System.currentTimeMillis()));
+				return false;
+			}
+			
 			pre.setString(9, emp.getId_emp());
 			return pre.executeUpdate() > 0;
 		} catch (Exception e) {
@@ -227,6 +258,19 @@ public class EmpDAL {
 			PreparedStatement pre = conn.prepareStatement(sql);
 			pre.setString(1, maNV);
 			return pre.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean resetChucVuByQuyen(String quyen) {
+		try {
+			Connection conn= get.getConnection();
+			String sql = "UPDATE NHANVIEN SET chucvu = NULL WHERE chucvu = ?";
+			PreparedStatement pre = conn.prepareStatement(sql);
+			pre.setString(1, quyen);
+			return pre.executeUpdate() >= 0; // Return true even if no rows are affected
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

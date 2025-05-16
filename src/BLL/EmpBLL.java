@@ -81,6 +81,10 @@ public class EmpBLL {
 		return this.empDAL.deleteNV(maNV);
 	}
 
+	public boolean resetChucVuByQuyen(String quyen) {
+		return this.empDAL.resetChucVuByQuyen(quyen);
+	}
+
 	public ArrayList<EmployeeManagementDTO> searchComboBox(String item,String value) {
 		return this.empDAL.searchSelectBox(item,value);
 	}
@@ -91,6 +95,15 @@ public class EmpBLL {
 
 	public ArrayList<EmployeeManagementDTO> searchAll(String item,String value, float min, float max) {
 		return this.empDAL.searchAll(item, value, min, max);
+	}
+
+	// Phương thức kiểm tra trạng thái của nhân viên theo mã
+	public int getEmployeeStatus(String maNV) {
+		EmployeeManagementDTO emp = this.empDAL.getNhanVien(maNV);
+		if (emp != null) {
+			return emp.getStatus_emp();
+		}
+		return -1; // Trả về -1 nếu không tìm thấy nhân viên
 	}
 
 }

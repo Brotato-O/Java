@@ -74,6 +74,11 @@ public class PhanQuyenBLL {
     }
     
     public boolean xoaQuyen(String quyen) {
+        // Cập nhật chức vụ của nhân viên thành null trước khi xóa quyền
+        EmpBLL empBLL = new EmpBLL();
+        empBLL.resetChucVuByQuyen(quyen);
+        
+        // Xóa quyền sau khi đã cập nhật chức vụ nhân viên
         boolean result = phanQuyenDAL.xoaQuyen(quyen);
         if (result) {
             // Nếu xóa thành công, đọc lại dữ liệu

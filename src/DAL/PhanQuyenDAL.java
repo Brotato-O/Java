@@ -103,10 +103,11 @@ public class PhanQuyenDAL {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, quyen);
             
-            return pre.executeUpdate() > 0;
+            int result = pre.executeUpdate();
+            return result > 0;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

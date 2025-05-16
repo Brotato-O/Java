@@ -147,7 +147,6 @@ public class AddQLNVController {
     
 
     private boolean checkBirthDay(String birthDate) {
-
         // Kiểm tra tính hợp lệ của ngày
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false); // Không cho phép ngày không hợp lệ (ví dụ: 30/02)
@@ -159,9 +158,14 @@ public class AddQLNVController {
                 JOptionPane.showMessageDialog(addQLNVDialog, "Ngày sinh không lớn hay ngày hiện tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
+            
+            // Đảm bảo chuỗi ngày có đúng định dạng yyyy-MM-dd
+            String formattedDate = sdf.format(date);
+            addQLNVDialog.getTxtNgaySinh().setText(formattedDate);
+            
             return true; // Ngày hợp lệ
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(addQLNVDialog, "Ngày sinh không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(addQLNVDialog, "Ngày sinh không hợp lệ! Hãy nhập theo định dạng yyyy-MM-dd (VD: 2000-12-31)", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
