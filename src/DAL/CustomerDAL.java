@@ -180,8 +180,7 @@ public class CustomerDAL {
             if (item.equals("Mã Khách Hàng")) {
                 sql += " AND MAKH LIKE ?";
             } else if (item.equals("Tên Khách Hàng")) {
-                // Tìm kiếm chỉ theo tên (phần cuối cùng của họ và tên)
-                sql += " AND SUBSTRING_INDEX(TENKH, ' ', -1) LIKE ?";
+                sql += " AND TENKH LIKE ?";
             }
     
             PreparedStatement pre = conn.prepareStatement(sql);
