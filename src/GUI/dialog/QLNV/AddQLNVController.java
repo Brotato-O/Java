@@ -68,6 +68,16 @@ public class AddQLNVController {
         }
     }
 
+    private boolean checkLuong(String Luong) {
+        float luong = Float.parseFloat(Luong);
+        if(luong >= 0) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(addQLNVDialog, "Lương không được âm", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
     private void clickBtnXacNhan() {
         this.btnXacNhan.addActionListener(new ActionListener() {
             @Override
@@ -105,6 +115,10 @@ public class AddQLNVController {
                 }
 
                 if(checkQuyen(chucVu) == false) {
+                    return;
+                }
+
+                if(checkLuong(luongStr) == false) {
                     return;
                 }
 
