@@ -152,14 +152,14 @@ public class EmployeeManagement extends JPanel {
 		//separator
 		JSeparator separator = new JSeparator();
 		res.add(separator, BorderLayout.NORTH);
-
+		
 		//Table
 		String[] columnNames = { "Mã NV", "Tên nhân viên", "Số điện thoại", "Email", "Password","Phái", "Chức vụ", "Lương",
 				"Ngày sinh" };
 
 		EmpBLL empBLL = new EmpBLL();
 		ArrayList<EmployeeManagementDTO> listNV = empBLL.getDS();
-
+		
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
 		for (EmployeeManagementDTO nv : listNV) {

@@ -42,7 +42,7 @@ public class TaiKhoanBiKhoa extends JPanel {
         // Tạo các tab và thêm vào JTabbedPane
         createNhanVienTab();
         createKhachHangTab();      
-        
+    
         // Thêm JTabbedPane vào JPanel chính
         add(tabbedPane, BorderLayout.CENTER);
         

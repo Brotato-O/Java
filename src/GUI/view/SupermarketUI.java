@@ -47,6 +47,7 @@ public class SupermarketUI {
 		// QLNhanVien: Nhân viên, phân quyền
 		menuToPermissionMap.put("Quản Lý Nhân Viên", "QLNhanVien");
 		menuToPermissionMap.put("Phân Quyền", "QLNhanVien");
+		menuToPermissionMap.put("Tải Khoản Bị Khóa", "QLNhanVien");
 		
 		// QLKhachHang: Khách hàng
 		menuToPermissionMap.put("Quản Lý Khách Hàng", "QLKhachHang");

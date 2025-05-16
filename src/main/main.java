@@ -23,6 +23,7 @@ public class main extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
+		
 	}
 
 	public static void main(String[] args) {

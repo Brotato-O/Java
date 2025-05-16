@@ -4,18 +4,13 @@
  */
 package GUI.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.util.ArrayList;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
 import BLL.BLLNCC;
 import DTO.NCC;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *

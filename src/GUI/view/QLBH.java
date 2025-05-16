@@ -359,7 +359,7 @@ public class QLBH extends JPanel{
         img.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JPanel[] input= new JPanel[5];
         out.add(img);
-        ImageIcon icon= new ImageIcon(getClass().getResource("../../img/image.png"));
+        ImageIcon icon= new ImageIcon("src\\img\\image.png");
         Image img1= icon.getImage();
         img1= img1.getScaledInstance(300, 200, Image.SCALE_AREA_AVERAGING);
         JLabel label = new JLabel(new ImageIcon(img1));

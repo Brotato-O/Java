@@ -1,16 +1,13 @@
 package GUI.view;
 
+import BLL.BLLQLLS;
+import DTO.*;
+import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-
-import BLL.BLLQLLS;
-import BLL.BLLQLS;
-import DTO.*;
 import main.main;
-import java.awt.*;
-import java.util.ArrayList;
-
 
 public class QLLS extends JPanel{
     private ArrayList <LoaiSach> list = new ArrayList<>();

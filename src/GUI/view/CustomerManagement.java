@@ -218,7 +218,6 @@ btnLamMoi.setForeground(new java.awt.Color(255, 255, 255));  // Trắng
 btnTimKiem.setBackground(new java.awt.Color(51, 102, 255));  // Xanh tím nhạt
 btnTimKiem.setForeground(new java.awt.Color(255, 255, 255)); // Trắng
 
-
         footerRight.add(pnlSearchRow1);
         footerRight.add(pnlSearchRow3);
         footerRight.add(pnlSearchRow4);

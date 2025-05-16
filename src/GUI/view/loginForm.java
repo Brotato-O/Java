@@ -109,9 +109,8 @@ public class loginForm extends JPanel {
         }
 
         // Launch main UI
-        SupermarketUI sm = new SupermarketUI();
-        sm.createAndShowGUI();
         SupermarketUI.setCurrentPermissions(permissions);
+        SupermarketUI.createAndShowGUI();
 
         // Close login window
         Window window = SwingUtilities.getWindowAncestor(this);

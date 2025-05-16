@@ -2,7 +2,6 @@ package GUI.view;
 
 import BLL.PhanQuyenBLL;
 import DTO.PhanQuyenDTO;
-import GUI.view.EmployeeManagement;
 import GUI.dialog.PhanQuyen.AddPhanQuyenDialog;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -138,6 +137,9 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
         return panel;
     }
     
+    /**
+     * @return
+     */
     private JPanel addFooter() {
         JPanel pnlFooter = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         
@@ -363,4 +365,5 @@ public class PhanQuyen extends JPanel implements AddPhanQuyenDialog.AddPhanQuyen
         loadDanhSachQuyen();
         // employeeManagement.loadDanhSachQuyen();
     }
+
 }
